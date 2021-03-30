@@ -1,0 +1,110 @@
+{
+  "@context": {
+    "kb": "http://example.org/kb/",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "uco-core": "https://unifiedcyberontology.org/ontology/uco/core#",
+    "uco-observable": "https://unifiedcyberontology.org/ontology/uco/observable#",
+    "uco-types": "https://unifiedcyberontology.org/ontology/uco/types#",
+    "uco-vocabulary": "https://unifiedcyberontology.org/ontology/uco/vocabulary#",
+    "xml": "http://www.w3.org/XML/1998/namespace",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@graph": [
+    {
+      "@id": "http://example.org/kb/file-72a7af43-7798-5794-88fd-49c0d3c76ccb",
+      "@type": "https://unifiedcyberontology.org/ontology/uco/observable#ObservableObject",
+      "https://unifiedcyberontology.org/ontology/uco/core#hasFacet": [
+        {
+          "@id": "_:N9465521b80bf49c586f914908dfc46a2"
+        },
+        {
+          "@id": "_:Ne7887bd0a239424bb588bed06ec4fc77"
+        }
+      ]
+    },
+    {
+      "@id": "_:N9465521b80bf49c586f914908dfc46a2",
+      "@type": "https://unifiedcyberontology.org/ontology/uco/observable#ContentDataFacet",
+      "https://unifiedcyberontology.org/ontology/uco/observable#hash": [
+        {
+          "@id": "_:Nad6171b4933a4a84b83faa5d48fd4ddb"
+        },
+        {
+          "@id": "_:N1ee7a053f4bd466e8fca1105b8392292"
+        },
+        {
+          "@id": "_:N098fa95f7ef2409b864a9fb6b291ab08"
+        },
+        {
+          "@id": "_:Na99d1f2a83814ac491c9b02662ea8587"
+        }
+      ],
+      "https://unifiedcyberontology.org/ontology/uco/observable#sizeInBytes": {
+        "@type": "http://www.w3.org/2001/XMLSchema#long",
+        "@value": "4"
+      }
+    },
+    {
+      "@id": "_:Nad6171b4933a4a84b83faa5d48fd4ddb",
+      "@type": "https://unifiedcyberontology.org/ontology/uco/types#Hash",
+      "https://unifiedcyberontology.org/ontology/uco/types#hashMethod": {
+        "@type": "https://unifiedcyberontology.org/ontology/uco/vocabulary#HashNameVocab",
+        "@value": "SHA512"
+      },
+      "https://unifiedcyberontology.org/ontology/uco/types#hashValue": {
+        "@type": "http://www.w3.org/2001/XMLSchema#hexBinary",
+        "@value": "ee26b0dd4af7e749aa1a8ee3c10ae9923f618980772e473f8819a5d4940e0db27ac185f8a0e1d5f84f88bc887fd67b143732c304cc5fa9ad8e6f57f50028a8ff"
+      }
+    },
+    {
+      "@id": "_:N1ee7a053f4bd466e8fca1105b8392292",
+      "@type": "https://unifiedcyberontology.org/ontology/uco/types#Hash",
+      "https://unifiedcyberontology.org/ontology/uco/types#hashMethod": {
+        "@type": "https://unifiedcyberontology.org/ontology/uco/vocabulary#HashNameVocab",
+        "@value": "SHA256"
+      },
+      "https://unifiedcyberontology.org/ontology/uco/types#hashValue": {
+        "@type": "http://www.w3.org/2001/XMLSchema#hexBinary",
+        "@value": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+      }
+    },
+    {
+      "@id": "_:N098fa95f7ef2409b864a9fb6b291ab08",
+      "@type": "https://unifiedcyberontology.org/ontology/uco/types#Hash",
+      "https://unifiedcyberontology.org/ontology/uco/types#hashMethod": {
+        "@type": "https://unifiedcyberontology.org/ontology/uco/vocabulary#HashNameVocab",
+        "@value": "SHA1"
+      },
+      "https://unifiedcyberontology.org/ontology/uco/types#hashValue": {
+        "@type": "http://www.w3.org/2001/XMLSchema#hexBinary",
+        "@value": "a94a8fe5ccb19ba61c4c0873d391e987982fbbd3"
+      }
+    },
+    {
+      "@id": "_:Na99d1f2a83814ac491c9b02662ea8587",
+      "@type": "https://unifiedcyberontology.org/ontology/uco/types#Hash",
+      "https://unifiedcyberontology.org/ontology/uco/types#hashMethod": {
+        "@type": "https://unifiedcyberontology.org/ontology/uco/vocabulary#HashNameVocab",
+        "@value": "MD5"
+      },
+      "https://unifiedcyberontology.org/ontology/uco/types#hashValue": {
+        "@type": "http://www.w3.org/2001/XMLSchema#hexBinary",
+        "@value": "098f6bcd4621d373cade4e832627b4f6"
+      }
+    },
+    {
+      "@id": "_:Ne7887bd0a239424bb588bed06ec4fc77",
+      "@type": "https://unifiedcyberontology.org/ontology/uco/observable#FileFacet",
+      "https://unifiedcyberontology.org/ontology/uco/observable#fileName": "sample.txt",
+      "https://unifiedcyberontology.org/ontology/uco/observable#modifiedTime": {
+        "@type": "http://www.w3.org/2001/XMLSchema#dateTime",
+        "@value": "2010-01-02T03:04:56+00:00"
+      },
+      "https://unifiedcyberontology.org/ontology/uco/observable#sizeInBytes": {
+        "@type": "http://www.w3.org/2001/XMLSchema#long",
+        "@value": "4"
+      }
+    }
+  ]
+}

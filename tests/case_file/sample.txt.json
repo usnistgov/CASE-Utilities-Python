@@ -1,0 +1,110 @@
+{
+    "@context": {
+        "kb": "http://example.org/kb/",
+        "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+        "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+        "uco-core": "https://unifiedcyberontology.org/ontology/uco/core#",
+        "uco-observable": "https://unifiedcyberontology.org/ontology/uco/observable#",
+        "uco-types": "https://unifiedcyberontology.org/ontology/uco/types#",
+        "uco-vocabulary": "https://unifiedcyberontology.org/ontology/uco/vocabulary#",
+        "xml": "http://www.w3.org/XML/1998/namespace",
+        "xsd": "http://www.w3.org/2001/XMLSchema#"
+    },
+    "@graph": [
+        {
+            "@id": "kb:file-d30556a8-8082-5ffb-95a5-ca3839414d4f",
+            "@type": "uco-observable:ObservableObject",
+            "uco-core:hasFacet": [
+                {
+                    "@id": "_:N0db8031480664f87b08e49c18a767095"
+                },
+                {
+                    "@id": "_:Nddb40eef75a94f8e979ff1fbfad9aca5"
+                }
+            ]
+        },
+        {
+            "@id": "_:N0db8031480664f87b08e49c18a767095",
+            "@type": "uco-observable:ContentDataFacet",
+            "uco-observable:hash": [
+                {
+                    "@id": "_:N839986b2d63a4963beafbb65016449da"
+                },
+                {
+                    "@id": "_:N065fc8f395464db38cf36008593a16f9"
+                },
+                {
+                    "@id": "_:N379cd3902adc4912a74a8eacd32afb9c"
+                },
+                {
+                    "@id": "_:N77e79676ee5449ea9f6db813fb9dc095"
+                }
+            ],
+            "uco-observable:sizeInBytes": {
+                "@type": "xsd:long",
+                "@value": "4"
+            }
+        },
+        {
+            "@id": "_:N839986b2d63a4963beafbb65016449da",
+            "@type": "uco-types:Hash",
+            "uco-types:hashMethod": {
+                "@type": "uco-vocabulary:HashNameVocab",
+                "@value": "SHA256"
+            },
+            "uco-types:hashValue": {
+                "@type": "xsd:hexBinary",
+                "@value": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+            }
+        },
+        {
+            "@id": "_:N065fc8f395464db38cf36008593a16f9",
+            "@type": "uco-types:Hash",
+            "uco-types:hashMethod": {
+                "@type": "uco-vocabulary:HashNameVocab",
+                "@value": "MD5"
+            },
+            "uco-types:hashValue": {
+                "@type": "xsd:hexBinary",
+                "@value": "098f6bcd4621d373cade4e832627b4f6"
+            }
+        },
+        {
+            "@id": "_:N379cd3902adc4912a74a8eacd32afb9c",
+            "@type": "uco-types:Hash",
+            "uco-types:hashMethod": {
+                "@type": "uco-vocabulary:HashNameVocab",
+                "@value": "SHA1"
+            },
+            "uco-types:hashValue": {
+                "@type": "xsd:hexBinary",
+                "@value": "a94a8fe5ccb19ba61c4c0873d391e987982fbbd3"
+            }
+        },
+        {
+            "@id": "_:N77e79676ee5449ea9f6db813fb9dc095",
+            "@type": "uco-types:Hash",
+            "uco-types:hashMethod": {
+                "@type": "uco-vocabulary:HashNameVocab",
+                "@value": "SHA512"
+            },
+            "uco-types:hashValue": {
+                "@type": "xsd:hexBinary",
+                "@value": "ee26b0dd4af7e749aa1a8ee3c10ae9923f618980772e473f8819a5d4940e0db27ac185f8a0e1d5f84f88bc887fd67b143732c304cc5fa9ad8e6f57f50028a8ff"
+            }
+        },
+        {
+            "@id": "_:Nddb40eef75a94f8e979ff1fbfad9aca5",
+            "@type": "uco-observable:FileFacet",
+            "uco-observable:fileName": "sample.txt",
+            "uco-observable:modifiedTime": {
+                "@type": "xsd:dateTime",
+                "@value": "2010-01-02T03:04:56+00:00"
+            },
+            "uco-observable:sizeInBytes": {
+                "@type": "xsd:long",
+                "@value": "4"
+            }
+        }
+    ]
+}

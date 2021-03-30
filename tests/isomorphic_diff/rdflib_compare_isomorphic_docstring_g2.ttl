@@ -1,0 +1,9 @@
+# This file is copied from this function's docstring:
+# https://rdflib.readthedocs.io/en/stable/apidocs/rdflib.html#rdflib.compare.isomorphic
+# EXCEPT domain-only IRIs are modified to have a slash to open up comparison with JSON-LD, per this issue:
+# https://github.com/RDFLib/rdflib-jsonld/issues/101
+
+@prefix ns: <http://example.org/ns#> .
+<http://example.org/> ns:rel [ ns:label "A bnode." ] .
+<http://example.org/> ns:rel <http://example.org/b>,
+        <http://example.org/a> .

@@ -1,0 +1,18 @@
+@prefix kb: <http://example.org/kb/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix uco-core: <https://unifiedcyberontology.org/ontology/uco/core#> .
+@prefix uco-observable: <https://unifiedcyberontology.org/ontology/uco/observable#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+kb:file-16d49634-ba5d-5f46-ab4e-7a577a4e096d
+	a uco-observable:ObservableObject ;
+	uco-core:hasFacet [
+		a uco-observable:FileFacet ;
+		uco-observable:fileName "sample.txt" ;
+		uco-observable:modifiedTime "2010-01-02T03:04:56+00:00"^^xsd:dateTime ;
+		uco-observable:sizeInBytes "4"^^xsd:long ;
+	] ;
+	.
+

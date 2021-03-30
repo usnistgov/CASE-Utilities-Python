@@ -1,0 +1,7 @@
+*.done.log
+*.swp
+.DS_Store
+__pycache__
+build/
+case_utils.egg-info/
+dist/

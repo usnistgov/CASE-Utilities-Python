@@ -1,0 +1,21 @@
+{
+  "@context": {
+    "": "http://example.org/ns#"
+  },
+  "@graph": [
+    {
+      "@id": "http://example.org/",
+      ":rel": [
+        {
+          "@id": "http://example.org/a"
+        },
+        {
+          "@id": "http://example.org/b"
+        },
+        {
+          ":label": "A bnode."
+        }
+      ]
+    }
+  ]
+}
