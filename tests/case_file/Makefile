@@ -96,8 +96,11 @@ kb.ttl: \
 	mv _$@ $@
 
 sample.txt.done.log: \
+  $(tests_srcdir)/.venv.done.log \
   sample_txt.py
-	python3 sample_txt.py sample.txt
+	source $(tests_srcdir)/venv/bin/activate \
+	  && python3 sample_txt.py \
+	    sample.txt
 	touch $@
 
 # Display difference between rdflib default output and compacted output.
