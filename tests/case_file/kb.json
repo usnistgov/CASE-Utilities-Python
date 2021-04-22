@@ -4,7 +4,8 @@
         "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
         "uco-core": "https://unifiedcyberontology.org/ontology/uco/core#",
         "uco-observable": "https://unifiedcyberontology.org/ontology/uco/observable#",
-        "uco-types": "https://unifiedcyberontology.org/ontology/uco/types#"
+        "uco-types": "https://unifiedcyberontology.org/ontology/uco/types#",
+        "xsd": "http://www.w3.org/2001/XMLSchema#"
     },
     "@graph": [
         {
