@@ -64,6 +64,10 @@ def main():
         _logger.debug("total_context = %r." % total_context)
 
         compacted = pyld.jsonld.compact(doc, total_context)
+
+        # Add xsd prefix back in to context dictionary.  .compact() removes it, and this causes some xsd definitions like xsd:long to no longer resolve in SPARQL queries.
+        compacted["@context"]["xsd"] = "http://www.w3.org/2001/XMLSchema#"
+
         out_fh.write(json.dumps(compacted, indent=4))
 
 if __name__ == "__main__":
