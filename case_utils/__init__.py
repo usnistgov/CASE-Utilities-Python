@@ -37,6 +37,8 @@ def guess_format(fpath, fmap=None):
         updated_fmap = {key:rdflib.util.SUFFIX_FORMAT_MAP[key] for key in rdflib.util.SUFFIX_FORMAT_MAP}
         if not "json" in updated_fmap:
             updated_fmap["json"] = "json-ld"
+        if not "jsonld" in updated_fmap:
+            updated_fmap["jsonld"] = "json-ld"
     else:
         updated_fmap = {k:fmap[k] for k in fmap}
 
