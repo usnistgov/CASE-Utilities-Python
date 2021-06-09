@@ -40,10 +40,7 @@
                     "@id": "_:N77e79676ee5449ea9f6db813fb9dc095"
                 }
             ],
-            "uco-observable:sizeInBytes": {
-                "@type": "xsd:long",
-                "@value": "4"
-            }
+            "uco-observable:sizeInBytes": 4
         },
         {
             "@id": "_:N839986b2d63a4963beafbb65016449da",
@@ -101,10 +98,7 @@
                 "@type": "xsd:dateTime",
                 "@value": "2010-01-02T03:04:56+00:00"
             },
-            "uco-observable:sizeInBytes": {
-                "@type": "xsd:long",
-                "@value": "4"
-            }
+            "uco-observable:sizeInBytes": 4
         }
     ]
 }

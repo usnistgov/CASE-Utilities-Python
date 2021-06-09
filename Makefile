@@ -48,6 +48,12 @@ clean:
 	@$(MAKE) \
 	  --directory tests \
 	  clean
+	@rm -f \
+	  .git_submodule_init.done.log
+	@#Remove flag files that are normally set after deeper submodules and rdf-toolkit are downloaded.
+	@rm -f \
+	  dependencies/CASE-Examples-QC/.git_submodule_init.done.log \
+	  dependencies/CASE-Examples-QC/.lib.done.log
 
 distclean: \
   clean
