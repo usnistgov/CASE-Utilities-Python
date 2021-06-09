@@ -35,13 +35,13 @@ kb:file-57400969-69d0-5d5d-95c4-9dd7de330d3d
 					uco-types:hashValue "ee26b0dd4af7e749aa1a8ee3c10ae9923f618980772e473f8819a5d4940e0db27ac185f8a0e1d5f84f88bc887fd67b143732c304cc5fa9ad8e6f57f50028a8ff"^^xsd:hexBinary ;
 				]
 				;
-			uco-observable:sizeInBytes "4"^^xsd:long ;
+			uco-observable:sizeInBytes "4"^^xsd:integer ;
 		] ,
 		[
 			a uco-observable:FileFacet ;
 			uco-observable:fileName "sample.txt" ;
 			uco-observable:modifiedTime "2010-01-02T03:04:56+00:00"^^xsd:dateTime ;
-			uco-observable:sizeInBytes "4"^^xsd:long ;
+			uco-observable:sizeInBytes "4"^^xsd:integer ;
 		]
 		;
 	.
