@@ -37,10 +37,6 @@ all: \
 .venv.done.log: \
   $(top_srcdir)/.git_submodule_init.done.log \
   $(top_srcdir)/case_utils/__init__.py \
-  $(top_srcdir)/case_utils/case_file/__init__.py \
-  $(top_srcdir)/case_utils/case_sparql_construct/__init__.py \
-  $(top_srcdir)/case_utils/case_sparql_select/__init__.py \
-  $(top_srcdir)/case_utils/local_uuid.py \
   $(top_srcdir)/setup.cfg \
   $(top_srcdir)/setup.py \
   requirements.txt
@@ -58,7 +54,9 @@ all: \
 	    --requirement requirements.txt
 	source venv/bin/activate \
 	  && cd $(top_srcdir) \
-	    && python3 setup.py install
+	    && pip install \
+	      --editable \
+	      .
 	touch $@
 
 all-case_file: \

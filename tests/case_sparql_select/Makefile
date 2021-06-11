@@ -52,6 +52,7 @@ clean:
 
 output.%: \
   $(tests_srcdir)/.venv.done.log \
+  $(top_srcdir)/case_utils/case_sparql_select/__init__.py \
   input-1.sparql \
   input-2.ttl \
   input-3.json
