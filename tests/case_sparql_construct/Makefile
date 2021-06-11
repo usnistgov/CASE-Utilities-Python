@@ -21,6 +21,7 @@ all: \
   output.ttl
 
 check: \
+  output.json \
   output.ttl
 	source $(tests_srcdir)/venv/bin/activate \
 	  && pytest \
@@ -30,10 +31,10 @@ clean:
 	@rm -rf \
 	  __pycache__
 	@rm -f \
-	  output.ttl \
+	  output.* \
 	  _*
 
-output.ttl: \
+output.%: \
   $(tests_srcdir)/.venv.done.log \
   $(top_srcdir)/case_utils/case_sparql_construct/__init__.py \
   input-1.sparql \

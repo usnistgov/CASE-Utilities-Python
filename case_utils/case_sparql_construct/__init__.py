@@ -78,7 +78,7 @@ def main():
       "format": output_format
     }
     if output_format == "json-ld":
-        context_dictionary = {k:v for (k,v) in graph.namespace_manager.namespaces()}
+        context_dictionary = {k:v for (k,v) in out_graph.namespace_manager.namespaces()}
         serialize_kwargs["context"] = context_dictionary
 
     out_graph.serialize(args.out_graph, **serialize_kwargs)
