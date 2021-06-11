@@ -62,6 +62,8 @@ case_sparql_select output.html input.sparql input.json [input-2.json ...]
 case_sparql_select output.md input.sparql input.json [input-2.json ...]
 ```
 
+Note that `case_sparql_select` is not guaranteed to function with Pythons below version 3.7.
+
 
 ### `local_uuid`
 
