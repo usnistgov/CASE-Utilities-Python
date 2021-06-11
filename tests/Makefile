@@ -74,7 +74,7 @@ all-case_sparql_construct: \
 all-case_sparql_select: \
   .venv.done.log
 	$(MAKE) \
-	  --directory case_sparql_construct
+	  --directory case_sparql_select
 
 # These check calls are provided in preferred run-order.
 check: \
