@@ -15,7 +15,7 @@ import rdflib.plugins.sparql
 
 import case_utils
 
-def test_templates_with_blank_nodes_result():
+def _test_templates_with_blank_nodes_result(filename):
     ground_truth_positive = {
       ("Alice", "Hacker"),
       ("Bob", "Hacker")
@@ -23,7 +23,7 @@ def test_templates_with_blank_nodes_result():
     ground_truth_negative = set()
 
     graph = rdflib.Graph()
-    graph.parse("output.ttl", format=case_utils.guess_format("output.ttl"))
+    graph.parse(filename, format=case_utils.guess_format(filename))
 
     computed = set()
     query_string = """\
@@ -47,3 +47,8 @@ WHERE {
           l_family_name.toPython()
         ))
     assert computed == ground_truth_positive
+
+def test_templates_with_blank_nodes_result_json():
+    _test_templates_with_blank_nodes_result("output.json")
+def test_templates_with_blank_nodes_result_turtle():
+    _test_templates_with_blank_nodes_result("output.ttl")
