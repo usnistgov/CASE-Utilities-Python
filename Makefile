@@ -13,6 +13,8 @@
 
 SHELL := /bin/bash
 
+PYTHON3 ?= $(shell which python3.9 2>/dev/null || which python3.8 2>/dev/null || which python3.7 2>/dev/null || which python3.6 2>/dev/null || which python3)
+
 all:
 
 .PHONY: \
@@ -38,6 +40,7 @@ all:
 check: \
   .git_submodule_init.done.log
 	$(MAKE) \
+	  PYTHON3=$(PYTHON3) \
 	  --directory tests \
 	  check
 
@@ -45,6 +48,12 @@ clean:
 	@$(MAKE) \
 	  --directory tests \
 	  clean
+	@rm -f \
+	  .git_submodule_init.done.log
+	@#Remove flag files that are normally set after deeper submodules and rdf-toolkit are downloaded.
+	@rm -f \
+	  dependencies/CASE-Examples-QC/.git_submodule_init.done.log \
+	  dependencies/CASE-Examples-QC/.lib.done.log
 
 distclean: \
   clean

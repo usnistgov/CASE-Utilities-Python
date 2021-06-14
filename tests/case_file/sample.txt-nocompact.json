@@ -40,10 +40,7 @@
           "@id": "_:Na99d1f2a83814ac491c9b02662ea8587"
         }
       ],
-      "https://unifiedcyberontology.org/ontology/uco/observable#sizeInBytes": {
-        "@type": "http://www.w3.org/2001/XMLSchema#long",
-        "@value": "4"
-      }
+      "https://unifiedcyberontology.org/ontology/uco/observable#sizeInBytes": 4
     },
     {
       "@id": "_:Nad6171b4933a4a84b83faa5d48fd4ddb",
@@ -101,10 +98,7 @@
         "@type": "http://www.w3.org/2001/XMLSchema#dateTime",
         "@value": "2010-01-02T03:04:56+00:00"
       },
-      "https://unifiedcyberontology.org/ontology/uco/observable#sizeInBytes": {
-        "@type": "http://www.w3.org/2001/XMLSchema#long",
-        "@value": "4"
-      }
+      "https://unifiedcyberontology.org/ontology/uco/observable#sizeInBytes": 4
     }
   ]
 }

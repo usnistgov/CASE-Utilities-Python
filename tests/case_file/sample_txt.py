@@ -17,13 +17,14 @@ This file is made with a Python script instead of 'echo' and 'touch' in order to
 Mtime should be 2010-01-02T03:04:56Z.
 """
 
-import datetime
 import os
 import sys
+
+import dateutil.parser
 
 with open(sys.argv[1], "w") as out_fh:
     out_fh.write("test")
 
-target_datetime = datetime.datetime.fromisoformat("2010-01-02T03:04:56+00:00")
+target_datetime = dateutil.parser.isoparse("2010-01-02T03:04:56+00:00")
 target_timestamp = target_datetime.timestamp()
 os.utime(sys.argv[1], (target_timestamp, target_timestamp))

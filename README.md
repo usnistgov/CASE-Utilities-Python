@@ -35,6 +35,36 @@ case_file --disable-hashes sample.txt.json sample.txt
 ```
 
 
+### SPARQL executors
+
+Two commands are provided to generate output from a SPARQL query and one or more input graphs.  Input graphs can be any graph, such as instance data or supplementary ontology files that supply custom class definitions or other external ontologies.
+
+
+#### `case_sparql_construct`
+
+To use a SPARQL `CONSTRUCT` query to make a supplementary graph file from one or more input graphs:
+
+```bash
+case_sparql_construct output.json input.sparql input.json [input-2.json ...]
+```
+
+
+#### `case_sparql_select`
+
+To use a SPARQL `SELECT` query to make a table from one or more input graphs:
+
+```bash
+# HTML output with Bootstrap classes
+# (e.g. for Jekyll-backed websites)
+case_sparql_select output.html input.sparql input.json [input-2.json ...]
+
+# Markdown, Github-flavored
+case_sparql_select output.md input.sparql input.json [input-2.json ...]
+```
+
+Note that `case_sparql_select` is not guaranteed to function with Pythons below version 3.7.
+
+
 ### `local_uuid`
 
 This [module](case_utils/local_uuid.py) provides a wrapper UUID generator, `local_uuid()`.  Its main purpose is making example data generate consistent identifiers, and intentionally includes mechanisms to make it difficult to activate this mode without awareness of the caller.
@@ -58,8 +88,8 @@ This project follows [SEMVER 2.0.0](https://semver.org/) where versions are decl
 
 This repository supports the ontology versions that are linked as submodules in the [CASE Examples QC](https://github.com/ajnelson-nist/CASE-Examples-QC) repository.  Currently, the ontology versions are:
 
-* CASE - 0.3.0
-* UCO - 0.5.0
+* CASE - 0.4.0
+* UCO - 0.6.0
 
 
 ## Repository locations

@@ -19,9 +19,7 @@ tests_srcdir := $(top_srcdir)/tests
 
 qc_srcdir := $(top_srcdir)/dependencies/CASE-Examples-QC
 
-case_srcdir := $(qc_srcdir)/dependencies/CASE-Examples/dependencies/CASE
-
-RDF_TOOLKIT_JAR := $(case_srcdir)/lib/rdf-toolkit.jar
+RDF_TOOLKIT_JAR := $(qc_srcdir)/dependencies/CASE-Examples/dependencies/CASE-0.3.0/CASE/lib/rdf-toolkit.jar
 
 COMM ?= $(shell which gcomm 2>/dev/null || which comm)
 ifeq ($(COMM),)
@@ -96,14 +94,19 @@ kb.ttl: \
 	mv _$@ $@
 
 sample.txt.done.log: \
+  $(tests_srcdir)/.venv.done.log \
   sample_txt.py
-	python3 sample_txt.py sample.txt
+	source $(tests_srcdir)/venv/bin/activate \
+	  && python3 sample_txt.py \
+	    sample.txt
 	touch $@
 
 # Display difference between rdflib default output and compacted output.
 sample.txt.json: \
   $(tests_srcdir)/src/compact.py \
   $(tests_srcdir)/src/isomorphic_diff.py \
+  $(top_srcdir)/case_utils/case_file/__init__.py \
+  $(top_srcdir)/case_utils/local_uuid.py \
   sample.txt-nocompact.json
 	rm -f $@ _$@ __$@
 	export DEMO_UUID_REQUESTING_NONRANDOM=NONRANDOM_REQUESTED \
@@ -134,6 +137,7 @@ sample.txt.ttl: \
   $(RDF_TOOLKIT_JAR) \
   $(tests_srcdir)/.venv.done.log \
   $(top_srcdir)/case_utils/case_file/__init__.py \
+  $(top_srcdir)/case_utils/local_uuid.py \
   sample.txt.done.log
 	rm -f _$@ __$@
 	export DEMO_UUID_REQUESTING_NONRANDOM=NONRANDOM_REQUESTED \
@@ -155,6 +159,7 @@ sample.txt-disable_hashes.ttl: \
   $(RDF_TOOLKIT_JAR) \
   $(tests_srcdir)/.venv.done.log \
   $(top_srcdir)/case_utils/case_file/__init__.py \
+  $(top_srcdir)/case_utils/local_uuid.py \
   sample.txt.done.log
 	rm -f _$@ __$@
 	export DEMO_UUID_REQUESTING_NONRANDOM=NONRANDOM_REQUESTED \
@@ -178,6 +183,7 @@ sample.txt-nocompact.json: \
   $(tests_srcdir)/.venv.done.log \
   $(tests_srcdir)/src/isomorphic_diff.py \
   $(top_srcdir)/case_utils/case_file/__init__.py \
+  $(top_srcdir)/case_utils/local_uuid.py \
   sample.txt.done.log
 	rm -f _$@
 	export DEMO_UUID_REQUESTING_NONRANDOM=NONRANDOM_REQUESTED \

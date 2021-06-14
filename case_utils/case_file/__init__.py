@@ -87,7 +87,7 @@ def create_file_node(graph, filepath, node_iri=None, node_prefix=DEFAULT_PREFIX,
     graph.add((
       n_file_facet,
       NS_UCO_OBSERVABLE.sizeInBytes,
-      rdflib.Literal(file_stat.st_size, datatype=NS_XSD.long)
+      rdflib.Literal(int(file_stat.st_size))
     ))
     graph.add((
       n_file,
@@ -174,7 +174,7 @@ def create_file_node(graph, filepath, node_iri=None, node_prefix=DEFAULT_PREFIX,
         graph.add((
           n_contentdata_facet,
           NS_UCO_OBSERVABLE.sizeInBytes,
-          rdflib.Literal(successful_hashdict["filesize"], datatype=NS_XSD.long)
+          rdflib.Literal(successful_hashdict["filesize"])
         ))
 
         # Add confirmed hashes into graph.

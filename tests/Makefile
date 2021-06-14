@@ -20,19 +20,23 @@ srcdir := $(shell pwd)
 PYTHON3 ?= $(shell which python3.9 2>/dev/null || which python3.8 2>/dev/null || which python3.7 2>/dev/null || which python3.6 2>/dev/null || which python3)
 
 all: \
-  all-case_file
+  all-case_file \
+  all-case_sparql_construct \
+  all-case_sparql_select
 
 .PHONY: \
   all-case_file \
+  all-case_sparql_construct \
+  all-case_sparql_select \
   check-case_file \
+  check-case_sparql_construct \
+  check-case_sparql_select \
   check-isomorphic_diff \
   download
 
 .venv.done.log: \
   $(top_srcdir)/.git_submodule_init.done.log \
   $(top_srcdir)/case_utils/__init__.py \
-  $(top_srcdir)/case_utils/case_file/__init__.py \
-  $(top_srcdir)/case_utils/local_uuid.py \
   $(top_srcdir)/setup.cfg \
   $(top_srcdir)/setup.py \
   requirements.txt
@@ -50,7 +54,9 @@ all: \
 	    --requirement requirements.txt
 	source venv/bin/activate \
 	  && cd $(top_srcdir) \
-	    && python3 setup.py install
+	    && pip install \
+	      --editable \
+	      .
 	touch $@
 
 all-case_file: \
@@ -58,13 +64,30 @@ all-case_file: \
 	$(MAKE) \
 	  --directory case_file
 
+all-case_sparql_construct: \
+  .venv.done.log
+	$(MAKE) \
+	  --directory case_sparql_construct
+
+all-case_sparql_select: \
+  .venv.done.log
+	# Only descend if python>=3.7, due to pandas dependency unsatisfiable in 3.6.x.
+	# Boolean explanation: sys.exit(False) has exit status 0.
+	venv/bin/python3 -c 'import sys ; sys.exit(not (sys.version_info < (3, 7)))' \
+	  || $(MAKE) \
+	    --directory case_sparql_select
+
 # These check calls are provided in preferred run-order.
 check: \
   check-isomorphic_diff \
-  check-case_file
+  check-case_file \
+  check-case_sparql_construct \
+  check-case_sparql_select
 	source venv/bin/activate \
 	  && pytest \
 	    --ignore case_file \
+	    --ignore case_sparql_construct \
+	    --ignore case_sparql_select \
 	    --log-level=DEBUG
 
 check-case_file: \
@@ -73,6 +96,21 @@ check-case_file: \
 	  --directory case_file \
 	  check
 
+check-case_sparql_construct: \
+  .venv.done.log
+	$(MAKE) \
+	  --directory case_sparql_construct \
+	  check
+
+check-case_sparql_select: \
+  .venv.done.log
+	# Only descend if python>=3.7, due to pandas dependency unsatisfiable in 3.6.x.
+	# Boolean explanation: sys.exit(False) has exit status 0.
+	venv/bin/python3 -c 'import sys ; sys.exit(not (sys.version_info < (3, 7)))' \
+	  || $(MAKE) \
+	    --directory case_sparql_select \
+	    check
+
 check-isomorphic_diff: \
   .venv.done.log
 	$(MAKE) \
@@ -80,6 +118,12 @@ check-isomorphic_diff: \
 	  check
 
 clean:
+	@$(MAKE) \
+	  --directory case_sparql_select \
+	  clean
+	@$(MAKE) \
+	  --directory case_sparql_construct \
+	  clean
 	@$(MAKE) \
 	  --directory case_file \
 	  clean
