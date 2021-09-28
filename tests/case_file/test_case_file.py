@@ -39,7 +39,7 @@ SRCDIR = os.path.dirname(__file__)
 
 def load_graph(filename):
     in_graph = rdflib.Graph()
-    in_graph.parse(filename, format=rdflib.util.guess_format(filename))
+    in_graph.parse(filename)
     return in_graph
 
 @pytest.fixture

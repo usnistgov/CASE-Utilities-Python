@@ -52,8 +52,8 @@ def main():
     g1 = rdflib.Graph()
     g2 = rdflib.Graph()
 
-    g1.parse(args.in_graph_1, format=case_utils.guess_format(args.in_graph_1))
-    g2.parse(args.in_graph_2, format=case_utils.guess_format(args.in_graph_2))
+    g1.parse(args.in_graph_1)
+    g2.parse(args.in_graph_2)
 
     #_logger.debug("type(g1) = %r.", type(g1))
     #_logger.debug("type(g2) = %r.", type(g2))

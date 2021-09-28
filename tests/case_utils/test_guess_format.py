@@ -38,11 +38,9 @@ def test_rdflib_util_guess_format_ttl_default():
 def test_rdflib_util_guess_format_ttl_fmap():
     assert rdflib.util.guess_format(PATH_TO_TTL, FMAP_XHTML_GRDDL) == "turtle", "Failed to recognize .ttl RDF file extension when using fmap"
 
-@pytest.mark.xfail(reason="rdflib 5.0.0 known to not recognize .json", strict=True)
 def test_rdflib_util_guess_format_json():
     assert rdflib.util.guess_format(PATH_TO_JSON) == "json-ld", "Failed to recognize .json RDF file extension"
 
-@pytest.mark.xfail(reason="rdflib 5.0.0 known to not recognize .jsonld", strict=True)
 def test_rdflib_util_guess_format_jsonld():
     assert rdflib.util.guess_format(PATH_TO_JSONLD) == "json-ld", "Failed to recognize .jsonld RDF file extension"
 

@@ -24,8 +24,8 @@ import case_utils
 def main():
     g = rdflib.Graph()
     for in_graph in args.in_graph:
-        g.parse(in_graph, format=case_utils.guess_format(in_graph))
-    g.serialize(args.out_graph, format=case_utils.guess_format(args.out_graph))
+        g.parse(in_graph)
+    g.serialize(args.out_graph)
 
 if __name__ == "__main__":
     import argparse

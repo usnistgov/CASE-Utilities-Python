@@ -41,7 +41,7 @@ def main():
 
     in_graph = rdflib.Graph()
     for in_graph_filename in args.in_graph:
-        in_graph.parse(in_graph_filename, format=case_utils.guess_format(in_graph_filename))
+        in_graph.parse(in_graph_filename)
         _logger.debug("len(in_graph) = %d.", len(in_graph))
 
     out_graph = rdflib.Graph()

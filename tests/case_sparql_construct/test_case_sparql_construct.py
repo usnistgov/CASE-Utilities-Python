@@ -23,7 +23,7 @@ def _test_templates_with_blank_nodes_result(filename):
     ground_truth_negative = set()
 
     graph = rdflib.Graph()
-    graph.parse(filename, format=case_utils.guess_format(filename))
+    graph.parse(filename)
 
     computed = set()
     query_string = """\
