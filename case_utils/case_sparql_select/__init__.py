@@ -55,7 +55,7 @@ def main():
 
     graph = rdflib.Graph()
     for in_graph_filename in args.in_graph:
-        graph.parse(in_graph_filename, format=case_utils.guess_format(in_graph_filename))
+        graph.parse(in_graph_filename)
 
     # Inherit prefixes defined in input context dictionary.
     nsdict = {k:v for (k,v) in graph.namespace_manager.namespaces()}
