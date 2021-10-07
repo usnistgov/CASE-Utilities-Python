@@ -21,7 +21,7 @@ import argparse
 import os
 import logging
 
-import rdflib.plugins.sparql
+import rdflib.plugins.sparql  # type: ignore
 
 import case_utils
 

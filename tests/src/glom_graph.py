@@ -17,7 +17,7 @@ This script takes multiple input JSON-LD or Turtle files and emits a single Turt
 
 __version__ = "0.1.0"
 
-import rdflib
+import rdflib  # type: ignore
 
 import case_utils
 

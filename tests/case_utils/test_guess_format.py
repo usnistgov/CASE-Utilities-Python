@@ -12,7 +12,7 @@
 # We would appreciate acknowledgement if the software is used.
 
 import pytest
-import rdflib
+import rdflib  # type: ignore
 
 import case_utils
 

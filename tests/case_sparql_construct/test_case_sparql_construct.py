@@ -11,7 +11,7 @@
 #
 # We would appreciate acknowledgement if the software is used.
 
-import rdflib.plugins.sparql
+import rdflib.plugins.sparql  # type: ignore
 
 import case_utils
 

@@ -15,7 +15,7 @@ __version__ = "0.2.1"
 
 import warnings
 
-import rdflib.util
+import rdflib.util  # type: ignore
 
 from . import local_uuid
 

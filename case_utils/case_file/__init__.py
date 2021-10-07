@@ -21,7 +21,7 @@ import datetime
 import hashlib
 import os
 
-import rdflib
+import rdflib  # type: ignore
 
 import case_utils
 

@@ -33,8 +33,8 @@ import binascii
 import os
 import logging
 
-import pandas as pd
-import rdflib.plugins.sparql
+import pandas as pd  # type: ignore
+import rdflib.plugins.sparql  # type: ignore
 
 import case_utils
 

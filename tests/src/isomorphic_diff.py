@@ -34,7 +34,7 @@ import logging
 import os
 import sys
 
-import rdflib.compare
+import rdflib.compare  # type: ignore
 
 import case_utils
 
