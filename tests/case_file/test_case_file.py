@@ -38,7 +38,7 @@ NSDICT = {
 SRCDIR = os.path.dirname(__file__)
 
 def load_graph(
-  filename
+  filename : str
 ) -> rdflib.Graph:
     in_graph = rdflib.Graph()
     in_graph.parse(filename)
@@ -52,7 +52,9 @@ def graph_case_file() -> rdflib.Graph:
 def graph_case_file_disable_hashes() -> rdflib.Graph:
     return load_graph(os.path.join(SRCDIR, "sample.txt-disable_hashes.ttl"))
 
-def test_confirm_hashes(graph_case_file) -> None:
+def test_confirm_hashes(
+  graph_case_file : rdflib.Graph
+) -> None:
     expected = {
       "MD5": "098F6BCD4621D373CADE4E832627B4F6",
       "SHA1": "A94A8FE5CCB19BA61C4C0873D391E987982FBBD3",
@@ -93,7 +95,10 @@ WHERE {
 
     assert expected == computed
 
-def test_confirm_mtime(graph_case_file, graph_case_file_disable_hashes) -> None:
+def test_confirm_mtime(
+  graph_case_file : rdflib.Graph,
+  graph_case_file_disable_hashes : rdflib.Graph
+) -> None:
     query_confirm_mtime = """
 SELECT ?nFile
 WHERE {

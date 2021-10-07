@@ -26,4 +26,4 @@ def guess_format(
 ) -> typing.Optional[str]:
     warnings.warn("The functionality in case_utils.guess_format is now upstream.  Please revise your code to use rdflib.util.guess_format.  The function arguments remain the same.  case_utils.guess_format will be removed in case_utils 0.4.0.", DeprecationWarning)
 
-    return rdflib.util.guess_format(fpath, fmap)
+    return rdflib.util.guess_format(fpath, fmap)  # type: ignore

@@ -17,7 +17,9 @@ import rdflib.plugins.sparql  # type: ignore
 
 import case_utils
 
-def _test_templates_with_blank_nodes_result(filename) -> None:
+def _test_templates_with_blank_nodes_result(
+  filename : str
+) -> None:
     ground_truth_positive = {
       ("Alice", "Hacker"),
       ("Bob", "Hacker")

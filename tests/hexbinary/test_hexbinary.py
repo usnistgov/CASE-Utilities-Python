@@ -263,7 +263,9 @@ def test_rdflib_literal_topython_hexbinarycanonical() -> None:
 
     assert l_hb_uppercase.toPython() == l_hbc_uppercase.toPython()
 
-def _query_all_value_matches(graph) -> typing.Set[str]:
+def _query_all_value_matches(
+  graph : rdflib.Graph
+) -> typing.Set[str]:
     """
     Return set of all node names (as strings) that have a matching value, where
     "matching" is determined by the SPARQL engine's type and data coercions.

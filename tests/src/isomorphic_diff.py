@@ -70,7 +70,10 @@ def main() -> None:
     if i1 == i2:
         sys.exit(0)
 
-    def _report(diff_symbol, graph):
+    def _report(
+      diff_symbol : str,
+      graph : rdflib.Graph
+    ) -> None:
         """
         This function copied in spirit from:
         https://rdflib.readthedocs.io/en/stable/apidocs/rdflib.html#module-rdflib.compare
