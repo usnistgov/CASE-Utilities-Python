@@ -21,6 +21,7 @@ import datetime
 import hashlib
 import os
 import typing
+import warnings
 
 import rdflib  # type: ignore
 
@@ -166,7 +167,7 @@ def create_file_node(graph, filepath, node_iri=None, node_prefix=DEFAULT_PREFIX,
             raise ValueError("Failed to confirm hashes of file %r." % filepath)
         if successful_hashdict["filesize"] != file_stat.st_size:
             # TODO - Discuss with AC whether this should be something stronger, like an assertion error.
-            _logger.warning(
+            warnings.warn(
               "Inode file size and hashed file sizes disagree: %d vs. %d.",
               file_stat.st_size,
               successful_hashdict["filesize"]
