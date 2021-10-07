@@ -20,6 +20,7 @@ __version__ = "0.1.0"
 import argparse
 import os
 import logging
+import typing
 
 import rdflib.plugins.sparql  # type: ignore
 
@@ -74,7 +75,7 @@ def main() -> None:
     else:
         output_format = args.output_format
 
-    serialize_kwargs = {
+    serialize_kwargs : typing.Dict[str, typing.Any] = {
       "format": output_format
     }
     if output_format == "json-ld":
