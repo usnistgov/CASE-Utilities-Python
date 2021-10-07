@@ -28,7 +28,7 @@ import pyld  # type: ignore
 
 _logger = logging.getLogger(os.path.basename(__file__))
 
-def main():
+def main() -> None:
     with open(args.out_json, "w") as out_fh:
         doc = None
         with open(args.in_json, "r") as in_fh:

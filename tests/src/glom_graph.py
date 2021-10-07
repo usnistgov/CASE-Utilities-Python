@@ -21,7 +21,7 @@ import rdflib  # type: ignore
 
 import case_utils
 
-def main():
+def main() -> None:
     g = rdflib.Graph()
     for in_graph in args.in_graph:
         g.parse(in_graph)
