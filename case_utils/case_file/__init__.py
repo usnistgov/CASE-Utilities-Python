@@ -205,7 +205,7 @@ def create_file_node(graph, filepath, node_iri=None, node_prefix=DEFAULT_PREFIX,
 
     return n_file
 
-def main():
+def main() -> None:
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("--base-prefix", default=DEFAULT_PREFIX)

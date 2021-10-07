@@ -27,7 +27,7 @@ import case_utils
 
 _logger = logging.getLogger(os.path.basename(__file__))
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--debug", action="store_true")
     parser.add_argument("--disallow-empty-results", action="store_true", help="Raise error if no results are returned for query.")
