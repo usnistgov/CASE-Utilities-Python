@@ -36,7 +36,24 @@ NS_UCO_TYPES = rdflib.Namespace("https://unifiedcyberontology.org/ontology/uco/t
 NS_UCO_VOCABULARY = rdflib.Namespace("https://unifiedcyberontology.org/ontology/uco/vocabulary#")
 NS_XSD = rdflib.XSD
 
-def create_file_node(graph, filepath, node_iri=None, node_prefix=DEFAULT_PREFIX, disable_hashes=False, disable_mtime=False):
+# Shortcut syntax for defining an immutable named tuple is noted here:
+# https://docs.python.org/3/library/typing.html#typing.NamedTuple
+# via the "See also" box here: https://docs.python.org/3/library/collections.html#collections.namedtuple
+class HashDict(typing.NamedTuple):
+    filesize : int
+    md5 : str
+    sha1 : str
+    sha256 : str
+    sha512 : str
+
+def create_file_node(
+  graph : rdflib.Graph,
+  filepath : str,
+  node_iri : typing.Optional[str] = None,
+  node_prefix : str = DEFAULT_PREFIX,
+  disable_hashes : bool = False,
+  disable_mtime : bool = False
+) -> rdflib.URIRef:
     r"""
     This function characterizes the file at filepath.
 
@@ -121,10 +138,10 @@ def create_file_node(graph, filepath, node_iri=None, node_prefix=DEFAULT_PREFIX,
         ))
 
         # Compute hashes until they are re-computed and match once.  (This is a lesson learned from working with a NAS that had a subtly faulty network cable.)
-        successful_hashdict = None
-        last_hashdict = dict()
+
+        successful_hashdict : typing.Optional[HashDict] = None
+        last_hashdict : typing.Optional[HashDict] = None
         for attempt_no in [0, 1, 2, 3]:
-            current_hashdict = dict()
             # Hash file's contents.
             # This hashing logic was partially copied from DFXML's walk_to_dfxml.py.
             md5obj = hashlib.md5()
@@ -132,9 +149,9 @@ def create_file_node(graph, filepath, node_iri=None, node_prefix=DEFAULT_PREFIX,
             sha256obj = hashlib.sha256()
             sha512obj = hashlib.sha512()
             stashed_error = None
+            byte_tally = 0
             with open(filepath, "rb") as in_fh:
                 chunk_size = 2**22
-                byte_tally = 0
                 while True:
                     buf = b""
                     try:
@@ -149,13 +166,15 @@ def create_file_node(graph, filepath, node_iri=None, node_prefix=DEFAULT_PREFIX,
                     sha1obj.update(buf)
                     sha256obj.update(buf)
                     sha512obj.update(buf)
-                current_hashdict["filesize"] = byte_tally
             if not stashed_error is None:
                 raise stashed_error
-            current_hashdict["md5"] = md5obj.hexdigest()
-            current_hashdict["sha1"] = sha1obj.hexdigest()
-            current_hashdict["sha256"] = sha256obj.hexdigest()
-            current_hashdict["sha512"] = sha512obj.hexdigest()
+            current_hashdict = HashDict(
+              byte_tally,
+              md5obj.hexdigest(),
+              sha1obj.hexdigest(),
+              sha256obj.hexdigest(),
+              sha512obj.hexdigest()
+            )
             if last_hashdict == current_hashdict:
                 successful_hashdict = current_hashdict
                 break
@@ -165,22 +184,23 @@ def create_file_node(graph, filepath, node_iri=None, node_prefix=DEFAULT_PREFIX,
         del current_hashdict
         if successful_hashdict is None:
             raise ValueError("Failed to confirm hashes of file %r." % filepath)
-        if successful_hashdict["filesize"] != file_stat.st_size:
+        if successful_hashdict.filesize != file_stat.st_size:
             # TODO - Discuss with AC whether this should be something stronger, like an assertion error.
             warnings.warn(
-              "Inode file size and hashed file sizes disagree: %d vs. %d.",
-              file_stat.st_size,
-              successful_hashdict["filesize"]
+              "Inode file size and hashed file sizes disagree: %d vs. %d." % (
+                file_stat.st_size,
+                successful_hashdict.filesize
+              )
             )
         # TODO - Discuss whether this property should be recorded even if hashes are not attempted.
         graph.add((
           n_contentdata_facet,
           NS_UCO_OBSERVABLE.sizeInBytes,
-          rdflib.Literal(successful_hashdict["filesize"])
+          rdflib.Literal(successful_hashdict.filesize)
         ))
 
         # Add confirmed hashes into graph.
-        for key in successful_hashdict:
+        for key in successful_hashdict._fields:
             if not key in ("md5", "sha1", "sha256", "sha512"):
                 continue
             n_hash = rdflib.BNode()
@@ -199,10 +219,11 @@ def create_file_node(graph, filepath, node_iri=None, node_prefix=DEFAULT_PREFIX,
               NS_UCO_TYPES.hashMethod,
               rdflib.Literal(key.upper(), datatype=NS_UCO_VOCABULARY.HashNameVocab)
             ))
+            hash_value = getattr(successful_hashdict, key)
             graph.add((
               n_hash,
               NS_UCO_TYPES.hashValue,
-              rdflib.Literal(successful_hashdict[key].upper(), datatype=NS_XSD.hexBinary)
+              rdflib.Literal(hash_value.upper(), datatype=NS_XSD.hexBinary)
             ))
 
     return n_file
