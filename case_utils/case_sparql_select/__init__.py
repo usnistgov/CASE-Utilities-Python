@@ -33,8 +33,8 @@ import binascii
 import os
 import logging
 
-import pandas as pd
-import rdflib.plugins.sparql
+import pandas as pd  # type: ignore
+import rdflib.plugins.sparql  # type: ignore
 
 import case_utils
 
@@ -42,7 +42,7 @@ NS_XSD = rdflib.XSD
 
 _logger = logging.getLogger(os.path.basename(__file__))
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--debug", action="store_true")
     parser.add_argument("--disallow-empty-results", action="store_true", help="Raise error if no results are returned for query.")

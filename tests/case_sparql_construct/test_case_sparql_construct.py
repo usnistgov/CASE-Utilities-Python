@@ -11,16 +11,20 @@
 #
 # We would appreciate acknowledgement if the software is used.
 
-import rdflib.plugins.sparql
+import typing
+
+import rdflib.plugins.sparql  # type: ignore
 
 import case_utils
 
-def _test_templates_with_blank_nodes_result(filename):
+def _test_templates_with_blank_nodes_result(
+  filename : str
+) -> None:
     ground_truth_positive = {
       ("Alice", "Hacker"),
       ("Bob", "Hacker")
     }
-    ground_truth_negative = set()
+    ground_truth_negative : typing.Set[str] = set()
 
     graph = rdflib.Graph()
     graph.parse(filename)
@@ -48,7 +52,8 @@ WHERE {
         ))
     assert computed == ground_truth_positive
 
-def test_templates_with_blank_nodes_result_json():
+def test_templates_with_blank_nodes_result_json() -> None:
     _test_templates_with_blank_nodes_result("output.json")
-def test_templates_with_blank_nodes_result_turtle():
+
+def test_templates_with_blank_nodes_result_turtle() -> None:
     _test_templates_with_blank_nodes_result("output.ttl")

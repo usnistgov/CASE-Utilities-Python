@@ -13,13 +13,17 @@
 
 __version__ = "0.2.1"
 
+import typing
 import warnings
 
-import rdflib.util
+import rdflib.util  # type: ignore
 
 from . import local_uuid
 
-def guess_format(fpath, fmap=None):
+def guess_format(
+  fpath : str,
+  fmap : typing.Optional[typing.Dict[str, str]] = None
+) -> typing.Optional[str]:
     warnings.warn("The functionality in case_utils.guess_format is now upstream.  Please revise your code to use rdflib.util.guess_format.  The function arguments remain the same.  case_utils.guess_format will be removed in case_utils 0.4.0.", DeprecationWarning)
 
-    return rdflib.util.guess_format(fpath, fmap)
+    return rdflib.util.guess_format(fpath, fmap)  # type: ignore

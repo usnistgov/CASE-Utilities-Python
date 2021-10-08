@@ -20,14 +20,15 @@ __version__ = "0.1.0"
 import argparse
 import os
 import logging
+import typing
 
-import rdflib.plugins.sparql
+import rdflib.plugins.sparql  # type: ignore
 
 import case_utils
 
 _logger = logging.getLogger(os.path.basename(__file__))
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--debug", action="store_true")
     parser.add_argument("--disallow-empty-results", action="store_true", help="Raise error if no results are returned for query.")
@@ -74,7 +75,7 @@ def main():
     else:
         output_format = args.output_format
 
-    serialize_kwargs = {
+    serialize_kwargs : typing.Dict[str, typing.Any] = {
       "format": output_format
     }
     if output_format == "json-ld":

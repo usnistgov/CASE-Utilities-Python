@@ -23,12 +23,13 @@ __version__ = "0.1.0"
 import logging
 import os
 import json
+import typing
 
-import pyld
+import pyld  # type: ignore
 
 _logger = logging.getLogger(os.path.basename(__file__))
 
-def main():
+def main() -> None:
     with open(args.out_json, "w") as out_fh:
         doc = None
         with open(args.in_json, "r") as in_fh:
@@ -38,7 +39,9 @@ def main():
 
         # Grab the first occurrence of every key.
         total_context = dict()
-        def _accrue_local_context(doc_object):
+        def _accrue_local_context(
+          doc_object : typing.Dict[str, typing.Any]
+        ) -> None:
             local_context = doc_object.get("@context", dict())
             for key in local_context.keys():
                 if not key in total_context:

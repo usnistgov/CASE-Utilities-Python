@@ -32,6 +32,7 @@ all: \
   check-case_sparql_construct \
   check-case_sparql_select \
   check-isomorphic_diff \
+  check-mypy \
   download
 
 .venv.done.log: \
@@ -79,6 +80,7 @@ all-case_sparql_select: \
 # These check calls are provided in preferred run-order.
 check: \
   check-isomorphic_diff \
+  check-mypy \
   check-case_file \
   check-case_sparql_construct \
   check-case_sparql_select
@@ -115,6 +117,18 @@ check-isomorphic_diff: \
 	$(MAKE) \
 	  --directory isomorphic_diff \
 	  check
+
+# mypy is called against specific members of the tests directory to avoid descending into the virtual environment.
+check-mypy: \
+  .venv.done.log
+	source venv/bin/activate \
+	  && mypy \
+	    $(top_srcdir)/case_utils \
+	    case_file \
+	    case_sparql_construct \
+	    case_utils \
+	    hexbinary \
+	    src
 
 clean:
 	@$(MAKE) \

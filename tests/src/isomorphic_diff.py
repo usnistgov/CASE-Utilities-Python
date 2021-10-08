@@ -34,13 +34,13 @@ import logging
 import os
 import sys
 
-import rdflib.compare
+import rdflib.compare  # type: ignore
 
 import case_utils
 
 _logger = logging.getLogger(os.path.basename(__file__))
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--debug", action="store_true")
     parser.add_argument("in_graph_1")
@@ -70,7 +70,10 @@ def main():
     if i1 == i2:
         sys.exit(0)
 
-    def _report(diff_symbol, graph):
+    def _report(
+      diff_symbol : str,
+      graph : rdflib.Graph
+    ) -> None:
         """
         This function copied in spirit from:
         https://rdflib.readthedocs.io/en/stable/apidocs/rdflib.html#module-rdflib.compare
