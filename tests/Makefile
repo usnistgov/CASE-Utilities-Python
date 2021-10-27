@@ -72,11 +72,8 @@ all-case_sparql_construct: \
 
 all-case_sparql_select: \
   .venv.done.log
-	# Only descend if python>=3.7, due to pandas dependency unsatisfiable in 3.6.x.
-	# Boolean explanation: sys.exit(False) has exit status 0.
-	venv/bin/python3 -c 'import sys ; sys.exit(not (sys.version_info < (3, 7)))' \
-	  || $(MAKE) \
-	    --directory case_sparql_select
+	$(MAKE) \
+	  --directory case_sparql_select
 
 # These check calls are provided in preferred run-order.
 check: \
@@ -106,12 +103,9 @@ check-case_sparql_construct: \
 
 check-case_sparql_select: \
   .venv.done.log
-	# Only descend if python>=3.7, due to pandas dependency unsatisfiable in 3.6.x.
-	# Boolean explanation: sys.exit(False) has exit status 0.
-	venv/bin/python3 -c 'import sys ; sys.exit(not (sys.version_info < (3, 7)))' \
-	  || $(MAKE) \
-	    --directory case_sparql_select \
-	    check
+	$(MAKE) \
+	  --directory case_sparql_select \
+	  check
 
 check-isomorphic_diff: \
   .venv.done.log
