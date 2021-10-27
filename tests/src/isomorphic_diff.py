@@ -79,9 +79,9 @@ def main() -> None:
         https://rdflib.readthedocs.io/en/stable/apidocs/rdflib.html#module-rdflib.compare
         """
         for line in sorted(graph.serialize(format="nt").splitlines()):
-            if line.strip() == b"":
+            if line.strip() == "":
                 continue
-            _logger.debug("%s %s", diff_symbol, line.decode("ascii"))
+            _logger.debug("%s %s", diff_symbol, line)
 
     #_report("1", g1)
     #_report("2", g2)
