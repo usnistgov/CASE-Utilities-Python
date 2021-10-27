@@ -48,7 +48,8 @@ all: \
 	  && pip install \
 	    --upgrade \
 	    pip \
-	    setuptools
+	    setuptools \
+	    wheel
 	source venv/bin/activate \
 	  && pip install \
 	    --requirement requirements.txt
