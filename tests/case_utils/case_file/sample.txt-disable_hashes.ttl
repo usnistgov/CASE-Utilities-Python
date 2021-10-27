@@ -6,7 +6,7 @@
 @prefix uco-observable: <https://unifiedcyberontology.org/ontology/uco/observable#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-kb:file-16d49634-ba5d-5f46-ab4e-7a577a4e096d
+kb:file-69751792-9d04-5f5f-8791-99ca3729cd3c
 	a uco-observable:ObservableObject ;
 	uco-core:hasFacet [
 		a uco-observable:FileFacet ;

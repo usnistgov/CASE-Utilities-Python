@@ -12,50 +12,48 @@
     },
     "@graph": [
         {
-            "@id": "kb:file-d30556a8-8082-5ffb-95a5-ca3839414d4f",
+            "@id": "kb:file-a44b2ee3-968f-5528-883a-fa65ac45ce2c",
             "@type": "uco-observable:ObservableObject",
             "uco-core:hasFacet": [
                 {
-                    "@id": "_:N0db8031480664f87b08e49c18a767095"
+                    "@id": "_:N4acc005af38245cb843d4a7009cce7df"
                 },
                 {
-                    "@id": "_:Nddb40eef75a94f8e979ff1fbfad9aca5"
+                    "@id": "_:Nc02deac289534fbf93c061d03bbb589d"
                 }
             ]
         },
         {
-            "@id": "_:N0db8031480664f87b08e49c18a767095",
+            "@id": "_:N4acc005af38245cb843d4a7009cce7df",
+            "@type": "uco-observable:FileFacet",
+            "uco-observable:fileName": "sample.txt",
+            "uco-observable:modifiedTime": {
+                "@type": "xsd:dateTime",
+                "@value": "2010-01-02T03:04:56+00:00"
+            },
+            "uco-observable:sizeInBytes": 4
+        },
+        {
+            "@id": "_:Nc02deac289534fbf93c061d03bbb589d",
             "@type": "uco-observable:ContentDataFacet",
             "uco-observable:hash": [
                 {
-                    "@id": "_:N839986b2d63a4963beafbb65016449da"
+                    "@id": "_:Nbbf71d61d9fa4615bc074268fd60b4b5"
                 },
                 {
-                    "@id": "_:N065fc8f395464db38cf36008593a16f9"
+                    "@id": "_:N6741cf44d9da464191c6a0014dbb602b"
                 },
                 {
-                    "@id": "_:N379cd3902adc4912a74a8eacd32afb9c"
+                    "@id": "_:N3b6cc89816394294bc260958408d74de"
                 },
                 {
-                    "@id": "_:N77e79676ee5449ea9f6db813fb9dc095"
+                    "@id": "_:Nfc008212dd584b16a8d4d50df33f0a47"
                 }
             ],
             "uco-observable:sizeInBytes": 4
         },
         {
-            "@id": "_:N839986b2d63a4963beafbb65016449da",
-            "@type": "uco-types:Hash",
-            "uco-types:hashMethod": {
-                "@type": "uco-vocabulary:HashNameVocab",
-                "@value": "SHA256"
-            },
-            "uco-types:hashValue": {
-                "@type": "xsd:hexBinary",
-                "@value": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
-            }
-        },
-        {
-            "@id": "_:N065fc8f395464db38cf36008593a16f9",
+            "@id": "_:Nbbf71d61d9fa4615bc074268fd60b4b5",
             "@type": "uco-types:Hash",
             "uco-types:hashMethod": {
                 "@type": "uco-vocabulary:HashNameVocab",
@@ -67,7 +65,7 @@
             }
         },
         {
-            "@id": "_:N379cd3902adc4912a74a8eacd32afb9c",
+            "@id": "_:N6741cf44d9da464191c6a0014dbb602b",
             "@type": "uco-types:Hash",
             "uco-types:hashMethod": {
                 "@type": "uco-vocabulary:HashNameVocab",
@@ -79,7 +77,19 @@
             }
         },
         {
-            "@id": "_:N77e79676ee5449ea9f6db813fb9dc095",
+            "@id": "_:N3b6cc89816394294bc260958408d74de",
+            "@type": "uco-types:Hash",
+            "uco-types:hashMethod": {
+                "@type": "uco-vocabulary:HashNameVocab",
+                "@value": "SHA256"
+            },
+            "uco-types:hashValue": {
+                "@type": "xsd:hexBinary",
+                "@value": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+            }
+        },
+        {
+            "@id": "_:Nfc008212dd584b16a8d4d50df33f0a47",
             "@type": "uco-types:Hash",
             "uco-types:hashMethod": {
                 "@type": "uco-vocabulary:HashNameVocab",
@@ -89,16 +99,6 @@
                 "@type": "xsd:hexBinary",
                 "@value": "ee26b0dd4af7e749aa1a8ee3c10ae9923f618980772e473f8819a5d4940e0db27ac185f8a0e1d5f84f88bc887fd67b143732c304cc5fa9ad8e6f57f50028a8ff"
             }
-        },
-        {
-            "@id": "_:Nddb40eef75a94f8e979ff1fbfad9aca5",
-            "@type": "uco-observable:FileFacet",
-            "uco-observable:fileName": "sample.txt",
-            "uco-observable:modifiedTime": {
-                "@type": "xsd:dateTime",
-                "@value": "2010-01-02T03:04:56+00:00"
-            },
-            "uco-observable:sizeInBytes": 4
         }
     ]
 }
