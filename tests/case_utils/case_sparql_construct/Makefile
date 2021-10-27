@@ -13,51 +13,35 @@
 
 SHELL := /bin/bash
 
-top_srcdir := $(shell cd ../.. ; pwd)
+top_srcdir := $(shell cd ../../.. ; pwd)
 
 tests_srcdir := $(top_srcdir)/tests
 
 all: \
-  output.html \
-  output.md
-
-.PHONY: \
-  check-html \
-  check-markdown
-
-.PRECIOUS: \
-  output.%
+  output.ttl
 
 check: \
-  check-html \
-  check-markdown
-
-check-html: \
-  .check-output.html \
-  output.html
-	diff $^
-
-check-markdown: \
-  .check-output.md \
-  output.md
-	diff $^
+  output.json \
+  output.ttl
+	source $(tests_srcdir)/venv/bin/activate \
+	  && pytest \
+	    --log-level=DEBUG
 
 clean:
 	@rm -rf \
 	  __pycache__
 	@rm -f \
-	  *.html \
-	  *.md \
+	  output.* \
 	  _*
 
 output.%: \
   $(tests_srcdir)/.venv.done.log \
-  $(top_srcdir)/case_utils/case_sparql_select/__init__.py \
+  $(top_srcdir)/case_utils/case_sparql_construct/__init__.py \
   input-1.sparql \
   input-2.ttl \
   input-3.json
 	source $(tests_srcdir)/venv/bin/activate \
-	  && case_sparql_select \
+	  && case_sparql_construct \
 	    _$@ \
 	    input-1.sparql \
 	    input-2.ttl \

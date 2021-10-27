@@ -12,74 +12,48 @@
   },
   "@graph": [
     {
-      "@id": "http://example.org/kb/file-72a7af43-7798-5794-88fd-49c0d3c76ccb",
+      "@id": "http://example.org/kb/file-4216a9f3-45fc-55aa-8e48-a9f828173625",
       "@type": "https://unifiedcyberontology.org/ontology/uco/observable#ObservableObject",
       "https://unifiedcyberontology.org/ontology/uco/core#hasFacet": [
         {
-          "@id": "_:N9465521b80bf49c586f914908dfc46a2"
+          "@id": "_:Ncbd74ec540fa42b09802cdf033ec0e86"
         },
         {
-          "@id": "_:Ne7887bd0a239424bb588bed06ec4fc77"
+          "@id": "_:N1b091168b6e746ca8ffef67ba546f52c"
         }
       ]
     },
     {
-      "@id": "_:N9465521b80bf49c586f914908dfc46a2",
+      "@id": "_:Ncbd74ec540fa42b09802cdf033ec0e86",
+      "@type": "https://unifiedcyberontology.org/ontology/uco/observable#FileFacet",
+      "https://unifiedcyberontology.org/ontology/uco/observable#fileName": "sample.txt",
+      "https://unifiedcyberontology.org/ontology/uco/observable#modifiedTime": {
+        "@type": "http://www.w3.org/2001/XMLSchema#dateTime",
+        "@value": "2010-01-02T03:04:56+00:00"
+      },
+      "https://unifiedcyberontology.org/ontology/uco/observable#sizeInBytes": 4
+    },
+    {
+      "@id": "_:N1b091168b6e746ca8ffef67ba546f52c",
       "@type": "https://unifiedcyberontology.org/ontology/uco/observable#ContentDataFacet",
       "https://unifiedcyberontology.org/ontology/uco/observable#hash": [
         {
-          "@id": "_:Nad6171b4933a4a84b83faa5d48fd4ddb"
+          "@id": "_:Nf0f6ff73c49045ffa53e2fc83249d20b"
         },
         {
-          "@id": "_:N1ee7a053f4bd466e8fca1105b8392292"
+          "@id": "_:Na2470e1f29914026a1690b0e9386cc1f"
         },
         {
-          "@id": "_:N098fa95f7ef2409b864a9fb6b291ab08"
+          "@id": "_:Nd8473ff30e87456d8dcd034729ba27ed"
         },
         {
-          "@id": "_:Na99d1f2a83814ac491c9b02662ea8587"
+          "@id": "_:Ncaa10f1e5cf84d8286f1d1c536b9fa06"
         }
       ],
       "https://unifiedcyberontology.org/ontology/uco/observable#sizeInBytes": 4
     },
     {
-      "@id": "_:Nad6171b4933a4a84b83faa5d48fd4ddb",
-      "@type": "https://unifiedcyberontology.org/ontology/uco/types#Hash",
-      "https://unifiedcyberontology.org/ontology/uco/types#hashMethod": {
-        "@type": "https://unifiedcyberontology.org/ontology/uco/vocabulary#HashNameVocab",
-        "@value": "SHA512"
-      },
-      "https://unifiedcyberontology.org/ontology/uco/types#hashValue": {
-        "@type": "http://www.w3.org/2001/XMLSchema#hexBinary",
-        "@value": "ee26b0dd4af7e749aa1a8ee3c10ae9923f618980772e473f8819a5d4940e0db27ac185f8a0e1d5f84f88bc887fd67b143732c304cc5fa9ad8e6f57f50028a8ff"
-      }
-    },
-    {
-      "@id": "_:N1ee7a053f4bd466e8fca1105b8392292",
-      "@type": "https://unifiedcyberontology.org/ontology/uco/types#Hash",
-      "https://unifiedcyberontology.org/ontology/uco/types#hashMethod": {
-        "@type": "https://unifiedcyberontology.org/ontology/uco/vocabulary#HashNameVocab",
-        "@value": "SHA256"
-      },
-      "https://unifiedcyberontology.org/ontology/uco/types#hashValue": {
-        "@type": "http://www.w3.org/2001/XMLSchema#hexBinary",
-        "@value": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
-      }
-    },
-    {
-      "@id": "_:N098fa95f7ef2409b864a9fb6b291ab08",
-      "@type": "https://unifiedcyberontology.org/ontology/uco/types#Hash",
-      "https://unifiedcyberontology.org/ontology/uco/types#hashMethod": {
-        "@type": "https://unifiedcyberontology.org/ontology/uco/vocabulary#HashNameVocab",
-        "@value": "SHA1"
-      },
-      "https://unifiedcyberontology.org/ontology/uco/types#hashValue": {
-        "@type": "http://www.w3.org/2001/XMLSchema#hexBinary",
-        "@value": "a94a8fe5ccb19ba61c4c0873d391e987982fbbd3"
-      }
-    },
-    {
-      "@id": "_:Na99d1f2a83814ac491c9b02662ea8587",
+      "@id": "_:Nf0f6ff73c49045ffa53e2fc83249d20b",
       "@type": "https://unifiedcyberontology.org/ontology/uco/types#Hash",
       "https://unifiedcyberontology.org/ontology/uco/types#hashMethod": {
         "@type": "https://unifiedcyberontology.org/ontology/uco/vocabulary#HashNameVocab",
@@ -91,14 +65,40 @@
       }
     },
     {
-      "@id": "_:Ne7887bd0a239424bb588bed06ec4fc77",
-      "@type": "https://unifiedcyberontology.org/ontology/uco/observable#FileFacet",
-      "https://unifiedcyberontology.org/ontology/uco/observable#fileName": "sample.txt",
-      "https://unifiedcyberontology.org/ontology/uco/observable#modifiedTime": {
-        "@type": "http://www.w3.org/2001/XMLSchema#dateTime",
-        "@value": "2010-01-02T03:04:56+00:00"
+      "@id": "_:Na2470e1f29914026a1690b0e9386cc1f",
+      "@type": "https://unifiedcyberontology.org/ontology/uco/types#Hash",
+      "https://unifiedcyberontology.org/ontology/uco/types#hashMethod": {
+        "@type": "https://unifiedcyberontology.org/ontology/uco/vocabulary#HashNameVocab",
+        "@value": "SHA1"
       },
-      "https://unifiedcyberontology.org/ontology/uco/observable#sizeInBytes": 4
+      "https://unifiedcyberontology.org/ontology/uco/types#hashValue": {
+        "@type": "http://www.w3.org/2001/XMLSchema#hexBinary",
+        "@value": "a94a8fe5ccb19ba61c4c0873d391e987982fbbd3"
+      }
+    },
+    {
+      "@id": "_:Nd8473ff30e87456d8dcd034729ba27ed",
+      "@type": "https://unifiedcyberontology.org/ontology/uco/types#Hash",
+      "https://unifiedcyberontology.org/ontology/uco/types#hashMethod": {
+        "@type": "https://unifiedcyberontology.org/ontology/uco/vocabulary#HashNameVocab",
+        "@value": "SHA256"
+      },
+      "https://unifiedcyberontology.org/ontology/uco/types#hashValue": {
+        "@type": "http://www.w3.org/2001/XMLSchema#hexBinary",
+        "@value": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+      }
+    },
+    {
+      "@id": "_:Ncaa10f1e5cf84d8286f1d1c536b9fa06",
+      "@type": "https://unifiedcyberontology.org/ontology/uco/types#Hash",
+      "https://unifiedcyberontology.org/ontology/uco/types#hashMethod": {
+        "@type": "https://unifiedcyberontology.org/ontology/uco/vocabulary#HashNameVocab",
+        "@value": "SHA512"
+      },
+      "https://unifiedcyberontology.org/ontology/uco/types#hashValue": {
+        "@type": "http://www.w3.org/2001/XMLSchema#hexBinary",
+        "@value": "ee26b0dd4af7e749aa1a8ee3c10ae9923f618980772e473f8819a5d4940e0db27ac185f8a0e1d5f84f88bc887fd67b143732c304cc5fa9ad8e6f57f50028a8ff"
+      }
     }
   ]
 }

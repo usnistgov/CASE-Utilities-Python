@@ -15,22 +15,14 @@ SHELL := /bin/bash
 
 top_srcdir := $(shell cd .. ; pwd)
 
-srcdir := $(shell pwd)
-
 PYTHON3 ?= $(shell which python3.9 2>/dev/null || which python3.8 2>/dev/null || which python3.7 2>/dev/null || which python3.6 2>/dev/null || which python3)
 
 all: \
-  all-case_file \
-  all-case_sparql_construct \
-  all-case_sparql_select
+  all-case_utils
 
 .PHONY: \
-  all-case_file \
-  all-case_sparql_construct \
-  all-case_sparql_select \
-  check-case_file \
-  check-case_sparql_construct \
-  check-case_sparql_select \
+  all-case_utils \
+  check-case_utils \
   check-isomorphic_diff \
   check-mypy \
   download
@@ -60,51 +52,26 @@ all: \
 	      .
 	touch $@
 
-all-case_file: \
-  .venv.done.log
-	$(MAKE) \
-	  --directory case_file
 
-all-case_sparql_construct: \
+all-case_utils: \
   .venv.done.log
 	$(MAKE) \
-	  --directory case_sparql_construct
-
-all-case_sparql_select: \
-  .venv.done.log
-	$(MAKE) \
-	  --directory case_sparql_select
+	  --directory case_utils
 
 # These check calls are provided in preferred run-order.
 check: \
-  check-isomorphic_diff \
   check-mypy \
-  check-case_file \
-  check-case_sparql_construct \
-  check-case_sparql_select
+  check-isomorphic_diff \
+  check-case_utils
 	source venv/bin/activate \
 	  && pytest \
-	    --ignore case_file \
-	    --ignore case_sparql_construct \
-	    --ignore case_sparql_select \
+	    --ignore case_utils \
 	    --log-level=DEBUG
 
-check-case_file: \
+check-case_utils: \
   .venv.done.log
 	$(MAKE) \
-	  --directory case_file \
-	  check
-
-check-case_sparql_construct: \
-  .venv.done.log
-	$(MAKE) \
-	  --directory case_sparql_construct \
-	  check
-
-check-case_sparql_select: \
-  .venv.done.log
-	$(MAKE) \
-	  --directory case_sparql_select \
+	  --directory case_utils \
 	  check
 
 check-isomorphic_diff: \
@@ -119,21 +86,13 @@ check-mypy: \
 	source venv/bin/activate \
 	  && mypy \
 	    $(top_srcdir)/case_utils \
-	    case_file \
-	    case_sparql_construct \
 	    case_utils \
 	    hexbinary \
 	    src
 
 clean:
 	@$(MAKE) \
-	  --directory case_sparql_select \
-	  clean
-	@$(MAKE) \
-	  --directory case_sparql_construct \
-	  clean
-	@$(MAKE) \
-	  --directory case_file \
+	  --directory case_utils \
 	  clean
 	@rm -f \
 	  .venv.done.log
