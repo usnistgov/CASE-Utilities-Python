@@ -86,10 +86,9 @@ This project follows [SEMVER 2.0.0](https://semver.org/) where versions are decl
 
 ## Ontology versions supported
 
-This repository supports the CASE ontology version that is linked as a submodule [here](dependencies/CASE).  Currently, the ontology versions are:
+This repository supports the CASE ontology version that is linked as a submodule [here](dependencies/CASE).  The CASE version is encoded as a variable (and checked in unit tests) in [`case_utils/ontology/version_info.py`](case_utils/ontology/version_info.py), and used throughout this code base, as `CURRENT_CASE_VERSION`.
 
-* CASE - 0.5.0
-* UCO - 0.7.0
+For instructions on how to update the CASE version for an ontology release, see [`CONTRIBUTE.md`](CONTRIBUTE.md).
 
 
 ## Repository locations
