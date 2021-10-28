@@ -20,6 +20,33 @@ Installation is demonstrated in the `.venv.done.log` target of the [`tests/`](te
 ## Usage
 
 
+### `case_validate`
+
+This repository provides `case_validate` as an adaptation of the `pyshacl` command from [RDFLib's pySHACL](https://github.com/RDFLib/pySHACL).  The command-line interface is adapted to run as though `pyshacl` were provided the full CASE ontology (and adopted full UCO ontology) as both a shapes and ontology graph.  "Compiled" (or, "aggregated") CASE ontologies are in the [`case_utils/ontology/`](case_utils/ontology/) directory, and are installed with `pip`, so data validation can occur without requiring networking after this repository is installed.
+
+To see a human-readable validation report of an instance-data file:
+
+```bash
+case_validate input.json
+```
+
+If `input.json` is not conformant, a report will be emitted, and `case_validate` will exit with status `1`.  (This is a `pyshacl` behavior, where `0` and `1` report validation success.  Status of >`1` is for other errors.)
+
+To produce the validation report as a machine-readable graph output, the `--format` flag can be used to modify the output format:
+
+```bash
+case_validate --format turtle input.json > result.ttl
+```
+
+To use one or more supplementary ontology files, the `--ontology-graph` flag can be used, more than once if desired, to supplement the selected CASE version:
+
+```bash
+case_validate --ontology-graph internal_ontology.ttl --ontology-graph experimental_shapes.ttl input.json
+```
+
+Other flags are reviewable with `case_validate --help`.
+
+
 ### `case_file`
 
 To characterize a file, including hashes:
