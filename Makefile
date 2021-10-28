@@ -35,6 +35,9 @@ all:
 	$(MAKE) \
 	  --directory dependencies/CASE-Examples-QC/tests \
 	  ontology_vocabulary.txt
+	test -r dependencies/CASE/ontology/master/case.ttl \
+	  || (git submodule init dependencies/CASE && git submodule update dependencies/CASE)
+	test -r dependencies/CASE/ontology/master/case.ttl
 	touch $@
 
 check: \
@@ -50,6 +53,19 @@ clean:
 	  clean
 	@rm -f \
 	  .git_submodule_init.done.log
+	@test ! -r dependencies/CASE/README.md \
+	  || @$(MAKE) \
+	    --directory dependencies/CASE \
+	    clean
+	@# Restore CASE validation output files that do not affect CASE build process.
+	@test ! -r dependencies/CASE/README.md \
+	  || ( \
+	    cd dependencies/CASE \
+	      && git checkout \
+	        -- \
+	        tests/examples \
+	        || true \
+	  )
 	@#Remove flag files that are normally set after deeper submodules and rdf-toolkit are downloaded.
 	@rm -f \
 	  dependencies/CASE-Examples-QC/.git_submodule_init.done.log \

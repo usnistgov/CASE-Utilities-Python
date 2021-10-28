@@ -86,10 +86,10 @@ This project follows [SEMVER 2.0.0](https://semver.org/) where versions are decl
 
 ## Ontology versions supported
 
-This repository supports the ontology versions that are linked as submodules in the [CASE Examples QC](https://github.com/ajnelson-nist/CASE-Examples-QC) repository.  Currently, the ontology versions are:
+This repository supports the CASE ontology version that is linked as a submodule [here](dependencies/CASE).  Currently, the ontology versions are:
 
-* CASE - 0.4.0
-* UCO - 0.6.0
+* CASE - 0.5.0
+* UCO - 0.7.0
 
 
 ## Repository locations
