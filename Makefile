@@ -76,7 +76,7 @@ clean:
 	  .*.done.log
 	@# 'clean' in the ontology directory should only happen when testing and building new ontology versions.  Hence, it is not called from the top-level Makefile.
 	@test ! -r dependencies/CASE/README.md \
-	  || @$(MAKE) \
+	  || $(MAKE) \
 	    --directory dependencies/CASE \
 	    clean
 	@# Restore CASE validation output files that do not affect CASE build process.
