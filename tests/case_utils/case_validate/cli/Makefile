@@ -84,19 +84,26 @@ format_human_output_unspecified.txt: \
 	    > _$@
 	mv _$@ $@
 
+# JSON-LD recipes contain a sed command to remove a randomly-valued
+# blank node ID that does not serve to inform the example.
 format_jsonld_output_%: \
   $(examples_srcdir)/investigative_action_PASS_validation.ttl \
   $(tests_srcdir)/.venv.done.log \
   $(top_srcdir)/.ontology.done.log \
   $(top_srcdir)/case_utils/case_validate/__init__.py \
   $(top_srcdir)/case_utils/ontology/__init__.py
-	rm -f _$@
+	rm -f __$@ _$@
 	source $(tests_srcdir)/venv/bin/activate \
 	  && case_validate \
 	    --debug \
 	    --format json-ld \
-	    --output _$@ \
+	    --output __$@ \
 	    $<
+	sed \
+	  -e '/"@id": "_:/d' \
+	  __$@ \
+	  > _$@
+	rm -f __$@
 	mv _$@ $@
 
 format_jsonld_output_unspecified.jsonld: \
@@ -105,13 +112,18 @@ format_jsonld_output_unspecified.jsonld: \
   $(top_srcdir)/.ontology.done.log \
   $(top_srcdir)/case_utils/case_validate/__init__.py \
   $(top_srcdir)/case_utils/ontology/__init__.py
-	rm -f _$@
+	rm -f __$@ _$@
 	source $(tests_srcdir)/venv/bin/activate \
 	  && case_validate \
 	    --debug \
 	    --format json-ld \
 	    $< \
-	    > _$@
+	    > __$@
+	sed \
+	  -e '/"@id": "_:/d' \
+	  __$@ \
+	  > _$@
+	rm -f __$@
 	mv _$@ $@
 
 format_turtle_output_%: \
