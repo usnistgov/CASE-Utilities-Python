@@ -11,6 +11,24 @@
 #
 # We would appreciate acknowledgement if the software is used.
 
+"""
+This script provides a wrapper to the pySHACL command line tool,
+available here:
+https://github.com/RDFLib/pySHACL
+
+Portions of the pySHACL command line interface are preserved and passed
+through to the underlying pySHACL validation functionality.
+
+Other portions of the pySHACL command line interface are adapted to
+CASE, specifically to support CASE and UCO as ontologies that store
+subclass hierarchy and node shapes together (rather than as separate
+ontology and shape graphs).  More specifically to CASE, if no particular
+ontology or shapes graph is requested, the most recent version of CASE
+will be used.  (That most recent version is shipped with this package as
+a monolithic file; see case_utils.ontology if interested in further
+details.)
+"""
+
 __version__ = "0.1.0"
 
 import argparse
@@ -21,7 +39,7 @@ import pathlib
 import sys
 import typing
 
-import rdflib  # type: ignore
+import rdflib.util  # type: ignore
 import pyshacl  # type: ignore
 
 import case_utils.ontology
@@ -31,9 +49,11 @@ from case_utils.ontology.version_info import *
 _logger = logging.getLogger(os.path.basename(__file__))
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="CASE wrapper to PySHACL command line tool.")
+    parser = argparse.ArgumentParser(description="CASE wrapper to pySHACL command line tool.")
 
-    # Configure debug logging before running parse_args, because there could be an error raised before the construction of the argument parser.
+    # Configure debug logging before running parse_args, because there
+    # could be an error raised before the construction of the argument
+    # parser.
     logging.basicConfig(level=logging.DEBUG if ("--debug" in sys.argv or "-d" in sys.argv) else logging.INFO)
 
     case_version_choices_list = ["none", "case-" + CURRENT_CASE_VERSION]
@@ -89,6 +109,15 @@ def main() -> None:
       default='none',
       help="(As with pyshacl CLI) Choose a type of inferencing to run against the Data Graph before validating. Default is \"none\".",
     )
+    parser.add_argument(
+      '-o',
+      '--output',
+      dest='output',
+      nargs='?',
+      type=argparse.FileType('x'),
+      help="(ALMOST as with pyshacl CLI) Send output to a file.  If absent, output will be written to stdout.  Difference: If specified, file is expected not to exist.  Clarification: Does NOT influence --format flag's default value of \"human\".  (I.e., any machine-readable serialization format must be specified with --format.)",
+      default=sys.stdout,
+    )
 
     parser.add_argument("in_graph")
 
@@ -108,6 +137,16 @@ def main() -> None:
             _logger.debug("arg_ontology_graph = %r.", arg_ontology_graph)
             ontology_graph.parse(arg_ontology_graph)
 
+    # Determine output format.
+    # pySHACL's determination of output formatting is handled solely
+    # through the -f flag.  Other CASE CLI tools handle format
+    # determination by output file extension.  case_validate will defer
+    # to pySHACL behavior, as other CASE tools don't (at the time of
+    # this writing) have the value "human" as an output format.
+    validator_kwargs : typing.Dict[str, str] = dict()
+    if args.format != "human":
+        validator_kwargs['serialize_report_graph'] = args.format
+
     validate_result : typing.Tuple[
       bool,
       typing.Union[Exception, bytes, str, rdflib.Graph],
@@ -121,7 +160,8 @@ def main() -> None:
       abort_on_first=args.abort,
       allow_warnings=True if args.allow_warnings else False,
       debug=True if args.debug else False,
-      do_owl_imports=True if args.imports else False
+      do_owl_imports=True if args.imports else False,
+      **validator_kwargs
     )
 
     # Relieve RAM of the data graph after validation has run.
@@ -131,17 +171,17 @@ def main() -> None:
     validation_graph = validate_result[1]
     validation_text = validate_result[2]
 
+    # NOTE: The output logistics code is adapted from pySHACL's file
+    # pyshacl/cli.py.  This section should be monitored for code drift.
     if args.format == "human":
-        sys.stdout.write(validation_text)
+        args.output.write(validation_text)
     else:
         if isinstance(validation_graph, rdflib.Graph):
-            validation_graph_str = validation_graph.serialize(format=args.format)
-            sys.stdout.write(validation_graph_str)
-            del validation_graph_str
+            raise NotImplementedError("rdflib.Graph expected not to be created from --format value %r." % args.format)
         elif isinstance(validation_graph, bytes):
-            sys.stdout.write(validation_graph.decode("utf-8"))
+            args.output.write(validation_graph.decode("utf-8"))
         elif isinstance(validation_graph, str):
-            sys.stdout.write(validation_graph)
+            args.output.write(validation_graph)
         else:
             raise NotImplementedError("Unexpected result type returned from validate: %r." % type(validation_graph))
 

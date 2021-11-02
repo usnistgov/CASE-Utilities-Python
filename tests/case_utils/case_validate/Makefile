@@ -18,30 +18,43 @@ top_srcdir := $(shell cd ../../.. ; pwd)
 tests_srcdir := $(top_srcdir)/tests
 
 all: \
+  all-cli \
   all-case_test_examples \
   all-uco_test_examples
 
 .PHONY: \
   all-case_test_examples \
+  all-cli \
   all-uco_test_examples \
   check-case_test_examples \
+  check-cli \
   check-uco_test_examples
 
 all-case_test_examples:
 	$(MAKE) \
 	  --directory case_test_examples
 
+all-cli:
+	$(MAKE) \
+	  --directory cli
+
 all-uco_test_examples:
 	$(MAKE) \
 	  --directory uco_test_examples
 
 check: \
+  check-cli \
   check-case_test_examples \
   check-uco_test_examples
 
 check-case_test_examples:
 	$(MAKE) \
 	  --directory case_test_examples \
+	  check
+
+check-cli:
+	$(MAKE) \
+	  --directory cli \
 	  check
 
 check-uco_test_examples:
@@ -55,4 +68,7 @@ clean:
 	  clean
 	@$(MAKE) \
 	  --directory uco_test_examples \
+	  clean
+	@$(MAKE) \
+	  --directory cli \
 	  clean

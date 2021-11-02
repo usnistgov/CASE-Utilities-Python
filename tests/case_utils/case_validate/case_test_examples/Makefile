@@ -45,12 +45,13 @@ all: \
   $(top_srcdir)/.ontology.done.log \
   $(top_srcdir)/case_utils/case_validate/__init__.py \
   $(top_srcdir)/case_utils/ontology/__init__.py
+	rm -f __$@ _$@
 	source $(tests_srcdir)/venv/bin/activate \
 	  && case_validate \
 	    --debug \
 	    --format turtle \
+	    --output __$@ \
 	    $< \
-	    > __$@ \
 	    ; rc=$$? ; test 0 -eq $$rc -o 1 -eq $$rc
 	@#Fail if output is empty.
 	@test -s __$@ \
