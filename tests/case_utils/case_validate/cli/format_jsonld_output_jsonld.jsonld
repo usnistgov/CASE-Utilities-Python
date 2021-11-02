@@ -1,0 +1,13 @@
+[
+  {
+    "@id": "_:Ne3c3fa53d833480eb7b2a3018b3c5f55",
+    "@type": [
+      "http://www.w3.org/ns/shacl#ValidationReport"
+    ],
+    "http://www.w3.org/ns/shacl#conforms": [
+      {
+        "@value": true
+      }
+    ]
+  }
+]
