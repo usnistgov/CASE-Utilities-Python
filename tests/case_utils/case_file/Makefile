@@ -39,6 +39,7 @@ all: \
 
 check: \
   kb.json \
+  kb_validation.ttl \
   sample.txt.json \
   sample.txt-nocompact.json \
   undefined_vocabulary.txt
@@ -85,6 +86,23 @@ kb.ttl: \
 	    sample.txt-disable_hashes.ttl
 	java -jar $(RDF_TOOLKIT_JAR) \
 	  --infer-base-iri \
+	  --inline-blank-nodes \
+	  --source __$@ \
+	  --source-format turtle \
+	  --target _$@ \
+	  --target-format turtle
+	rm __$@
+	mv _$@ $@
+
+#TODO - kb.json has a conversion error with context dictionary construction and custom datatypes.
+kb_validation.ttl: \
+  kb.ttl
+	source $(tests_srcdir)/venv/bin/activate \
+	  && case_validate \
+	    --format turtle \
+	    kb.ttl \
+	    > __$@
+	java -jar $(RDF_TOOLKIT_JAR) \
 	  --inline-blank-nodes \
 	  --source __$@ \
 	  --source-format turtle \

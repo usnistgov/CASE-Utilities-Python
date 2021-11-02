@@ -15,7 +15,13 @@ SHELL := /bin/bash
 
 PYTHON3 ?= $(shell which python3.9 2>/dev/null || which python3.8 2>/dev/null || which python3.7 2>/dev/null || which python3.6 2>/dev/null || which python3)
 
-all:
+case_version := $(shell $(PYTHON3) case_utils/ontology/version_info.py)
+ifeq ($(case_version),)
+$(error Unable to determine CASE version)
+endif
+
+all: \
+  .ontology.done.log
 
 .PHONY: \
   download
@@ -35,10 +41,28 @@ all:
 	$(MAKE) \
 	  --directory dependencies/CASE-Examples-QC/tests \
 	  ontology_vocabulary.txt
+	test -r dependencies/CASE/ontology/master/case.ttl \
+	  || (git submodule init dependencies/CASE && git submodule update dependencies/CASE)
+	test -r dependencies/CASE/ontology/master/case.ttl
+	$(MAKE) \
+	  --directory dependencies/CASE \
+	  .git_submodule_init.done.log \
+	  .lib.done.log
+	touch $@
+
+.ontology.done.log: \
+  dependencies/CASE/ontology/master/case.ttl
+	# Do not rebuild the current ontology file if it is already present.  It is expected not to change once built.
+	# touch -c: Do not create the file if it does not exist.  This will convince the recursive make nothing needs to be done if the file is present.
+	touch -c case_utils/ontology/case-$(case_version).ttl
+	$(MAKE) \
+	  --directory case_utils/ontology
+	# Confirm the current monolithic file is in place.
+	test -r case_utils/ontology/case-$(case_version).ttl
 	touch $@
 
 check: \
-  .git_submodule_init.done.log
+  .ontology.done.log
 	$(MAKE) \
 	  PYTHON3=$(PYTHON3) \
 	  --directory tests \
@@ -49,11 +73,31 @@ clean:
 	  --directory tests \
 	  clean
 	@rm -f \
-	  .git_submodule_init.done.log
+	  .*.done.log
+	@# 'clean' in the ontology directory should only happen when testing and building new ontology versions.  Hence, it is not called from the top-level Makefile.
+	@test ! -r dependencies/CASE/README.md \
+	  || $(MAKE) \
+	    --directory dependencies/CASE \
+	    clean
+	@# Restore CASE validation output files that do not affect CASE build process.
+	@test ! -r dependencies/CASE/README.md \
+	  || ( \
+	    cd dependencies/CASE \
+	      && git checkout \
+	        -- \
+	        tests/examples \
+	        || true \
+	  )
 	@#Remove flag files that are normally set after deeper submodules and rdf-toolkit are downloaded.
 	@rm -f \
 	  dependencies/CASE-Examples-QC/.git_submodule_init.done.log \
 	  dependencies/CASE-Examples-QC/.lib.done.log
+
+# This recipe guarantees timestamp update order, and is otherwise intended to be a no-op.
+dependencies/CASE/ontology/master/case.ttl: \
+  .git_submodule_init.done.log
+	test -r $@
+	touch $@
 
 distclean: \
   clean
