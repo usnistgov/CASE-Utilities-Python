@@ -30,6 +30,7 @@ __version__ = "0.3.0"
 
 import argparse
 import binascii
+import importlib.resources
 import logging
 import os
 import sys
@@ -37,7 +38,9 @@ import sys
 import pandas as pd  # type: ignore
 import rdflib.plugins.sparql  # type: ignore
 
-import case_utils
+import case_utils.ontology
+
+from case_utils.ontology.version_info import *
 
 NS_XSD = rdflib.XSD
 
@@ -49,10 +52,18 @@ def main() -> None:
     # Configure debug logging before running parse_args, because there could be an error raised before the construction of the argument parser.
     logging.basicConfig(level=logging.DEBUG if ("--debug" in sys.argv or "-d" in sys.argv) else logging.INFO)
 
+    built_version_choices_list = ["none", "case-" + CURRENT_CASE_VERSION]
+
     parser.add_argument(
       "-d",
       "--debug",
       action="store_true"
+    )
+    parser.add_argument(
+      "--built-version",
+      choices=tuple(built_version_choices_list),
+      default="case-"+CURRENT_CASE_VERSION,
+      help="Ontology version to use to supplement query, such as for subclass querying.  Does not require networking to use.  Default is most recent CASE release."
     )
     parser.add_argument(
       "--disallow-empty-results",
@@ -78,6 +89,9 @@ def main() -> None:
     with open(args.in_sparql, "r") as in_fh:
         select_query_text = in_fh.read().strip()
     _logger.debug("select_query_text = %r." % select_query_text)
+
+    if "subClassOf" in select_query_text:
+        case_utils.ontology.load_subclass_hierarchy(graph, built_version=args.built_version)
 
     # Build columns list from SELECT line.
     select_query_text_lines = select_query_text.split("\n")

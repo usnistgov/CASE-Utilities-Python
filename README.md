@@ -66,6 +66,8 @@ case_file --disable-hashes sample.txt.json sample.txt
 
 Two commands are provided to generate output from a SPARQL query and one or more input graphs.  Input graphs can be any graph, such as instance data or supplementary ontology files that supply custom class definitions or other external ontologies.
 
+These commands can be used with any RDF files to run arbitrary SPARQL queries.  They have one additional behavior tailored to CASE: If a path query is used for subclasses, the CASE subclass hierarchy will be loaded to supplement the input graph.  An expected use case of this feature is subclasses of `ObservableObject`.  For instance, if a data graph included an object with only the class `uco-observable:File` specified, the query `?x a/rdfs:subClassOf* uco-observable:ObservableObject` would match `?x` against that object.
+
 
 #### `case_sparql_construct`
 
