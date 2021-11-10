@@ -18,8 +18,9 @@ This script executes a SPARQL CONSTRUCT query, returning a graph of the generate
 __version__ = "0.1.0"
 
 import argparse
-import os
 import logging
+import os
+import sys
 import typing
 
 import rdflib.plugins.sparql  # type: ignore
@@ -30,6 +31,10 @@ _logger = logging.getLogger(os.path.basename(__file__))
 
 def main() -> None:
     parser = argparse.ArgumentParser()
+
+    # Configure debug logging before running parse_args, because there could be an error raised before the construction of the argument parser.
+    logging.basicConfig(level=logging.DEBUG if ("--debug" in sys.argv or "-d" in sys.argv) else logging.INFO)
+
     parser.add_argument(
       "-d",
       "--debug",
@@ -48,8 +53,6 @@ def main() -> None:
     parser.add_argument("in_sparql")
     parser.add_argument("in_graph", nargs="+")
     args = parser.parse_args()
-
-    logging.basicConfig(level=logging.DEBUG if args.debug else logging.INFO)
 
     in_graph = rdflib.Graph()
     for in_graph_filename in args.in_graph:
