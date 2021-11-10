@@ -56,10 +56,12 @@ all: \
 	# Do not rebuild the current ontology file if it is already present.  It is expected not to change once built.
 	# touch -c: Do not create the file if it does not exist.  This will convince the recursive make nothing needs to be done if the file is present.
 	touch -c case_utils/ontology/case-$(case_version).ttl
+	touch -c case_utils/ontology/case-$(case_version)-subclasses.ttl
 	$(MAKE) \
 	  --directory case_utils/ontology
 	# Confirm the current monolithic file is in place.
 	test -r case_utils/ontology/case-$(case_version).ttl
+	test -r case_utils/ontology/case-$(case_version)-subclasses.ttl
 	touch $@
 
 check: \

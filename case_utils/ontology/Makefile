@@ -24,6 +24,9 @@ RDF_TOOLKIT_JAR := $(case_srcdir)/lib/rdf-toolkit.jar
 case_version := $(shell python3 version_info.py)
 
 all: \
+  case-$(case_version)-subclasses.ttl
+
+.PRECIOUS: \
   case-$(case_version).ttl
 
 case-$(case_version).ttl: \
@@ -45,5 +48,34 @@ case-$(case_version).ttl: \
 	  --target-format turtle
 	mv _$@ $@
 
+case-$(case_version)-subclasses.ttl: \
+  case-$(case_version).ttl \
+  src/subclasses_ttl.py
+	# The CASE ontology test venv is made by the earlier build step
+	# of case_monolithic.ttl.  However, unless a new ontology
+	# release is being made, that step will have been skipped.
+	# This recursive Make call guarantees the virtual environment is
+	# set up.
+	$(MAKE) \
+	  --directory $(case_srcdir)/tests \
+	    .venv.done.log
+	#TODO This cleanup step should be removed after the 0.3.0 release of CASE-Utility-SHACL-Inheritance-Reviewer.
+	test ! -d $(uco_srcdir)/dependencies/CASE-Utility-SHACL-Inheritance-Reviewer/build \
+	  || rm -rf \
+	    $(uco_srcdir)/dependencies/CASE-Utility-SHACL-Inheritance-Reviewer/build
+	source $(case_srcdir)/tests/venv/bin/activate \
+	  && python3 src/subclasses_ttl.py \
+	  __$@ \
+	 $<
+	java -jar $(RDF_TOOLKIT_JAR) \
+	  --inline-blank-nodes \
+	  --source __$@ \
+	  --source-format turtle \
+	  --target _$@ \
+	  --target-format turtle
+	rm __$@
+	mv _$@ $@
+
 clean:
-	@rm -f case-$(case_version).ttl
+	@rm -f \
+	  case-$(case_version)*.ttl
