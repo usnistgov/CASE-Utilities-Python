@@ -44,9 +44,20 @@ _logger = logging.getLogger(os.path.basename(__file__))
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("-d", "--debug", action="store_true")
-    parser.add_argument("--disallow-empty-results", action="store_true", help="Raise error if no results are returned for query.")
-    parser.add_argument("out_table", help="Expected extensions are .html for HTML tables or .md for Markdown tables.")
+    parser.add_argument(
+      "-d",
+      "--debug",
+      action="store_true"
+    )
+    parser.add_argument(
+      "--disallow-empty-results",
+      action="store_true",
+      help="Raise error if no results are returned for query."
+    )
+    parser.add_argument(
+      "out_table",
+      help="Expected extensions are .html for HTML tables or .md for Markdown tables."
+    )
     parser.add_argument("in_sparql")
     parser.add_argument("in_graph", nargs="+")
     args = parser.parse_args()
