@@ -52,7 +52,6 @@ all: \
 	      .
 	touch $@
 
-
 all-case_utils: \
   .venv.done.log
 	$(MAKE) \
