@@ -1,0 +1,58 @@
+@prefix kb: <http://example.org/kb/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix uco-core: <https://unifiedcyberontology.org/ontology/uco/core#> .
+@prefix uco-observable: <https://unifiedcyberontology.org/ontology/uco/observable#> .
+@prefix uco-types: <https://unifiedcyberontology.org/ontology/uco/types#> .
+@prefix uco-vocabulary: <https://unifiedcyberontology.org/ontology/uco/vocabulary#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+kb:file-69751792-9d04-5f5f-8791-99ca3729cd3c
+	a uco-observable:File ;
+	uco-core:hasFacet [
+		a uco-observable:FileFacet ;
+		uco-observable:fileName "sample.txt" ;
+		uco-observable:modifiedTime "2010-01-02T03:04:56+00:00"^^xsd:dateTime ;
+		uco-observable:sizeInBytes "4"^^xsd:integer ;
+	] ;
+	.
+
+kb:file-9477a6eb-3a94-590b-b51e-6ce6892f0941
+	a uco-observable:File ;
+	uco-core:hasFacet
+		[
+			a uco-observable:ContentDataFacet ;
+			uco-observable:hash
+				[
+					a uco-types:Hash ;
+					uco-types:hashMethod "MD5"^^uco-vocabulary:HashNameVocab ;
+					uco-types:hashValue "098f6bcd4621d373cade4e832627b4f6"^^xsd:hexBinary ;
+				] ,
+				[
+					a uco-types:Hash ;
+					uco-types:hashMethod "SHA1"^^uco-vocabulary:HashNameVocab ;
+					uco-types:hashValue "a94a8fe5ccb19ba61c4c0873d391e987982fbbd3"^^xsd:hexBinary ;
+				] ,
+				[
+					a uco-types:Hash ;
+					uco-types:hashMethod "SHA256"^^uco-vocabulary:HashNameVocab ;
+					uco-types:hashValue "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"^^xsd:hexBinary ;
+				] ,
+				[
+					a uco-types:Hash ;
+					uco-types:hashMethod "SHA512"^^uco-vocabulary:HashNameVocab ;
+					uco-types:hashValue "ee26b0dd4af7e749aa1a8ee3c10ae9923f618980772e473f8819a5d4940e0db27ac185f8a0e1d5f84f88bc887fd67b143732c304cc5fa9ad8e6f57f50028a8ff"^^xsd:hexBinary ;
+				]
+				;
+			uco-observable:sizeInBytes "4"^^xsd:integer ;
+		] ,
+		[
+			a uco-observable:FileFacet ;
+			uco-observable:fileName "sample.txt" ;
+			uco-observable:modifiedTime "2010-01-02T03:04:56+00:00"^^xsd:dateTime ;
+			uco-observable:sizeInBytes "4"^^xsd:integer ;
+		]
+		;
+	.
+

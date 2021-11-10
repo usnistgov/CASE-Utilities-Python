@@ -27,20 +27,20 @@ https://github.com/RDFLib/rdflib/issues/812
 On resolution of rdflib issue 812, and on adding some format-support flexibility, isomorphic_diff.py is likely to be deprecated in favor of using the upstream rdfgraphisomorphism command.
 """
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 import argparse
 import logging
 import os
 import sys
 
-import rdflib.compare
+import rdflib.compare  # type: ignore
 
 import case_utils
 
 _logger = logging.getLogger(os.path.basename(__file__))
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--debug", action="store_true")
     parser.add_argument("in_graph_1")
@@ -52,8 +52,8 @@ def main():
     g1 = rdflib.Graph()
     g2 = rdflib.Graph()
 
-    g1.parse(args.in_graph_1, format=case_utils.guess_format(args.in_graph_1))
-    g2.parse(args.in_graph_2, format=case_utils.guess_format(args.in_graph_2))
+    g1.parse(args.in_graph_1)
+    g2.parse(args.in_graph_2)
 
     #_logger.debug("type(g1) = %r.", type(g1))
     #_logger.debug("type(g2) = %r.", type(g2))
@@ -70,15 +70,18 @@ def main():
     if i1 == i2:
         sys.exit(0)
 
-    def _report(diff_symbol, graph):
+    def _report(
+      diff_symbol : str,
+      graph : rdflib.Graph
+    ) -> None:
         """
         This function copied in spirit from:
         https://rdflib.readthedocs.io/en/stable/apidocs/rdflib.html#module-rdflib.compare
         """
         for line in sorted(graph.serialize(format="nt").splitlines()):
-            if line.strip() == b"":
+            if line.strip() == "":
                 continue
-            _logger.debug("%s %s", diff_symbol, line.decode("ascii"))
+            _logger.debug("%s %s", diff_symbol, line)
 
     #_report("1", g1)
     #_report("2", g2)

@@ -48,9 +48,10 @@ The overall finding is: in rdflib and rdflib's SPARQL engine, xsd:hexBinaryCanon
 
 import logging
 import os
+import typing
 
 import pytest
-import rdflib.plugins.sparql
+import rdflib.plugins.sparql  # type: ignore
 
 _logger = logging.getLogger(os.path.basename(__file__))
 
@@ -64,7 +65,7 @@ n_lowercase2 = rdflib.URIRef("urn:example:lowercase2")
 n_uppercase1 = rdflib.URIRef("urn:example:uppercase1")
 p_predicate = rdflib.URIRef("urn:example:predicate1")
 
-def test_sparql_syntax_bind_boolean():
+def test_sparql_syntax_bind_boolean() -> None:
     """
     This test serves as a syntax reminder for binding boolean values.
     """
@@ -81,7 +82,7 @@ WHERE {
     assert confirmed
 
 @pytest.mark.xfail(reason="hard-coded failure")
-def test_pytest_syntax_xfail():
+def test_pytest_syntax_xfail() -> None:
     """
     This test serves as a syntax reminder for the XFail decorator.
     """
@@ -97,7 +98,7 @@ WHERE {
         confirmed = l_value.toPython()
     assert confirmed
 
-def test_sparql_syntax_integer_coercion():
+def test_sparql_syntax_integer_coercion() -> None:
     """
     This test serves as a syntax reminder for type coercions.
     """
@@ -113,7 +114,7 @@ WHERE {
         confirmed = l_value.toPython()
     assert confirmed
 
-def test_sparql_syntax_integer_cast():
+def test_sparql_syntax_integer_cast() -> None:
     """
     This test serves as a syntax reminder for the casting form of type coercions.
     """
@@ -130,7 +131,7 @@ WHERE {
     assert confirmed
 
 @pytest.mark.xfail
-def test_sparql_cast_custom_type():
+def test_sparql_cast_custom_type() -> None:
     """
     This test checks for nonexistent literal-datatype assignments.
     """
@@ -146,7 +147,7 @@ WHERE {
         confirmed = l_value.toPython()
     assert confirmed
 
-def test_sparql_compare_hexbinary_mixcase():
+def test_sparql_compare_hexbinary_mixcase() -> None:
     confirmed = None
     graph = rdflib.Graph()
     for result in graph.query("""\
@@ -159,7 +160,7 @@ WHERE {
         confirmed = l_value.toPython()
     assert confirmed
 
-def test_sparql_compare_hexbinary_matchcase():
+def test_sparql_compare_hexbinary_matchcase() -> None:
     confirmed = None
     graph = rdflib.Graph()
     for result in graph.query("""\
@@ -172,7 +173,7 @@ WHERE {
         confirmed = l_value.toPython()
     assert confirmed
 
-def test_sparql_compare_hexbinarycanonical_matchcase():
+def test_sparql_compare_hexbinarycanonical_matchcase() -> None:
     confirmed = None
     graph = rdflib.Graph()
     for result in graph.query("""\
@@ -186,7 +187,7 @@ WHERE {
     assert confirmed
 
 @pytest.mark.xfail
-def test_sparql_compare_hexbinarycanonical_mixcase():
+def test_sparql_compare_hexbinarycanonical_mixcase() -> None:
     """
     This test shows hexBinaryCanonical does not induce a casing-insensitive comparison.
     """
@@ -203,7 +204,7 @@ WHERE {
     assert confirmed
 
 @pytest.mark.xfail
-def test_sparql_compare_hb_hbc_mixcase():
+def test_sparql_compare_hb_hbc_mixcase() -> None:
     """
     This test confirms that literal-comparison takes into account datatype when one type is unknown.
     """
@@ -220,7 +221,7 @@ WHERE {
     assert confirmed
 
 @pytest.mark.xfail
-def test_sparql_compare_hb_hbc_mixcase_cast():
+def test_sparql_compare_hb_hbc_mixcase_cast() -> None:
     """
     This test is a bit redundant with test_sparql_cast_custom_type, but is here as an explicit demonstration of failure to cast a hexBinary value.
     """
@@ -236,7 +237,7 @@ WHERE {
         confirmed = l_value.toPython()
     assert confirmed
 
-def test_rdflib_literal_hexbinary():
+def test_rdflib_literal_hexbinary() -> None:
     _logger.debug("l_hb_lowercase = %r." % l_hb_lowercase)
     _logger.debug("l_hb_uppercase = %r." % l_hb_uppercase)
     _logger.debug("l_hb_lowercase.toPython() = %r." % l_hb_lowercase.toPython())
@@ -249,20 +250,22 @@ def test_rdflib_literal_hexbinary():
     assert l_hb_lowercase.toPython() == l_hb_uppercase.toPython()
 
 @pytest.mark.xfail
-def test_rdflib_literal_hexbinarycanonical():
+def test_rdflib_literal_hexbinarycanonical() -> None:
     _logger.debug("l_hb_uppercase = %r." % l_hb_uppercase)
     _logger.debug("l_hbc_uppercase = %r." % l_hbc_uppercase)
 
     assert l_hb_uppercase == l_hbc_uppercase
 
 @pytest.mark.xfail
-def test_rdflib_literal_topython_hexbinarycanonical():
+def test_rdflib_literal_topython_hexbinarycanonical() -> None:
     _logger.debug("l_hb_lowercase.toPython() = %r." % l_hb_lowercase.toPython())
     _logger.debug("l_hb_uppercase.toPython() = %r." % l_hb_uppercase.toPython())
 
     assert l_hb_uppercase.toPython() == l_hbc_uppercase.toPython()
 
-def _query_all_value_matches(graph):
+def _query_all_value_matches(
+  graph : rdflib.Graph
+) -> typing.Set[str]:
     """
     Return set of all node names (as strings) that have a matching value, where
     "matching" is determined by the SPARQL engine's type and data coercions.
@@ -280,7 +283,7 @@ WHERE {
         computed.add(n_node2.toPython())
     return computed
 
-def test_graph_repeat():
+def test_graph_repeat() -> None:
     """
     Two nodes are given the same literal value, and are found to match on literal values.
     """
@@ -302,7 +305,7 @@ def test_graph_repeat():
     computed = _query_all_value_matches(graph)
     assert computed == expected
 
-def test_graph_all_hexbinary_literals():
+def test_graph_all_hexbinary_literals() -> None:
     """
     Two nodes with the same literal value, and another node with the uppercase of the literal hexBinary value, are found to match on literal values.
     """
@@ -333,7 +336,7 @@ def test_graph_all_hexbinary_literals():
     assert computed == expected
 
 @pytest.mark.xfail
-def test_graph_hexbinarycanonical():
+def test_graph_hexbinarycanonical() -> None:
     graph = rdflib.Graph()
     graph.add((
       n_lowercase1,

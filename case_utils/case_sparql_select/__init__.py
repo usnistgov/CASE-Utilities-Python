@@ -26,36 +26,61 @@ The word "DISTINCT" will also be cut from the query, if present.
 Should a more complex query be necessary, an outer, wrapping SELECT query would let this script continue to function.
 """
 
-__version__ = "0.3.0"
+__version__ = "0.4.0"
 
 import argparse
 import binascii
-import os
+import importlib.resources
 import logging
+import os
+import sys
 
-import pandas as pd
-import rdflib.plugins.sparql
+import pandas as pd  # type: ignore
+import rdflib.plugins.sparql  # type: ignore
 
-import case_utils
+import case_utils.ontology
+
+from case_utils.ontology.version_info import *
 
 NS_XSD = rdflib.XSD
 
 _logger = logging.getLogger(os.path.basename(__file__))
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("-d", "--debug", action="store_true")
-    parser.add_argument("--disallow-empty-results", action="store_true", help="Raise error if no results are returned for query.")
-    parser.add_argument("out_table", help="Expected extensions are .html for HTML tables or .md for Markdown tables.")
+
+    # Configure debug logging before running parse_args, because there could be an error raised before the construction of the argument parser.
+    logging.basicConfig(level=logging.DEBUG if ("--debug" in sys.argv or "-d" in sys.argv) else logging.INFO)
+
+    built_version_choices_list = ["none", "case-" + CURRENT_CASE_VERSION]
+
+    parser.add_argument(
+      "-d",
+      "--debug",
+      action="store_true"
+    )
+    parser.add_argument(
+      "--built-version",
+      choices=tuple(built_version_choices_list),
+      default="case-"+CURRENT_CASE_VERSION,
+      help="Ontology version to use to supplement query, such as for subclass querying.  Does not require networking to use.  Default is most recent CASE release."
+    )
+    parser.add_argument(
+      "--disallow-empty-results",
+      action="store_true",
+      help="Raise error if no results are returned for query."
+    )
+    parser.add_argument(
+      "out_table",
+      help="Expected extensions are .html for HTML tables or .md for Markdown tables."
+    )
     parser.add_argument("in_sparql")
     parser.add_argument("in_graph", nargs="+")
     args = parser.parse_args()
 
-    logging.basicConfig(level=logging.DEBUG if args.debug else logging.INFO)
-
     graph = rdflib.Graph()
     for in_graph_filename in args.in_graph:
-        graph.parse(in_graph_filename, format=case_utils.guess_format(in_graph_filename))
+        graph.parse(in_graph_filename)
 
     # Inherit prefixes defined in input context dictionary.
     nsdict = {k:v for (k,v) in graph.namespace_manager.namespaces()}
@@ -64,6 +89,9 @@ def main():
     with open(args.in_sparql, "r") as in_fh:
         select_query_text = in_fh.read().strip()
     _logger.debug("select_query_text = %r." % select_query_text)
+
+    if "subClassOf" in select_query_text:
+        case_utils.ontology.load_subclass_hierarchy(graph, built_version=args.built_version)
 
     # Build columns list from SELECT line.
     select_query_text_lines = select_query_text.split("\n")

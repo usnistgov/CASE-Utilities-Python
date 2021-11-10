@@ -1,0 +1,16 @@
+{
+    "@context": {
+        "kb": "http://example.org/kb/",
+        "case-investigation": "https://ontology.caseontology.org/case/investigation/",
+        "uco-core": "https://unifiedcyberontology.org/ontology/uco/core#"
+    },
+    "@graph": [
+        {
+            "@id": "kb:provenance-record-1",
+            "@type": "case-investigation:ProvenanceRecord",
+            "uco-core:object": {
+                "@id": "kb:file-1"
+            }
+        }
+    ]
+}

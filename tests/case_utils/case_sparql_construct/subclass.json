@@ -1,0 +1,16 @@
+{
+    "@context": {
+        "kb": "http://example.org/kb/",
+        "uco-observable": "https://unifiedcyberontology.org/ontology/uco/observable#"
+      },
+    "@graph": [
+        {
+            "@id": "kb:file-1",
+            "@type": "uco-observable:ObservableObject"
+        },
+	{
+            "@id": "kb:file-2",
+            "@type": "uco-observable:File"
+        }
+    ]
+}

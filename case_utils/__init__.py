@@ -11,35 +11,19 @@
 #
 # We would appreciate acknowledgement if the software is used.
 
-__version__ = "0.2.1"
+__version__ = "0.3.0"
 
-import rdflib.util
+import typing
+import warnings
+
+import rdflib.util  # type: ignore
 
 from . import local_uuid
 
-def guess_format(fpath, fmap=None):
-    """
-    This function is a wrapper around rdflib.util.guess_format(), adding that the .json extension should be recognized as JSON-LD.
+def guess_format(
+  fpath : str,
+  fmap : typing.Optional[typing.Dict[str, str]] = None
+) -> typing.Optional[str]:
+    warnings.warn("The functionality in case_utils.guess_format is now upstream.  Please revise your code to use rdflib.util.guess_format.  The function arguments remain the same.  case_utils.guess_format will be removed in case_utils 0.4.0.", DeprecationWarning)
 
-    :param fpath: File path.
-    :type fpath: string
-
-    :param fmap: Mapper dictionary; see rdflib.util.guess_format() for further description.  Note that as in rdflib 5.0.0, supplying this argument overwrites, not augments, the suffix format map used by rdflib.
-    :type fmap: dict
-
-    :returns: RDF file format, fit for rdflib.Graph.parse() or .serialize(); or, None if file extension not mapped.
-    :rtype: string
-    """
-
-    assert fmap is None or isinstance(fmap, dict), "Type check failed"
-
-    if fmap is None:
-        updated_fmap = {key:rdflib.util.SUFFIX_FORMAT_MAP[key] for key in rdflib.util.SUFFIX_FORMAT_MAP}
-        if not "json" in updated_fmap:
-            updated_fmap["json"] = "json-ld"
-        if not "jsonld" in updated_fmap:
-            updated_fmap["jsonld"] = "json-ld"
-    else:
-        updated_fmap = {k:fmap[k] for k in fmap}
-
-    return rdflib.util.guess_format(fpath, updated_fmap)
+    return rdflib.util.guess_format(fpath, fmap)  # type: ignore

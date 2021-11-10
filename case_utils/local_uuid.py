@@ -15,23 +15,23 @@
 This library is a wrapper for uuid, provided to generate repeatable UUIDs if requested.
 """
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 import os
 import sys
 import uuid
 
-USE_DEMO_UUID = False
+USE_DEMO_UUID : bool = False
 
-DEMO_UUID_COUNTER = 0
+DEMO_UUID_COUNTER : int = 0
 
-def configure():
+def configure() -> None:
     global USE_DEMO_UUID
 
     if os.getenv("DEMO_UUID_REQUESTING_NONRANDOM") == "NONRANDOM_REQUESTED":
         USE_DEMO_UUID = True
 
-def demo_uuid():
+def demo_uuid() -> str:
     """
     This function generates a repeatable UUID, drawing on non-varying elements of the environment and process call for entropy.
 
@@ -52,16 +52,17 @@ def demo_uuid():
     parts.append(str(DEMO_UUID_COUNTER))
 
     # Component: Present working directory, replacing $HOME with '~'.
-    parts.append(os.getcwd().replace(os.getenv("HOME"), "~"))
+    env_HOME : str = os.getenv("HOME", "/nonexistent")
+    parts.append(os.getcwd().replace(env_HOME, "~"))
 
     # Component: Argument vector.
     parts.extend(sys.argv)
 
     return str(uuid.uuid5(uuid.NAMESPACE_URL, "/".join(parts)))
 
-def local_uuid():
+def local_uuid() -> str:
     """
-    Generate either a UUID4, or if requested via environment configuration, a non-random demo UUID.  Returns a string.
+    Generate either a UUID4, or if requested via environment configuration, a non-random demo UUID.
     """
     global USE_DEMO_UUID
     if USE_DEMO_UUID:
