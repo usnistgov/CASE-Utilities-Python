@@ -9,7 +9,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 kb:file-9477a6eb-3a94-590b-b51e-6ce6892f0941
-	a uco-observable:ObservableObject ;
+	a uco-observable:File ;
 	uco-core:hasFacet
 		[
 			a uco-observable:ContentDataFacet ;

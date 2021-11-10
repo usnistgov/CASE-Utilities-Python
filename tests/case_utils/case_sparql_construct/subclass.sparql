@@ -1,0 +1,9 @@
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX uco-observable: <https://unifiedcyberontology.org/ontology/uco/observable#>
+CONSTRUCT {
+  ?nEntity a prov:Entity .
+}
+WHERE
+{
+  ?nEntity a/rdfs:subClassOf* uco-observable:ObservableObject .
+}

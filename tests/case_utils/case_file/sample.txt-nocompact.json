@@ -13,18 +13,18 @@
   "@graph": [
     {
       "@id": "http://example.org/kb/file-4216a9f3-45fc-55aa-8e48-a9f828173625",
-      "@type": "https://unifiedcyberontology.org/ontology/uco/observable#ObservableObject",
+      "@type": "https://unifiedcyberontology.org/ontology/uco/observable#File",
       "https://unifiedcyberontology.org/ontology/uco/core#hasFacet": [
         {
-          "@id": "_:Ncbd74ec540fa42b09802cdf033ec0e86"
+          "@id": "_:N44ce7f76801a429d9aabefe1046da060"
         },
         {
-          "@id": "_:N1b091168b6e746ca8ffef67ba546f52c"
+          "@id": "_:Ndd6e8785860848aeb6823b493c6420a7"
         }
       ]
     },
     {
-      "@id": "_:Ncbd74ec540fa42b09802cdf033ec0e86",
+      "@id": "_:N44ce7f76801a429d9aabefe1046da060",
       "@type": "https://unifiedcyberontology.org/ontology/uco/observable#FileFacet",
       "https://unifiedcyberontology.org/ontology/uco/observable#fileName": "sample.txt",
       "https://unifiedcyberontology.org/ontology/uco/observable#modifiedTime": {
@@ -34,26 +34,26 @@
       "https://unifiedcyberontology.org/ontology/uco/observable#sizeInBytes": 4
     },
     {
-      "@id": "_:N1b091168b6e746ca8ffef67ba546f52c",
+      "@id": "_:Ndd6e8785860848aeb6823b493c6420a7",
       "@type": "https://unifiedcyberontology.org/ontology/uco/observable#ContentDataFacet",
       "https://unifiedcyberontology.org/ontology/uco/observable#hash": [
         {
-          "@id": "_:Nf0f6ff73c49045ffa53e2fc83249d20b"
+          "@id": "_:N334acc4a58624aa29968e0d155bd34c7"
         },
         {
-          "@id": "_:Na2470e1f29914026a1690b0e9386cc1f"
+          "@id": "_:Na1176e4f42e442b2bd4167202aa93383"
         },
         {
-          "@id": "_:Nd8473ff30e87456d8dcd034729ba27ed"
+          "@id": "_:N400f582d54af4f8190253677f57de728"
         },
         {
-          "@id": "_:Ncaa10f1e5cf84d8286f1d1c536b9fa06"
+          "@id": "_:Nef2949777f2b4b34a46a7d99ea01f44e"
         }
       ],
       "https://unifiedcyberontology.org/ontology/uco/observable#sizeInBytes": 4
     },
     {
-      "@id": "_:Nf0f6ff73c49045ffa53e2fc83249d20b",
+      "@id": "_:N334acc4a58624aa29968e0d155bd34c7",
       "@type": "https://unifiedcyberontology.org/ontology/uco/types#Hash",
       "https://unifiedcyberontology.org/ontology/uco/types#hashMethod": {
         "@type": "https://unifiedcyberontology.org/ontology/uco/vocabulary#HashNameVocab",
@@ -65,7 +65,7 @@
       }
     },
     {
-      "@id": "_:Na2470e1f29914026a1690b0e9386cc1f",
+      "@id": "_:Na1176e4f42e442b2bd4167202aa93383",
       "@type": "https://unifiedcyberontology.org/ontology/uco/types#Hash",
       "https://unifiedcyberontology.org/ontology/uco/types#hashMethod": {
         "@type": "https://unifiedcyberontology.org/ontology/uco/vocabulary#HashNameVocab",
@@ -77,7 +77,7 @@
       }
     },
     {
-      "@id": "_:Nd8473ff30e87456d8dcd034729ba27ed",
+      "@id": "_:N400f582d54af4f8190253677f57de728",
       "@type": "https://unifiedcyberontology.org/ontology/uco/types#Hash",
       "https://unifiedcyberontology.org/ontology/uco/types#hashMethod": {
         "@type": "https://unifiedcyberontology.org/ontology/uco/vocabulary#HashNameVocab",
@@ -89,7 +89,7 @@
       }
     },
     {
-      "@id": "_:Ncaa10f1e5cf84d8286f1d1c536b9fa06",
+      "@id": "_:Nef2949777f2b4b34a46a7d99ea01f44e",
       "@type": "https://unifiedcyberontology.org/ontology/uco/types#Hash",
       "https://unifiedcyberontology.org/ontology/uco/types#hashMethod": {
         "@type": "https://unifiedcyberontology.org/ontology/uco/vocabulary#HashNameVocab",

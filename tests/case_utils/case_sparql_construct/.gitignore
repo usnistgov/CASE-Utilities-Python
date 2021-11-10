@@ -1,2 +1,2 @@
-output.json
-output.ttl
+subclass-*.ttl
+w3-output.*

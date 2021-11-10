@@ -18,6 +18,8 @@ import os
 import pytest
 import rdflib.plugins.sparql  # type: ignore
 
+import case_utils.ontology
+
 _logger = logging.getLogger(os.path.basename(__file__))
 
 IRI_UCO_CORE = "https://unifiedcyberontology.org/ontology/uco/core#"
@@ -42,6 +44,8 @@ def load_graph(
 ) -> rdflib.Graph:
     in_graph = rdflib.Graph()
     in_graph.parse(filename)
+    # The queries in this test rely on the subclass hierarchy.  Load it.
+    case_utils.ontology.load_subclass_hierarchy(in_graph)
     return in_graph
 
 @pytest.fixture

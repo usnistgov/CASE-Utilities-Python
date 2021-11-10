@@ -10,7 +10,7 @@
     "@graph": [
         {
             "@id": "kb:file-69751792-9d04-5f5f-8791-99ca3729cd3c",
-            "@type": "uco-observable:ObservableObject",
+            "@type": "uco-observable:File",
             "uco-core:hasFacet": {
                 "@type": "uco-observable:FileFacet",
                 "uco-observable:fileName": "sample.txt",
@@ -26,7 +26,7 @@
         },
         {
             "@id": "kb:file-9477a6eb-3a94-590b-b51e-6ce6892f0941",
-            "@type": "uco-observable:ObservableObject",
+            "@type": "uco-observable:File",
             "uco-core:hasFacet": [
                 {
                     "@type": "uco-observable:ContentDataFacet",

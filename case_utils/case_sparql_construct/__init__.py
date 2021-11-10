@@ -18,27 +18,51 @@ This script executes a SPARQL CONSTRUCT query, returning a graph of the generate
 __version__ = "0.1.0"
 
 import argparse
-import os
 import logging
+import os
+import sys
 import typing
 
 import rdflib.plugins.sparql  # type: ignore
 
-import case_utils
+import case_utils.ontology
+
+from case_utils.ontology.version_info import *
 
 _logger = logging.getLogger(os.path.basename(__file__))
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("-d", "--debug", action="store_true")
-    parser.add_argument("--disallow-empty-results", action="store_true", help="Raise error if no results are returned for query.")
-    parser.add_argument("--output-format", help="Override extension-based format guesser.")
+
+    # Configure debug logging before running parse_args, because there could be an error raised before the construction of the argument parser.
+    logging.basicConfig(level=logging.DEBUG if ("--debug" in sys.argv or "-d" in sys.argv) else logging.INFO)
+
+    built_version_choices_list = ["none", "case-" + CURRENT_CASE_VERSION]
+
+    parser.add_argument(
+      "-d",
+      "--debug",
+      action="store_true"
+    )
+    parser.add_argument(
+      "--built-version",
+      choices=tuple(built_version_choices_list),
+      default="case-"+CURRENT_CASE_VERSION,
+      help="Ontology version to use to supplement query, such as for subclass querying.  Does not require networking to use.  Default is most recent CASE release."
+    )
+    parser.add_argument(
+      "--disallow-empty-results",
+      action="store_true",
+      help="Raise error if no results are returned for query."
+    )
+    parser.add_argument(
+      "--output-format",
+      help="Override extension-based format guesser."
+    )
     parser.add_argument("out_graph")
     parser.add_argument("in_sparql")
     parser.add_argument("in_graph", nargs="+")
     args = parser.parse_args()
-
-    logging.basicConfig(level=logging.DEBUG if args.debug else logging.INFO)
 
     in_graph = rdflib.Graph()
     for in_graph_filename in args.in_graph:
@@ -57,6 +81,9 @@ def main() -> None:
     with open(args.in_sparql, "r") as in_fh:
         construct_query_text = in_fh.read().strip()
     assert not construct_query_text is None
+
+    if "subClassOf" in construct_query_text:
+        case_utils.ontology.load_subclass_hierarchy(in_graph, built_version=args.built_version)
 
     construct_query_object = rdflib.plugins.sparql.prepareQuery(construct_query_text, initNs=nsdict)
 
