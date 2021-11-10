@@ -17,9 +17,11 @@ top_srcdir := $(shell cd ../../.. ; pwd)
 
 tests_srcdir := $(top_srcdir)/tests
 
+case_srcdir := $(top_srcdir)/dependencies/CASE
+
 qc_srcdir := $(top_srcdir)/dependencies/CASE-Examples-QC
 
-RDF_TOOLKIT_JAR := $(qc_srcdir)/dependencies/CASE-Examples/dependencies/CASE-0.3.0/CASE/lib/rdf-toolkit.jar
+RDF_TOOLKIT_JAR := $(case_srcdir)/lib/rdf-toolkit.jar
 
 COMM ?= $(shell which gcomm 2>/dev/null || which comm)
 ifeq ($(COMM),)

@@ -37,7 +37,8 @@ all: \
 	# Build an ontology terms list, which has a side effect of initiating further submodules.
 	$(MAKE) \
 	  --directory dependencies/CASE-Examples-QC \
-	  download
+	  .git_submodule_init.done.log \
+	  .venv.done.log
 	$(MAKE) \
 	  --directory dependencies/CASE-Examples-QC/tests \
 	  ontology_vocabulary.txt
