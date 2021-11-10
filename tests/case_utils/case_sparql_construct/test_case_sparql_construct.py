@@ -17,6 +17,27 @@ import rdflib.plugins.sparql  # type: ignore
 
 import case_utils
 
+def _test_subclass_templates_result(
+  filename : str,
+  expected : typing.Set[str]
+) -> None:
+    computed : typing.Set[str] = set()
+
+    graph = rdflib.Graph()
+    graph.parse(filename)
+
+    query_string = """\
+PREFIX prov: <http://www.w3.org/ns/prov#>
+SELECT ?nEntity
+WHERE {
+  ?nEntity a prov:Entity
+}
+"""
+    for result in graph.query(query_string):
+        n_entity = result[0]
+        computed.add(n_entity.toPython())
+    assert expected == computed
+
 def _test_w3_templates_with_blank_nodes_result(
   filename : str
 ) -> None:
@@ -57,3 +78,20 @@ def test_w3_templates_with_blank_nodes_result_json() -> None:
 
 def test_w3_templates_with_blank_nodes_result_turtle() -> None:
     _test_w3_templates_with_blank_nodes_result("w3-output.ttl")
+
+def test_subclass_templates_result_default_case() -> None:
+    _test_subclass_templates_result(
+      "subclass-implicit-any.ttl",
+      {
+        "http://example.org/kb/file-1",
+        "http://example.org/kb/file-2"
+      }
+    )
+
+def test_subclass_templates_result_no_case() -> None:
+    _test_subclass_templates_result(
+      "subclass-explicit-none.ttl",
+      {
+        "http://example.org/kb/file-1"
+      }
+    )

@@ -18,10 +18,14 @@ top_srcdir := $(shell cd ../../.. ; pwd)
 tests_srcdir := $(top_srcdir)/tests
 
 all: \
+  subclass-explicit-none.ttl \
+  subclass-implicit-any.ttl \
   w3-output.json \
   w3-output.ttl
 
 check: \
+  subclass-explicit-none.ttl \
+  subclass-implicit-any.ttl \
   w3-output.json \
   w3-output.ttl
 	source $(tests_srcdir)/venv/bin/activate \
@@ -34,6 +38,35 @@ clean:
 	@rm -f \
 	  output.* \
 	  _*
+
+subclass-explicit-none.ttl: \
+  $(tests_srcdir)/.venv.done.log \
+  $(top_srcdir)/case_utils/case_sparql_construct/__init__.py \
+  $(top_srcdir)/case_utils/ontology/__init__.py \
+  $(top_srcdir)/case_utils/ontology/version_info.py \
+  subclass.json \
+  subclass.sparql
+	source $(tests_srcdir)/venv/bin/activate \
+	  && case_sparql_construct \
+	    --built-version none \
+	    _$@ \
+	    subclass.sparql \
+	    subclass.json
+	mv _$@ $@
+
+subclass-implicit-any.ttl: \
+  $(tests_srcdir)/.venv.done.log \
+  $(top_srcdir)/case_utils/case_sparql_construct/__init__.py \
+  $(top_srcdir)/case_utils/ontology/__init__.py \
+  $(top_srcdir)/case_utils/ontology/version_info.py \
+  subclass.json \
+  subclass.sparql
+	source $(tests_srcdir)/venv/bin/activate \
+	  && case_sparql_construct \
+	    _$@ \
+	    subclass.sparql \
+	    subclass.json
+	mv _$@ $@
 
 w3-output.%: \
   $(tests_srcdir)/.venv.done.log \

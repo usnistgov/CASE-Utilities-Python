@@ -1,0 +1,5 @@
+PREFIX uco-observable: <https://unifiedcyberontology.org/ontology/uco/observable#>
+SELECT ?nFile
+WHERE {
+  ?nFile a/rdfs:subClassOf* uco-observable:ObservableObject .
+}

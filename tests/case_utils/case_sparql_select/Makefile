@@ -18,19 +18,40 @@ top_srcdir := $(shell cd ../../.. ; pwd)
 tests_srcdir := $(top_srcdir)/tests
 
 all: \
+  subclass-explicit-none.md \
+  subclass-implicit-any.md \
   w3-output.html \
   w3-output.md
 
 .PHONY: \
+  check-subclass \
+  check-subclass-explicit-none \
+  check-subclass-implicit-any \
   check-w3-html \
   check-w3-markdown
 
 .PRECIOUS: \
+  subclass-% \
   w3-output.%
 
 check: \
   check-w3-html \
-  check-w3-markdown
+  check-w3-markdown \
+  check-subclass
+
+check-subclass: \
+  check-subclass-explicit-none \
+  check-subclass-implicit-any
+
+check-subclass-explicit-none: \
+  .check-subclass-explicit-none.md \
+  subclass-explicit-none.md
+	diff $^
+
+check-subclass-implicit-any: \
+  .check-subclass-implicit-any.md \
+  subclass-implicit-any.md
+	diff $^
 
 check-w3-html: \
   .check-w3-output.html \
@@ -49,6 +70,35 @@ clean:
 	  *.html \
 	  *.md \
 	  _*
+
+subclass-explicit-none.md: \
+  $(tests_srcdir)/.venv.done.log \
+  $(top_srcdir)/case_utils/case_sparql_select/__init__.py \
+  $(top_srcdir)/case_utils/ontology/__init__.py \
+  $(top_srcdir)/case_utils/ontology/version_info.py \
+  subclass.json \
+  subclass.sparql
+	source $(tests_srcdir)/venv/bin/activate \
+	  && case_sparql_select \
+	    --built-version none \
+	    _$@ \
+	    subclass.sparql \
+	    subclass.json
+	mv _$@ $@
+
+subclass-implicit-any.md: \
+  $(tests_srcdir)/.venv.done.log \
+  $(top_srcdir)/case_utils/case_sparql_select/__init__.py \
+  $(top_srcdir)/case_utils/ontology/__init__.py \
+  $(top_srcdir)/case_utils/ontology/version_info.py \
+  subclass.json \
+  subclass.sparql
+	source $(tests_srcdir)/venv/bin/activate \
+	  && case_sparql_select \
+	    _$@ \
+	    subclass.sparql \
+	    subclass.json
+	mv _$@ $@
 
 w3-output.%: \
   $(tests_srcdir)/.venv.done.log \
