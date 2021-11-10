@@ -9,7 +9,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 kb:file-69751792-9d04-5f5f-8791-99ca3729cd3c
-	a uco-observable:ObservableObject ;
+	a uco-observable:File ;
 	uco-core:hasFacet [
 		a uco-observable:FileFacet ;
 		uco-observable:fileName "sample.txt" ;
@@ -19,7 +19,7 @@ kb:file-69751792-9d04-5f5f-8791-99ca3729cd3c
 	.
 
 kb:file-9477a6eb-3a94-590b-b51e-6ce6892f0941
-	a uco-observable:ObservableObject ;
+	a uco-observable:File ;
 	uco-core:hasFacet
 		[
 			a uco-observable:ContentDataFacet ;
