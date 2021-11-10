@@ -18,28 +18,28 @@ top_srcdir := $(shell cd ../../.. ; pwd)
 tests_srcdir := $(top_srcdir)/tests
 
 all: \
-  output.html \
-  output.md
+  w3-output.html \
+  w3-output.md
 
 .PHONY: \
-  check-html \
-  check-markdown
+  check-w3-html \
+  check-w3-markdown
 
 .PRECIOUS: \
-  output.%
+  w3-output.%
 
 check: \
-  check-html \
-  check-markdown
+  check-w3-html \
+  check-w3-markdown
 
-check-html: \
-  .check-output.html \
-  output.html
+check-w3-html: \
+  .check-w3-output.html \
+  w3-output.html
 	diff $^
 
-check-markdown: \
-  .check-output.md \
-  output.md
+check-w3-markdown: \
+  .check-w3-output.md \
+  w3-output.md
 	diff $^
 
 clean:
@@ -50,18 +50,18 @@ clean:
 	  *.md \
 	  _*
 
-output.%: \
+w3-output.%: \
   $(tests_srcdir)/.venv.done.log \
   $(top_srcdir)/case_utils/case_sparql_select/__init__.py \
   $(top_srcdir)/case_utils/ontology/__init__.py \
   $(top_srcdir)/case_utils/ontology/version_info.py \
-  input-1.sparql \
-  input-2.ttl \
-  input-3.json
+  w3-input-1.sparql \
+  w3-input-2.ttl \
+  w3-input-3.json
 	source $(tests_srcdir)/venv/bin/activate \
 	  && case_sparql_select \
 	    _$@ \
-	    input-1.sparql \
-	    input-2.ttl \
-	    input-3.json
+	    w3-input-1.sparql \
+	    w3-input-2.ttl \
+	    w3-input-3.json
 	mv _$@ $@

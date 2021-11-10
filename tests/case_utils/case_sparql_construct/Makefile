@@ -18,11 +18,12 @@ top_srcdir := $(shell cd ../../.. ; pwd)
 tests_srcdir := $(top_srcdir)/tests
 
 all: \
-  output.ttl
+  w3-output.json \
+  w3-output.ttl
 
 check: \
-  output.json \
-  output.ttl
+  w3-output.json \
+  w3-output.ttl
 	source $(tests_srcdir)/venv/bin/activate \
 	  && pytest \
 	    --log-level=DEBUG
@@ -34,18 +35,18 @@ clean:
 	  output.* \
 	  _*
 
-output.%: \
+w3-output.%: \
   $(tests_srcdir)/.venv.done.log \
   $(top_srcdir)/case_utils/case_sparql_construct/__init__.py \
   $(top_srcdir)/case_utils/ontology/__init__.py \
   $(top_srcdir)/case_utils/ontology/version_info.py \
-  input-1.sparql \
-  input-2.ttl \
-  input-3.json
+  w3-input-1.sparql \
+  w3-input-2.ttl \
+  w3-input-3.json
 	source $(tests_srcdir)/venv/bin/activate \
 	  && case_sparql_construct \
 	    _$@ \
-	    input-1.sparql \
-	    input-2.ttl \
-	    input-3.json
+	    w3-input-1.sparql \
+	    w3-input-2.ttl \
+	    w3-input-3.json
 	mv _$@ $@

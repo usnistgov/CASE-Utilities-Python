@@ -17,7 +17,7 @@ import rdflib.plugins.sparql  # type: ignore
 
 import case_utils
 
-def _test_templates_with_blank_nodes_result(
+def _test_w3_templates_with_blank_nodes_result(
   filename : str
 ) -> None:
     ground_truth_positive = {
@@ -52,8 +52,8 @@ WHERE {
         ))
     assert computed == ground_truth_positive
 
-def test_templates_with_blank_nodes_result_json() -> None:
-    _test_templates_with_blank_nodes_result("output.json")
+def test_w3_templates_with_blank_nodes_result_json() -> None:
+    _test_w3_templates_with_blank_nodes_result("w3-output.json")
 
-def test_templates_with_blank_nodes_result_turtle() -> None:
-    _test_templates_with_blank_nodes_result("output.ttl")
+def test_w3_templates_with_blank_nodes_result_turtle() -> None:
+    _test_w3_templates_with_blank_nodes_result("w3-output.ttl")
