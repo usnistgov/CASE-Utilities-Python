@@ -56,7 +56,7 @@ def main() -> None:
     # parser.
     logging.basicConfig(level=logging.DEBUG if ("--debug" in sys.argv or "-d" in sys.argv) else logging.INFO)
 
-    case_version_choices_list = ["none", "case-" + CURRENT_CASE_VERSION]
+    built_version_choices_list = ["none", "case-" + CURRENT_CASE_VERSION]
 
     # Add arguments specific to case_validate.
     parser.add_argument(
@@ -67,7 +67,7 @@ def main() -> None:
     )
     parser.add_argument(
       "--built-version",
-      choices=tuple(case_version_choices_list),
+      choices=tuple(built_version_choices_list),
       default="case-"+CURRENT_CASE_VERSION,
       help="Monolithic aggregation of CASE ontology files at certain versions.  Does not require networking to use.  Default is most recent CASE release."
     )
