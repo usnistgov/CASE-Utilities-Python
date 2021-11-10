@@ -119,12 +119,14 @@ def main() -> None:
       default=sys.stdout,
     )
 
-    parser.add_argument("in_graph")
+    parser.add_argument("in_graph", nargs="+")
 
     args = parser.parse_args()
 
     data_graph = rdflib.Graph()
-    data_graph.parse(args.in_graph)
+    for in_graph in args.in_graph:
+        _logger.debug("in_graph = %r.", in_graph)
+        data_graph.parse(in_graph)
 
     ontology_graph = rdflib.Graph()
     if args.built_version != "none":

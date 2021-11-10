@@ -27,7 +27,7 @@ This repository provides `case_validate` as an adaptation of the `pyshacl` comma
 To see a human-readable validation report of an instance-data file:
 
 ```bash
-case_validate input.json
+case_validate input.json [input-2.json ...]
 ```
 
 If `input.json` is not conformant, a report will be emitted, and `case_validate` will exit with status `1`.  (This is a `pyshacl` behavior, where `0` and `1` report validation success.  Status of >`1` is for other errors.)
