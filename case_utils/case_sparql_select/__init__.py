@@ -30,8 +30,8 @@ __version__ = "0.3.0"
 
 import argparse
 import binascii
-import os
 import logging
+import os
 
 import pandas as pd  # type: ignore
 import rdflib.plugins.sparql  # type: ignore
