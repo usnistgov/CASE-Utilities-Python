@@ -15,7 +15,7 @@
 This script takes multiple input JSON-LD or Turtle files and emits a single Turtle graph.
 """
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 import rdflib  # type: ignore
 
