@@ -15,7 +15,7 @@ SHELL := /bin/bash
 
 top_srcdir := $(shell cd .. ; pwd)
 
-PYTHON3 ?= $(shell which python3.9 2>/dev/null || which python3.8 2>/dev/null || which python3.7 2>/dev/null || which python3.6 2>/dev/null || which python3)
+PYTHON3 ?= python3
 
 all: \
   all-case_utils
@@ -51,7 +51,6 @@ all: \
 	      --editable \
 	      .
 	touch $@
-
 
 all-case_utils: \
   .venv.done.log
