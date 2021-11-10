@@ -85,7 +85,7 @@ def create_file_node(
     graph.add((
       n_file,
       NS_RDF.type,
-      NS_UCO_OBSERVABLE.ObservableObject
+      NS_UCO_OBSERVABLE.File
     ))
 
     basename = os.path.basename(filepath)
