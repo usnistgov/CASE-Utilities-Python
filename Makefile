@@ -13,7 +13,7 @@
 
 SHELL := /bin/bash
 
-PYTHON3 ?= $(shell which python3.9 2>/dev/null || which python3.8 2>/dev/null || which python3.7 2>/dev/null || which python3.6 2>/dev/null || which python3)
+PYTHON3 ?= python3
 
 case_version := $(shell $(PYTHON3) case_utils/ontology/version_info.py)
 ifeq ($(case_version),)
