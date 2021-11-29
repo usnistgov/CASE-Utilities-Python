@@ -12,9 +12,10 @@ Participation by NIST in the creation of the documentation of mentioned software
 
 1. Clone this repository.
 2. (Optional) Create and activate a virtual environment.
-3. Run `python setup.py`.
+3. (Optional) Upgrade `pip` with `pip install --upgrade pip`.  (This can speed installation of some dependent packages.)
+4. Run `pip install .`.
 
-Installation is demonstrated in the `.venv.done.log` target of the [`tests/`](tests/) directory.
+Installation is demonstrated in the `.venv.done.log` target of the `tests/` directory's [`Makefile`](tests/Makefile).
 
 
 ## Usage
