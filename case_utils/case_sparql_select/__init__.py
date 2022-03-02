@@ -74,7 +74,7 @@ def main() -> None:
       "out_table",
       help="Expected extensions are .html for HTML tables or .md for Markdown tables."
     )
-    parser.add_argument("in_sparql")
+    parser.add_argument("in_sparql", help="File containing a SPARQL SELECT query.  Note that prefixes not mapped with a PREFIX statement will be mapped according to their first occurrence among input graphs.")
     parser.add_argument("in_graph", nargs="+")
     args = parser.parse_args()
 

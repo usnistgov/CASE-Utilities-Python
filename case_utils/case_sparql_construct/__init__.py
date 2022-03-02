@@ -60,7 +60,7 @@ def main() -> None:
       help="Override extension-based format guesser."
     )
     parser.add_argument("out_graph")
-    parser.add_argument("in_sparql")
+    parser.add_argument("in_sparql", help="File containing a SPARQL CONSTRUCT query.  Note that prefixes not mapped with a PREFIX statement will be mapped according to their first occurrence among input graphs.")
     parser.add_argument("in_graph", nargs="+")
     args = parser.parse_args()
 
