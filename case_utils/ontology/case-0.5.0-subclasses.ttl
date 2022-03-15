@@ -1565,4 +1565,3 @@
 <https://unifiedcyberontology.org/ontology/uco/vocabulary#WindowsVolumeAttributeVocab>
 	rdfs:subClassOf rdfs:Resource ;
 	.
-

@@ -15,4 +15,3 @@ kb:file-69751792-9d04-5f5f-8791-99ca3729cd3c
 		uco-observable:sizeInBytes "4"^^xsd:integer ;
 	] ;
 	.
-
