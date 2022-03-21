@@ -21,15 +21,15 @@ When preparing to build a new monolithic ontology, please edit this variable to 
 
 __version__ = "0.1.0"
 
-__all__ = [
-  "CURRENT_CASE_VERSION"
-]
+__all__ = ["CURRENT_CASE_VERSION"]
 
 # Tested with CI to match versionInfo of <https://ontology.caseontology.org/case/case>.
-CURRENT_CASE_VERSION : str = "0.5.0"
+CURRENT_CASE_VERSION: str = "0.5.0"
+
 
 def main() -> None:
     print(CURRENT_CASE_VERSION)
+
 
 if __name__ == "__main__":
     main()
