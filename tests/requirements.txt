@@ -1,4 +1,5 @@
 PyLD
+black
 mypy
 pytest
 python-dateutil
