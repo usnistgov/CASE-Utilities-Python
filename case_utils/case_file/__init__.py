@@ -15,7 +15,7 @@
 This module creates a graph object that provides a basic UCO characterization of a single file.  The gathered metadata is among the more "durable" file characteristics, i.e. characteristics that would remain consistent when transferring a file between locations.
 """
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 import datetime
 import hashlib
@@ -30,29 +30,34 @@ import case_utils
 DEFAULT_PREFIX = "http://example.org/kb/"
 
 NS_RDF = rdflib.RDF
-NS_UCO_CORE = rdflib.Namespace("https://unifiedcyberontology.org/ontology/uco/core#")
-NS_UCO_OBSERVABLE = rdflib.Namespace("https://unifiedcyberontology.org/ontology/uco/observable#")
-NS_UCO_TYPES = rdflib.Namespace("https://unifiedcyberontology.org/ontology/uco/types#")
-NS_UCO_VOCABULARY = rdflib.Namespace("https://unifiedcyberontology.org/ontology/uco/vocabulary#")
+NS_UCO_CORE = rdflib.Namespace("https://ontology.unifiedcyberontology.org/uco/core/")
+NS_UCO_OBSERVABLE = rdflib.Namespace(
+    "https://ontology.unifiedcyberontology.org/uco/observable/"
+)
+NS_UCO_TYPES = rdflib.Namespace("https://ontology.unifiedcyberontology.org/uco/types/")
+NS_UCO_VOCABULARY = rdflib.Namespace(
+    "https://ontology.unifiedcyberontology.org/uco/vocabulary/"
+)
 NS_XSD = rdflib.XSD
 
 # Shortcut syntax for defining an immutable named tuple is noted here:
 # https://docs.python.org/3/library/typing.html#typing.NamedTuple
 # via the "See also" box here: https://docs.python.org/3/library/collections.html#collections.namedtuple
 class HashDict(typing.NamedTuple):
-    filesize : int
-    md5 : str
-    sha1 : str
-    sha256 : str
-    sha512 : str
+    filesize: int
+    md5: str
+    sha1: str
+    sha256: str
+    sha512: str
+
 
 def create_file_node(
-  graph : rdflib.Graph,
-  filepath : str,
-  node_iri : typing.Optional[str] = None,
-  node_prefix : str = DEFAULT_PREFIX,
-  disable_hashes : bool = False,
-  disable_mtime : bool = False
+    graph: rdflib.Graph,
+    filepath: str,
+    node_iri: typing.Optional[str] = None,
+    node_prefix: str = DEFAULT_PREFIX,
+    disable_hashes: bool = False,
+    disable_mtime: bool = False,
 ) -> rdflib.URIRef:
     r"""
     This function characterizes the file at filepath.
@@ -82,65 +87,49 @@ def create_file_node(
         node_slug = "file-" + case_utils.local_uuid.local_uuid()
         node_iri = rdflib.Namespace(node_prefix)[node_slug]
     n_file = rdflib.URIRef(node_iri)
-    graph.add((
-      n_file,
-      NS_RDF.type,
-      NS_UCO_OBSERVABLE.File
-    ))
+    graph.add((n_file, NS_RDF.type, NS_UCO_OBSERVABLE.File))
 
     basename = os.path.basename(filepath)
     literal_basename = rdflib.Literal(basename)
 
     file_stat = os.stat(filepath)
     n_file_facet = rdflib.BNode()
-    graph.add((
-      n_file_facet,
-      NS_RDF.type,
-      NS_UCO_OBSERVABLE.FileFacet,
-    ))
-    graph.add((
-      n_file_facet,
-      NS_UCO_OBSERVABLE.fileName,
-      literal_basename
-    ))
-    graph.add((
-      n_file_facet,
-      NS_UCO_OBSERVABLE.sizeInBytes,
-      rdflib.Literal(int(file_stat.st_size))
-    ))
-    graph.add((
-      n_file,
-      NS_UCO_CORE.hasFacet,
-      n_file_facet
-    ))
+    graph.add(
+        (
+            n_file_facet,
+            NS_RDF.type,
+            NS_UCO_OBSERVABLE.FileFacet,
+        )
+    )
+    graph.add((n_file_facet, NS_UCO_OBSERVABLE.fileName, literal_basename))
+    graph.add(
+        (
+            n_file_facet,
+            NS_UCO_OBSERVABLE.sizeInBytes,
+            rdflib.Literal(int(file_stat.st_size)),
+        )
+    )
+    graph.add((n_file, NS_UCO_CORE.hasFacet, n_file_facet))
 
     if not disable_mtime:
-        mtime_datetime = datetime.datetime.fromtimestamp(file_stat.st_mtime, tz=datetime.timezone.utc)
+        mtime_datetime = datetime.datetime.fromtimestamp(
+            file_stat.st_mtime, tz=datetime.timezone.utc
+        )
         str_mtime = mtime_datetime.isoformat()
         literal_mtime = rdflib.Literal(str_mtime, datatype=NS_XSD.dateTime)
-        graph.add((
-          n_file_facet,
-          NS_UCO_OBSERVABLE.modifiedTime,
-          literal_mtime
-        ))
+        graph.add((n_file_facet, NS_UCO_OBSERVABLE.modifiedTime, literal_mtime))
 
     if not disable_hashes:
         n_contentdata_facet = rdflib.BNode()
-        graph.add((
-          n_file,
-          NS_UCO_CORE.hasFacet,
-          n_contentdata_facet
-        ))
-        graph.add((
-          n_contentdata_facet,
-          NS_RDF.type,
-          NS_UCO_OBSERVABLE.ContentDataFacet
-        ))
+        graph.add((n_file, NS_UCO_CORE.hasFacet, n_contentdata_facet))
+        graph.add(
+            (n_contentdata_facet, NS_RDF.type, NS_UCO_OBSERVABLE.ContentDataFacet)
+        )
 
         # Compute hashes until they are re-computed and match once.  (This is a lesson learned from working with a NAS that had a subtly faulty network cable.)
 
-        successful_hashdict : typing.Optional[HashDict] = None
-        last_hashdict : typing.Optional[HashDict] = None
+        successful_hashdict: typing.Optional[HashDict] = None
+        last_hashdict: typing.Optional[HashDict] = None
         for attempt_no in [0, 1, 2, 3]:
             # Hash file's contents.
             # This hashing logic was partially copied from DFXML's walk_to_dfxml.py.
@@ -169,11 +158,11 @@ def create_file_node(
             if not stashed_error is None:
                 raise stashed_error
             current_hashdict = HashDict(
-              byte_tally,
-              md5obj.hexdigest(),
-              sha1obj.hexdigest(),
-              sha256obj.hexdigest(),
-              sha512obj.hexdigest()
+                byte_tally,
+                md5obj.hexdigest(),
+                sha1obj.hexdigest(),
+                sha256obj.hexdigest(),
+                sha512obj.hexdigest(),
             )
             if last_hashdict == current_hashdict:
                 successful_hashdict = current_hashdict
@@ -187,54 +176,56 @@ def create_file_node(
         if successful_hashdict.filesize != file_stat.st_size:
             # TODO - Discuss with AC whether this should be something stronger, like an assertion error.
             warnings.warn(
-              "Inode file size and hashed file sizes disagree: %d vs. %d." % (
-                file_stat.st_size,
-                successful_hashdict.filesize
-              )
+                "Inode file size and hashed file sizes disagree: %d vs. %d."
+                % (file_stat.st_size, successful_hashdict.filesize)
             )
         # TODO - Discuss whether this property should be recorded even if hashes are not attempted.
-        graph.add((
-          n_contentdata_facet,
-          NS_UCO_OBSERVABLE.sizeInBytes,
-          rdflib.Literal(successful_hashdict.filesize)
-        ))
+        graph.add(
+            (
+                n_contentdata_facet,
+                NS_UCO_OBSERVABLE.sizeInBytes,
+                rdflib.Literal(successful_hashdict.filesize),
+            )
+        )
 
         # Add confirmed hashes into graph.
         for key in successful_hashdict._fields:
             if not key in ("md5", "sha1", "sha256", "sha512"):
                 continue
             n_hash = rdflib.BNode()
-            graph.add((
-              n_contentdata_facet,
-              NS_UCO_OBSERVABLE.hash,
-              n_hash
-            ))
-            graph.add((
-              n_hash,
-              NS_RDF.type,
-              NS_UCO_TYPES.Hash
-            ))
-            graph.add((
-              n_hash,
-              NS_UCO_TYPES.hashMethod,
-              rdflib.Literal(key.upper(), datatype=NS_UCO_VOCABULARY.HashNameVocab)
-            ))
+            graph.add((n_contentdata_facet, NS_UCO_OBSERVABLE.hash, n_hash))
+            graph.add((n_hash, NS_RDF.type, NS_UCO_TYPES.Hash))
+            graph.add(
+                (
+                    n_hash,
+                    NS_UCO_TYPES.hashMethod,
+                    rdflib.Literal(
+                        key.upper(), datatype=NS_UCO_VOCABULARY.HashNameVocab
+                    ),
+                )
+            )
             hash_value = getattr(successful_hashdict, key)
-            graph.add((
-              n_hash,
-              NS_UCO_TYPES.hashValue,
-              rdflib.Literal(hash_value.upper(), datatype=NS_XSD.hexBinary)
-            ))
+            graph.add(
+                (
+                    n_hash,
+                    NS_UCO_TYPES.hashValue,
+                    rdflib.Literal(hash_value.upper(), datatype=NS_XSD.hexBinary),
+                )
+            )
 
     return n_file
 
+
 def main() -> None:
     import argparse
+
     parser = argparse.ArgumentParser()
     parser.add_argument("--base-prefix", default=DEFAULT_PREFIX)
     parser.add_argument("--disable-hashes", action="store_true")
     parser.add_argument("--disable-mtime", action="store_true")
-    parser.add_argument("--output-format", help="Override extension-based format guesser.")
+    parser.add_argument(
+        "--output-format", help="Override extension-based format guesser."
+    )
     parser.add_argument("out_graph")
     parser.add_argument("in_file")
     args = parser.parse_args()
@@ -253,28 +244,27 @@ def main() -> None:
 
     output_format = None
     if args.output_format is None:
-        output_format = case_utils.guess_format(args.out_graph)
+        output_format = rdflib.util.guess_format(args.out_graph)
     else:
         output_format = args.output_format
 
-    serialize_kwargs : typing.Dict[str, typing.Any] = {
-      "format": output_format
-    }
+    serialize_kwargs: typing.Dict[str, typing.Any] = {"format": output_format}
     if output_format == "json-ld":
-        context_dictionary = {k:v for (k,v) in graph.namespace_manager.namespaces()}
+        context_dictionary = {k: v for (k, v) in graph.namespace_manager.namespaces()}
         serialize_kwargs["context"] = context_dictionary
 
     node_iri = NS_BASE["file-" + case_utils.local_uuid.local_uuid()]
     n_file = create_file_node(
-      graph,
-      args.in_file,
-      node_iri=node_iri,
-      node_prefix=args.base_prefix,
-      disable_hashes=args.disable_hashes,
-      disable_mtime=args.disable_mtime
+        graph,
+        args.in_file,
+        node_iri=node_iri,
+        node_prefix=args.base_prefix,
+        disable_hashes=args.disable_hashes,
+        disable_mtime=args.disable_mtime,
     )
 
     graph.serialize(args.out_graph, **serialize_kwargs)
+
 
 if __name__ == "__main__":
     main()

@@ -12,9 +12,10 @@ Participation by NIST in the creation of the documentation of mentioned software
 
 1. Clone this repository.
 2. (Optional) Create and activate a virtual environment.
-3. Run `python setup.py`.
+3. (Optional) Upgrade `pip` with `pip install --upgrade pip`.  (This can speed installation of some dependent packages.)
+4. Run `pip install .`.
 
-Installation is demonstrated in the `.venv.done.log` target of the [`tests/`](tests/) directory.
+Installation is demonstrated in the `.venv.done.log` target of the `tests/` directory's [`Makefile`](tests/Makefile).
 
 
 ## Usage
@@ -67,6 +68,8 @@ case_file --disable-hashes sample.txt.json sample.txt
 Two commands are provided to generate output from a SPARQL query and one or more input graphs.  Input graphs can be any graph, such as instance data or supplementary ontology files that supply custom class definitions or other external ontologies.
 
 These commands can be used with any RDF files to run arbitrary SPARQL queries.  They have one additional behavior tailored to CASE: If a path query is used for subclasses, the CASE subclass hierarchy will be loaded to supplement the input graph.  An expected use case of this feature is subclasses of `ObservableObject`.  For instance, if a data graph included an object with only the class `uco-observable:File` specified, the query `?x a/rdfs:subClassOf* uco-observable:ObservableObject` would match `?x` against that object.
+
+Note that prefixes used in the SPARQL queries do not need to be defined in the SPARQL query.  Their mapping will be inherited from their first definition in the input graph files.  However, input graphs are not required to agree on prefix mappings, so there is potential for confusion from input argument order mattering if two input graph files disagree on what a prefix maps to.  If there is concern of ambiguity from inputs, a `PREFIX` statement should be included in the query, such as is shown in [this test query](tests/case_utils/case_sparql_select/subclass.sparql).
 
 
 #### `case_sparql_construct`
