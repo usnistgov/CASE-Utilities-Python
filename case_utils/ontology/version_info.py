@@ -26,6 +26,7 @@ __all__ = ["CURRENT_CASE_VERSION", "built_version_choices_list"]
 # Tested with CI to match versionInfo of <https://ontology.caseontology.org/case/case>.
 CURRENT_CASE_VERSION: str = "0.5.0"
 
+# Tested with CI to match set of ontology files available.
 built_version_choices_list = ["none", "case-" + CURRENT_CASE_VERSION]
 
 def main() -> None:
