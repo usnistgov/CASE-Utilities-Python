@@ -11,6 +11,6 @@
 #
 # We would appreciate acknowledgement if the software is used.
 
-__version__ = "0.3.0"
+__version__ = "0.4.0"
 
 from . import local_uuid
