@@ -29,7 +29,7 @@ a monolithic file; see case_utils.ontology if interested in further
 details.)
 """
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 import argparse
 import importlib.resources
