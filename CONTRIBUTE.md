@@ -9,7 +9,7 @@
 4. A list of built versions of CASE is also hard-coded in [`case_utils/ontology/version_info.py`](case_utils/ontology/version_info.py).  Edit the variable `built_version_choices_list`.
 5. From the top source directory, run `make clean`.  This guarantees a clean state of this repository as well as the ontology submodules.
 6. Still from the top source directory, run `make`.
-7. Any new `.ttl` files will be created under [`case_utils/ontology/`](case_utils/ontology/).  Use `git add` to add each of them.  (The patch-weight of these files could overshadow manual revisions, so it is fine to commit the built files after the manual changes are committed.)
+7. Any new `.ttl` files will be created under [`case_utils/ontology/`](case_utils/ontology/).  Use `git add` to add each of them.  (The patch-weight of these files could overshadow manual revisions, so it is fine to commit the built files separately from the manual changes being committed.  Preferably, commit the built files *before* manual changes - this prevents later issues with a `git bisect` that relies on CI passing.)
 
 Here is a sample sequence of shell commands to run the build:
 
@@ -30,6 +30,6 @@ pushd case_utils/ontology
 popd
 make check
 # Assuming `make check` passes:
+git commit -m "Build CASE 0.6.0 monolithic .ttl files" case_utils/ontology/case-0.6.0-subclasses.ttl case_utils/ontology/case-0.6.0.ttl
 git commit -m "Update CASE ontology pointer to version 0.6.0" dependencies/CASE case_utils/ontology/version_info.py
-git commit -m "Build CASE 0.6.0.ttl" case_utils/ontology/case-0.6.0.ttl
 ```
