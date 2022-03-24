@@ -19,22 +19,14 @@ import pytest
 import rdflib.plugins.sparql  # type: ignore
 
 import case_utils.ontology
+from case_utils.namespace import *
 
 _logger = logging.getLogger(os.path.basename(__file__))
 
-IRI_UCO_CORE = "https://unifiedcyberontology.org/ontology/uco/core#"
-IRI_UCO_OBSERVABLE = "https://unifiedcyberontology.org/ontology/uco/observable#"
-IRI_UCO_TYPES = "https://unifiedcyberontology.org/ontology/uco/types#"
-
-NS_RDF = rdflib.RDF
-NS_UCO_CORE = rdflib.Namespace(IRI_UCO_CORE)
-NS_UCO_OBSERVABLE = rdflib.Namespace(IRI_UCO_OBSERVABLE)
-NS_UCO_TYPES = rdflib.Namespace(IRI_UCO_TYPES)
-
 NSDICT = {
-    "uco-core": IRI_UCO_CORE,
-    "uco-observable": IRI_UCO_OBSERVABLE,
-    "uco-types": IRI_UCO_TYPES,
+    "uco-core": NS_UCO_CORE,
+    "uco-observable": NS_UCO_OBSERVABLE,
+    "uco-types": NS_UCO_TYPES,
 }
 
 SRCDIR = os.path.dirname(__file__)
