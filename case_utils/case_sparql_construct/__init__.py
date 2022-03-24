@@ -103,7 +103,7 @@ def main() -> None:
 
     output_format = None
     if args.output_format is None:
-        output_format = case_utils.guess_format(args.out_graph)
+        output_format = rdflib.util.guess_format(args.out_graph)
     else:
         output_format = args.output_format
 
