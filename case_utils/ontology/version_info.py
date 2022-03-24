@@ -21,11 +21,12 @@ When preparing to build a new monolithic ontology, please edit this variable to 
 
 __version__ = "0.1.0"
 
-__all__ = ["CURRENT_CASE_VERSION"]
+__all__ = ["CURRENT_CASE_VERSION", "built_version_choices_list"]
 
 # Tested with CI to match versionInfo of <https://ontology.caseontology.org/case/case>.
 CURRENT_CASE_VERSION: str = "0.5.0"
 
+built_version_choices_list = ["none", "case-" + CURRENT_CASE_VERSION]
 
 def main() -> None:
     print(CURRENT_CASE_VERSION)

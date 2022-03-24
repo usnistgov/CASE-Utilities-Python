@@ -6,9 +6,10 @@
 1. After cloning this repository, ensure the CASE submodule is checked out.  This can be done with either `git submodule init && git submodule update`, `make .git_submodule_init.done.log`, or `make check`.
 2. Update the CASE submodule pointer to the new tagged release.
 3. The version of CASE is also hard-coded in [`case_utils/ontology/version_info.py`](case_utils/ontology/version_info.py).  Edit the variable `CURRENT_CASE_VERSION`.
-4. From the top source directory, run `make clean`.  This guarantees a clean state of this repository as well as the ontology submodules.
-5. Still from the top source directory, run `make`.
-6. Any new `.ttl` files will be created under [`case_utils/ontology/`](case_utils/ontology/).  Use `git add` to add each of them.  (The patch-weight of these files could overshadow manual revisions, so it is fine to commit the built files after the manual changes are committed.)
+4. A list of built versions of CASE is also hard-coded in [`case_utils/ontology/version_info.py`](case_utils/ontology/version_info.py).  Edit the variable `built_version_choices_list`.
+5. From the top source directory, run `make clean`.  This guarantees a clean state of this repository as well as the ontology submodules.
+6. Still from the top source directory, run `make`.
+7. Any new `.ttl` files will be created under [`case_utils/ontology/`](case_utils/ontology/).  Use `git add` to add each of them.  (The patch-weight of these files could overshadow manual revisions, so it is fine to commit the built files after the manual changes are committed.)
 
 Here is a sample sequence of shell commands to run the build:
 
