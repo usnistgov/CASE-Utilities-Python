@@ -30,13 +30,13 @@ import case_utils
 DEFAULT_PREFIX = "http://example.org/kb/"
 
 NS_RDF = rdflib.RDF
-NS_UCO_CORE = rdflib.Namespace("https://unifiedcyberontology.org/ontology/uco/core#")
+NS_UCO_CORE = rdflib.Namespace("https://ontology.unifiedcyberontology.org/uco/core/")
 NS_UCO_OBSERVABLE = rdflib.Namespace(
-    "https://unifiedcyberontology.org/ontology/uco/observable#"
+    "https://ontology.unifiedcyberontology.org/uco/observable/"
 )
-NS_UCO_TYPES = rdflib.Namespace("https://unifiedcyberontology.org/ontology/uco/types#")
+NS_UCO_TYPES = rdflib.Namespace("https://ontology.unifiedcyberontology.org/uco/types/")
 NS_UCO_VOCABULARY = rdflib.Namespace(
-    "https://unifiedcyberontology.org/ontology/uco/vocabulary#"
+    "https://ontology.unifiedcyberontology.org/uco/vocabulary/"
 )
 NS_XSD = rdflib.XSD
 

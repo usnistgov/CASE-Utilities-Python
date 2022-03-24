@@ -63,8 +63,6 @@ def main() -> None:
         else logging.INFO
     )
 
-    built_version_choices_list = ["none", "case-" + CURRENT_CASE_VERSION]
-
     # Add arguments specific to case_validate.
     parser.add_argument(
         "-d", "--debug", action="store_true", help="Output additional runtime messages."

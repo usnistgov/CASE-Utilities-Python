@@ -42,8 +42,6 @@ def main() -> None:
         else logging.INFO
     )
 
-    built_version_choices_list = ["none", "case-" + CURRENT_CASE_VERSION]
-
     parser.add_argument("-d", "--debug", action="store_true")
     parser.add_argument(
         "--built-version",
