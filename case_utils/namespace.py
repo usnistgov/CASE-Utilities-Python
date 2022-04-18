@@ -26,13 +26,35 @@ NS_XSD = rdflib.XSD
 NS_CASE_INVESTIGATION = rdflib.Namespace(
     "https://ontology.caseontology.org/case/investigation/"
 )
-NS_UCO_ACTION = rdflib.Namespace("https://ontology.unifiedcyberontology.org/uco/action/")
+NS_CASE_VOCABULARY = rdflib.Namespace(
+    "https://ontology.caseontology.org/case/vocabulary/"
+)
+NS_UCO_ACTION = rdflib.Namespace(
+    "https://ontology.unifiedcyberontology.org/uco/action/"
+)
 NS_UCO_CORE = rdflib.Namespace("https://ontology.unifiedcyberontology.org/uco/core/")
-NS_UCO_LOCATION = rdflib.Namespace("https://ontology.unifiedcyberontology.org/uco/location/")
+NS_UCO_IDENTITY = rdflib.Namespace(
+    "https://ontology.unifiedcyberontology.org/uco/identity/"
+)
+NS_UCO_LOCATION = rdflib.Namespace(
+    "https://ontology.unifiedcyberontology.org/uco/location/"
+)
+NS_UCO_MARKING = rdflib.Namespace(
+    "https://ontology.unifiedcyberontology.org/uco/marking/"
+)
 NS_UCO_OBSERVABLE = rdflib.Namespace(
     "https://ontology.unifiedcyberontology.org/uco/observable/"
 )
+NS_UCO_PATTERN = rdflib.Namespace(
+    "https://ontology.unifiedcyberontology.org/uco/pattern/"
+)
+NS_UCO_ROLE = rdflib.Namespace("https://ontology.unifiedcyberontology.org/uco/role/")
+NS_UCO_TIME = rdflib.Namespace("https://ontology.unifiedcyberontology.org/uco/time/")
+NS_UCO_TOOL = rdflib.Namespace("https://ontology.unifiedcyberontology.org/uco/tool/")
 NS_UCO_TYPES = rdflib.Namespace("https://ontology.unifiedcyberontology.org/uco/types/")
+NS_UCO_VICTIM = rdflib.Namespace(
+    "https://ontology.unifiedcyberontology.org/uco/victim/"
+)
 NS_UCO_VOCABULARY = rdflib.Namespace(
     "https://ontology.unifiedcyberontology.org/uco/vocabulary/"
 )
