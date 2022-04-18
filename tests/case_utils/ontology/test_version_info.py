@@ -24,6 +24,15 @@ from case_utils.ontology.version_info import *
 NS_OWL = rdflib.OWL
 
 
+def test_built_version_choices_list() -> None:
+    for built_version_choice in sorted(built_version_choices_list):
+        if built_version_choice == "none":
+            continue
+        ttl_filename = built_version_choice + ".ttl"
+        with importlib.resources.open_text(case_utils.ontology, ttl_filename) as tmp_fh:
+            pass
+
+
 def test_case_ontology_version_info_versus_monolithic() -> None:
     ontology_graph = rdflib.Graph()
 

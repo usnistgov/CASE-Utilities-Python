@@ -15,7 +15,7 @@
 This module creates a graph object that provides a basic UCO characterization of a single file.  The gathered metadata is among the more "durable" file characteristics, i.e. characteristics that would remain consistent when transferring a file between locations.
 """
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 import datetime
 import hashlib
@@ -234,7 +234,7 @@ def main() -> None:
 
     output_format = None
     if args.output_format is None:
-        output_format = case_utils.guess_format(args.out_graph)
+        output_format = rdflib.util.guess_format(args.out_graph)
     else:
         output_format = args.output_format
 

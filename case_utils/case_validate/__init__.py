@@ -29,7 +29,7 @@ a monolithic file; see case_utils.ontology if interested in further
 details.)
 """
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 import argparse
 import importlib.resources
@@ -62,8 +62,6 @@ def main() -> None:
         if ("--debug" in sys.argv or "-d" in sys.argv)
         else logging.INFO
     )
-
-    built_version_choices_list = ["none", "case-" + CURRENT_CASE_VERSION]
 
     # Add arguments specific to case_validate.
     parser.add_argument(
