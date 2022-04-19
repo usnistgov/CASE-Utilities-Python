@@ -111,6 +111,7 @@ sample.txt.json: \
   $(tests_srcdir)/src/isomorphic_diff.py \
   $(top_srcdir)/case_utils/case_file/__init__.py \
   $(top_srcdir)/case_utils/local_uuid.py \
+  $(top_srcdir)/case_utils/namespace.py \
   sample.txt-nocompact.json
 	rm -f $@ _$@ __$@
 	export DEMO_UUID_REQUESTING_NONRANDOM=NONRANDOM_REQUESTED \
@@ -142,6 +143,7 @@ sample.txt.ttl: \
   $(tests_srcdir)/.venv.done.log \
   $(top_srcdir)/case_utils/case_file/__init__.py \
   $(top_srcdir)/case_utils/local_uuid.py \
+  $(top_srcdir)/case_utils/namespace.py \
   sample.txt.done.log
 	rm -f _$@ __$@
 	export DEMO_UUID_REQUESTING_NONRANDOM=NONRANDOM_REQUESTED \
@@ -164,6 +166,7 @@ sample.txt-disable_hashes.ttl: \
   $(tests_srcdir)/.venv.done.log \
   $(top_srcdir)/case_utils/case_file/__init__.py \
   $(top_srcdir)/case_utils/local_uuid.py \
+  $(top_srcdir)/case_utils/namespace.py \
   sample.txt.done.log
 	rm -f _$@ __$@
 	export DEMO_UUID_REQUESTING_NONRANDOM=NONRANDOM_REQUESTED \
@@ -188,6 +191,7 @@ sample.txt-nocompact.json: \
   $(tests_srcdir)/src/isomorphic_diff.py \
   $(top_srcdir)/case_utils/case_file/__init__.py \
   $(top_srcdir)/case_utils/local_uuid.py \
+  $(top_srcdir)/case_utils/namespace.py \
   sample.txt.done.log
 	rm -f _$@
 	export DEMO_UUID_REQUESTING_NONRANDOM=NONRANDOM_REQUESTED \
