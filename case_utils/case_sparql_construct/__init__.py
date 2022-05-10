@@ -15,7 +15,7 @@
 This script executes a SPARQL CONSTRUCT query, returning a graph of the generated triples.
 """
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 
 import argparse
 import logging
@@ -41,8 +41,6 @@ def main() -> None:
         if ("--debug" in sys.argv or "-d" in sys.argv)
         else logging.INFO
     )
-
-    built_version_choices_list = ["none", "case-" + CURRENT_CASE_VERSION]
 
     parser.add_argument("-d", "--debug", action="store_true")
     parser.add_argument(
@@ -105,7 +103,7 @@ def main() -> None:
 
     output_format = None
     if args.output_format is None:
-        output_format = case_utils.guess_format(args.out_graph)
+        output_format = rdflib.util.guess_format(args.out_graph)
     else:
         output_format = args.output_format
 

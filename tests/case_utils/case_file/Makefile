@@ -19,34 +19,18 @@ tests_srcdir := $(top_srcdir)/tests
 
 case_srcdir := $(top_srcdir)/dependencies/CASE
 
-qc_srcdir := $(top_srcdir)/dependencies/CASE-Examples-QC
-
 RDF_TOOLKIT_JAR := $(case_srcdir)/lib/rdf-toolkit.jar
-
-COMM ?= $(shell which gcomm 2>/dev/null || which comm)
-ifeq ($(COMM),)
-$(error comm not found)
-endif
-
-SORT ?= $(shell which gsort 2>/dev/null || which sort)
-ifeq ($(SORT),)
-$(error sort not found)
-endif
 
 all: \
   kb.json \
   sample.txt.json \
-  sample.txt-nocompact.json \
-  undefined_vocabulary.txt
+  sample.txt-nocompact.json
 
 check: \
   kb.json \
   kb_validation.ttl \
   sample.txt.json \
-  sample.txt-nocompact.json \
-  undefined_vocabulary.txt
-	test ! -s undefined_vocabulary.txt \
-	  || (echo "ERROR:tests/case_file/Makefile:The output in kb.json has undefined CASE or UCO terms.  The first few are:" >&2 && head undefined_vocabulary.txt >&2 && exit 1)
+  sample.txt-nocompact.json
 	source $(tests_srcdir)/venv/bin/activate \
 	  && pytest \
 	    --log-level=DEBUG
@@ -127,6 +111,7 @@ sample.txt.json: \
   $(tests_srcdir)/src/isomorphic_diff.py \
   $(top_srcdir)/case_utils/case_file/__init__.py \
   $(top_srcdir)/case_utils/local_uuid.py \
+  $(top_srcdir)/case_utils/namespace.py \
   sample.txt-nocompact.json
 	rm -f $@ _$@ __$@
 	export DEMO_UUID_REQUESTING_NONRANDOM=NONRANDOM_REQUESTED \
@@ -158,6 +143,7 @@ sample.txt.ttl: \
   $(tests_srcdir)/.venv.done.log \
   $(top_srcdir)/case_utils/case_file/__init__.py \
   $(top_srcdir)/case_utils/local_uuid.py \
+  $(top_srcdir)/case_utils/namespace.py \
   sample.txt.done.log
 	rm -f _$@ __$@
 	export DEMO_UUID_REQUESTING_NONRANDOM=NONRANDOM_REQUESTED \
@@ -180,6 +166,7 @@ sample.txt-disable_hashes.ttl: \
   $(tests_srcdir)/.venv.done.log \
   $(top_srcdir)/case_utils/case_file/__init__.py \
   $(top_srcdir)/case_utils/local_uuid.py \
+  $(top_srcdir)/case_utils/namespace.py \
   sample.txt.done.log
 	rm -f _$@ __$@
 	export DEMO_UUID_REQUESTING_NONRANDOM=NONRANDOM_REQUESTED \
@@ -204,6 +191,7 @@ sample.txt-nocompact.json: \
   $(tests_srcdir)/src/isomorphic_diff.py \
   $(top_srcdir)/case_utils/case_file/__init__.py \
   $(top_srcdir)/case_utils/local_uuid.py \
+  $(top_srcdir)/case_utils/namespace.py \
   sample.txt.done.log
 	rm -f _$@
 	export DEMO_UUID_REQUESTING_NONRANDOM=NONRANDOM_REQUESTED \
@@ -224,25 +212,3 @@ sample.txt-nocompact.json: \
 	fi
 	test ! -r _$@
 	touch $@
-
-undefined_vocabulary.txt: \
-  kb.json \
-  $(qc_srcdir)/src/vocabulary_used.py \
-  $(qc_srcdir)/tests/ontology_vocabulary.txt
-	source $(qc_srcdir)/venv/bin/activate \
-	  && python3 $(qc_srcdir)/src/vocabulary_used.py \
-	    $< \
-	    > $@___
-	grep ':' $@___ \
-	  | egrep -v 'w3.org' \
-	    | grep -v '/kb/' \
-	      > $@__
-	rm $@___
-	LC_ALL=C \
-	  $(COMM) \
-	    -13 \
-	    $(qc_srcdir)/tests/ontology_vocabulary.txt \
-	    <(LC_ALL=C $(SORT) $@__) \
-	    > $@_
-	rm $@__
-	mv $@_ $@

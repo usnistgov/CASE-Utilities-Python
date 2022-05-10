@@ -26,7 +26,7 @@ The word "DISTINCT" will also be cut from the query, if present.
 Should a more complex query be necessary, an outer, wrapping SELECT query would let this script continue to function.
 """
 
-__version__ = "0.4.0"
+__version__ = "0.4.1"
 
 import argparse
 import binascii
@@ -56,8 +56,6 @@ def main() -> None:
         if ("--debug" in sys.argv or "-d" in sys.argv)
         else logging.INFO
     )
-
-    built_version_choices_list = ["none", "case-" + CURRENT_CASE_VERSION]
 
     parser.add_argument("-d", "--debug", action="store_true")
     parser.add_argument(
