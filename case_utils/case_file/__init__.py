@@ -17,8 +17,10 @@ This module creates a graph object that provides a basic UCO characterization of
 
 __version__ = "0.3.0"
 
+import argparse
 import datetime
 import hashlib
+import logging
 import os
 import typing
 import warnings
@@ -207,10 +209,9 @@ def create_file_node(
 
 
 def main() -> None:
-    import argparse
-
     parser = argparse.ArgumentParser()
     parser.add_argument("--base-prefix", default=DEFAULT_PREFIX)
+    parser.add_argument("--debug", action="store_true")
     parser.add_argument("--disable-hashes", action="store_true")
     parser.add_argument("--disable-mtime", action="store_true")
     parser.add_argument(
@@ -219,6 +220,8 @@ def main() -> None:
     parser.add_argument("out_graph")
     parser.add_argument("in_file")
     args = parser.parse_args()
+
+    logging.basicConfig(level=logging.DEBUG if args.debug else logging.INFO)
 
     case_utils.local_uuid.configure()
 

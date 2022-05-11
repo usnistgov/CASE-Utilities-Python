@@ -114,9 +114,10 @@ sample.txt.json: \
   $(top_srcdir)/case_utils/namespace.py \
   sample.txt-nocompact.json
 	rm -f $@ _$@ __$@
-	export DEMO_UUID_REQUESTING_NONRANDOM=NONRANDOM_REQUESTED \
+	export CASE_DEMO_NONRANDOM_UUID_BASE="$(top_srcdir)" \
 	  && source $(tests_srcdir)/venv/bin/activate \
 	    && case_file \
+	      --debug \
 	      __$@ \
 	      sample.txt
 	source $(tests_srcdir)/venv/bin/activate \
@@ -146,9 +147,10 @@ sample.txt.ttl: \
   $(top_srcdir)/case_utils/namespace.py \
   sample.txt.done.log
 	rm -f _$@ __$@
-	export DEMO_UUID_REQUESTING_NONRANDOM=NONRANDOM_REQUESTED \
+	export CASE_DEMO_NONRANDOM_UUID_BASE="$(top_srcdir)" \
 	  && source $(tests_srcdir)/venv/bin/activate \
 	    && case_file \
+	      --debug \
 	      __$@ \
 	      sample.txt
 	java -jar $(RDF_TOOLKIT_JAR) \
@@ -169,9 +171,10 @@ sample.txt-disable_hashes.ttl: \
   $(top_srcdir)/case_utils/namespace.py \
   sample.txt.done.log
 	rm -f _$@ __$@
-	export DEMO_UUID_REQUESTING_NONRANDOM=NONRANDOM_REQUESTED \
+	export CASE_DEMO_NONRANDOM_UUID_BASE="$(top_srcdir)" \
 	  && source $(tests_srcdir)/venv/bin/activate \
 	    && case_file \
+	      --debug \
 	      --disable-hashes \
 	      __$@ \
 	      sample.txt
@@ -194,9 +197,10 @@ sample.txt-nocompact.json: \
   $(top_srcdir)/case_utils/namespace.py \
   sample.txt.done.log
 	rm -f _$@
-	export DEMO_UUID_REQUESTING_NONRANDOM=NONRANDOM_REQUESTED \
+	export CASE_DEMO_NONRANDOM_UUID_BASE="$(top_srcdir)" \
 	  && source $(tests_srcdir)/venv/bin/activate \
 	    && case_file \
+	      --debug \
 	      _$@ \
 	      sample.txt
 	# To avoid making noisy, uninformative updates from blank node identifiers, only move the new file into place if it is not isomorphic with the Git-tracked version of the target.
