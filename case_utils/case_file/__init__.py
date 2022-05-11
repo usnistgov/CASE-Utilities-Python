@@ -15,10 +15,12 @@
 This module creates a graph object that provides a basic UCO characterization of a single file.  The gathered metadata is among the more "durable" file characteristics, i.e. characteristics that would remain consistent when transferring a file between locations.
 """
 
-__version__ = "0.3.0"
+__version__ = "0.3.1"
 
+import argparse
 import datetime
 import hashlib
+import logging
 import os
 import typing
 import warnings
@@ -26,19 +28,9 @@ import warnings
 import rdflib  # type: ignore
 
 import case_utils
+from case_utils.namespace import *
 
 DEFAULT_PREFIX = "http://example.org/kb/"
-
-NS_RDF = rdflib.RDF
-NS_UCO_CORE = rdflib.Namespace("https://ontology.unifiedcyberontology.org/uco/core/")
-NS_UCO_OBSERVABLE = rdflib.Namespace(
-    "https://ontology.unifiedcyberontology.org/uco/observable/"
-)
-NS_UCO_TYPES = rdflib.Namespace("https://ontology.unifiedcyberontology.org/uco/types/")
-NS_UCO_VOCABULARY = rdflib.Namespace(
-    "https://ontology.unifiedcyberontology.org/uco/vocabulary/"
-)
-NS_XSD = rdflib.XSD
 
 # Shortcut syntax for defining an immutable named tuple is noted here:
 # https://docs.python.org/3/library/typing.html#typing.NamedTuple
@@ -217,10 +209,9 @@ def create_file_node(
 
 
 def main() -> None:
-    import argparse
-
     parser = argparse.ArgumentParser()
     parser.add_argument("--base-prefix", default=DEFAULT_PREFIX)
+    parser.add_argument("--debug", action="store_true")
     parser.add_argument("--disable-hashes", action="store_true")
     parser.add_argument("--disable-mtime", action="store_true")
     parser.add_argument(
@@ -229,6 +220,8 @@ def main() -> None:
     parser.add_argument("out_graph")
     parser.add_argument("in_file")
     args = parser.parse_args()
+
+    logging.basicConfig(level=logging.DEBUG if args.debug else logging.INFO)
 
     case_utils.local_uuid.configure()
 
