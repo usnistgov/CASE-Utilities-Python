@@ -117,6 +117,7 @@ sample.txt.json: \
 	export DEMO_UUID_REQUESTING_NONRANDOM=NONRANDOM_REQUESTED \
 	  && source $(tests_srcdir)/venv/bin/activate \
 	    && case_file \
+	      --debug \
 	      __$@ \
 	      sample.txt
 	source $(tests_srcdir)/venv/bin/activate \
@@ -149,6 +150,7 @@ sample.txt.ttl: \
 	export DEMO_UUID_REQUESTING_NONRANDOM=NONRANDOM_REQUESTED \
 	  && source $(tests_srcdir)/venv/bin/activate \
 	    && case_file \
+	      --debug \
 	      __$@ \
 	      sample.txt
 	java -jar $(RDF_TOOLKIT_JAR) \
@@ -172,6 +174,7 @@ sample.txt-disable_hashes.ttl: \
 	export DEMO_UUID_REQUESTING_NONRANDOM=NONRANDOM_REQUESTED \
 	  && source $(tests_srcdir)/venv/bin/activate \
 	    && case_file \
+	      --debug \
 	      --disable-hashes \
 	      __$@ \
 	      sample.txt
@@ -197,6 +200,7 @@ sample.txt-nocompact.json: \
 	export DEMO_UUID_REQUESTING_NONRANDOM=NONRANDOM_REQUESTED \
 	  && source $(tests_srcdir)/venv/bin/activate \
 	    && case_file \
+	      --debug \
 	      _$@ \
 	      sample.txt
 	# To avoid making noisy, uninformative updates from blank node identifiers, only move the new file into place if it is not isomorphic with the Git-tracked version of the target.
