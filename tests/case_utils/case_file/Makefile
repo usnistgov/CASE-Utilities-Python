@@ -114,7 +114,7 @@ sample.txt.json: \
   $(top_srcdir)/case_utils/namespace.py \
   sample.txt-nocompact.json
 	rm -f $@ _$@ __$@
-	export DEMO_UUID_REQUESTING_NONRANDOM=NONRANDOM_REQUESTED \
+	export CASE_DEMO_NONRANDOM_UUID_BASE="$(top_srcdir)" \
 	  && source $(tests_srcdir)/venv/bin/activate \
 	    && case_file \
 	      --debug \
@@ -147,7 +147,7 @@ sample.txt.ttl: \
   $(top_srcdir)/case_utils/namespace.py \
   sample.txt.done.log
 	rm -f _$@ __$@
-	export DEMO_UUID_REQUESTING_NONRANDOM=NONRANDOM_REQUESTED \
+	export CASE_DEMO_NONRANDOM_UUID_BASE="$(top_srcdir)" \
 	  && source $(tests_srcdir)/venv/bin/activate \
 	    && case_file \
 	      --debug \
@@ -171,7 +171,7 @@ sample.txt-disable_hashes.ttl: \
   $(top_srcdir)/case_utils/namespace.py \
   sample.txt.done.log
 	rm -f _$@ __$@
-	export DEMO_UUID_REQUESTING_NONRANDOM=NONRANDOM_REQUESTED \
+	export CASE_DEMO_NONRANDOM_UUID_BASE="$(top_srcdir)" \
 	  && source $(tests_srcdir)/venv/bin/activate \
 	    && case_file \
 	      --debug \
@@ -197,7 +197,7 @@ sample.txt-nocompact.json: \
   $(top_srcdir)/case_utils/namespace.py \
   sample.txt.done.log
 	rm -f _$@
-	export DEMO_UUID_REQUESTING_NONRANDOM=NONRANDOM_REQUESTED \
+	export CASE_DEMO_NONRANDOM_UUID_BASE="$(top_srcdir)" \
 	  && source $(tests_srcdir)/venv/bin/activate \
 	    && case_file \
 	      --debug \
