@@ -22,8 +22,8 @@ import os
 import pathlib
 import sys
 import typing
-import warnings
 import uuid
+import warnings
 
 DEMO_UUID_BASE: typing.Optional[str] = None
 

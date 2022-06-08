@@ -35,16 +35,17 @@ import argparse
 import importlib.resources
 import logging
 import os
-import pathlib
 import sys
 import typing
 
-import rdflib.util  # type: ignore
 import pyshacl  # type: ignore
+import rdflib.util  # type: ignore
 
 import case_utils.ontology
-
-from case_utils.ontology.version_info import *
+from case_utils.ontology.version_info import (
+    CURRENT_CASE_VERSION,
+    built_version_choices_list,
+)
 
 _logger = logging.getLogger(os.path.basename(__file__))
 
