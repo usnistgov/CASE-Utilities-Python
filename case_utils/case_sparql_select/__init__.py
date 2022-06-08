@@ -39,7 +39,6 @@ import pandas as pd  # type: ignore
 import rdflib.plugins.sparql  # type: ignore
 
 import case_utils.ontology
-
 from case_utils.ontology.version_info import *
 
 NS_XSD = rdflib.XSD

@@ -20,9 +20,9 @@ https://www.w3.org/TR/json-ld11/#terms
 
 __version__ = "0.2.0"
 
+import json
 import logging
 import os
-import json
 import typing
 
 import pyld  # type: ignore

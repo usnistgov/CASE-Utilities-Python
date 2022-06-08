@@ -26,7 +26,6 @@ import typing
 import rdflib.plugins.sparql  # type: ignore
 
 import case_utils.ontology
-
 from case_utils.ontology.version_info import *
 
 _logger = logging.getLogger(os.path.basename(__file__))

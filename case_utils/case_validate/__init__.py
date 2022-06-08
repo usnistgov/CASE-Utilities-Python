@@ -39,11 +39,10 @@ import pathlib
 import sys
 import typing
 
-import rdflib.util  # type: ignore
 import pyshacl  # type: ignore
+import rdflib.util  # type: ignore
 
 import case_utils.ontology
-
 from case_utils.ontology.version_info import *
 
 _logger = logging.getLogger(os.path.basename(__file__))

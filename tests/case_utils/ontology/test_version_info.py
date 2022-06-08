@@ -18,7 +18,6 @@ import typing
 import rdflib  # type: ignore
 
 import case_utils.ontology
-
 from case_utils.ontology.version_info import *
 
 NS_OWL = rdflib.OWL
