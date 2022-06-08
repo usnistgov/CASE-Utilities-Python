@@ -22,7 +22,7 @@ import rdflib
 # Yes, this next import is self-referential (/circular).  But, it does work with importlib.
 import case_utils.ontology
 
-from .version_info import *
+from .version_info import CURRENT_CASE_VERSION
 
 _logger = logging.getLogger(os.path.basename(__file__))
 

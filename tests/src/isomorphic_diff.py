@@ -36,8 +36,6 @@ import sys
 
 import rdflib.compare  # type: ignore
 
-import case_utils
-
 _logger = logging.getLogger(os.path.basename(__file__))
 
 

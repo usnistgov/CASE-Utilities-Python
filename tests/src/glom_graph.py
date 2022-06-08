@@ -19,8 +19,6 @@ __version__ = "0.2.0"
 
 import rdflib  # type: ignore
 
-import case_utils
-
 
 def main() -> None:
     g = rdflib.Graph()

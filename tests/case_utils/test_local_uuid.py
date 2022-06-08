@@ -11,8 +11,6 @@
 #
 # We would appreciate acknowledgement if the software is used.
 
-import os
-
 import pytest
 
 import case_utils.local_uuid

@@ -30,7 +30,6 @@ __version__ = "0.4.1"
 
 import argparse
 import binascii
-import importlib.resources
 import logging
 import os
 import sys
@@ -39,7 +38,10 @@ import pandas as pd  # type: ignore
 import rdflib.plugins.sparql  # type: ignore
 
 import case_utils.ontology
-from case_utils.ontology.version_info import *
+from case_utils.ontology.version_info import (
+    CURRENT_CASE_VERSION,
+    built_version_choices_list,
+)
 
 NS_XSD = rdflib.XSD
 
