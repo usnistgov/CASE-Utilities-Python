@@ -19,7 +19,7 @@ tests_srcdir := $(top_srcdir)/tests
 
 case_srcdir := $(top_srcdir)/dependencies/CASE
 
-RDF_TOOLKIT_JAR := $(case_srcdir)/lib/rdf-toolkit.jar
+RDF_TOOLKIT_JAR := $(case_srcdir)/dependencies/UCO/lib/rdf-toolkit.jar
 
 all: \
   kb.json \
