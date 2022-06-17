@@ -15,7 +15,7 @@
 This module creates a graph object that provides a basic UCO characterization of a single file.  The gathered metadata is among the more "durable" file characteristics, i.e. characteristics that would remain consistent when transferring a file between locations.
 """
 
-__version__ = "0.3.1"
+__version__ = "0.3.2"
 
 import argparse
 import datetime
@@ -28,7 +28,14 @@ import warnings
 import rdflib  # type: ignore
 
 import case_utils
-from case_utils.namespace import *
+from case_utils.namespace import (
+    NS_RDF,
+    NS_UCO_CORE,
+    NS_UCO_OBSERVABLE,
+    NS_UCO_TYPES,
+    NS_UCO_VOCABULARY,
+    NS_XSD,
+)
 
 DEFAULT_PREFIX = "http://example.org/kb/"
 
@@ -147,7 +154,7 @@ def create_file_node(
                     sha1obj.update(buf)
                     sha256obj.update(buf)
                     sha512obj.update(buf)
-            if not stashed_error is None:
+            if stashed_error is not None:
                 raise stashed_error
             current_hashdict = HashDict(
                 byte_tally,
@@ -182,7 +189,7 @@ def create_file_node(
 
         # Add confirmed hashes into graph.
         for key in successful_hashdict._fields:
-            if not key in ("md5", "sha1", "sha256", "sha512"):
+            if key not in ("md5", "sha1", "sha256", "sha512"):
                 continue
             n_hash = rdflib.BNode()
             graph.add((n_contentdata_facet, NS_UCO_OBSERVABLE.hash, n_hash))
@@ -247,7 +254,7 @@ def main() -> None:
         serialize_kwargs["context"] = context_dictionary
 
     node_iri = NS_BASE["file-" + case_utils.local_uuid.local_uuid()]
-    n_file = create_file_node(
+    create_file_node(
         graph,
         args.in_file,
         node_iri=node_iri,
