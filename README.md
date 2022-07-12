@@ -24,7 +24,7 @@ Users who wish to install from PyPI should be aware that while CASE's ontology i
 
 ### Installing from source
 
-Users who wish to install pre-release versions and/or make improvements to the code base should install in this manner. 
+Users who wish to install pre-release versions and/or make improvements to the code base should install in this manner.
 
 1. Clone this repository.
 2. (Optional) Create and activate a virtual environment.
