@@ -79,17 +79,15 @@ check-isomorphic_diff: \
 	  --directory isomorphic_diff \
 	  check
 
-# mypy is called against specific members of the tests directory to avoid descending into the virtual environment.
 # TODO - Fix type signatures in UCO test.
 check-mypy: \
   .venv.done.log
 	source venv/bin/activate \
 	  && mypy \
 	    --exclude case_utils/case_validate/uco_test_examples/test_uco_validation.py \
+	    --exclude venv \
 	    $(top_srcdir)/case_utils \
-	    case_utils \
-	    hexbinary \
-	    src
+	    .
 
 clean:
 	@$(MAKE) \
