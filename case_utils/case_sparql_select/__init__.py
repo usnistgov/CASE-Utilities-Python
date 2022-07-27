@@ -35,7 +35,7 @@ import os
 import sys
 
 import pandas as pd  # type: ignore
-import rdflib.plugins.sparql  # type: ignore
+import rdflib.plugins.sparql
 
 import case_utils.ontology
 from case_utils.ontology.version_info import (
@@ -107,7 +107,7 @@ def main() -> None:
 
     tally = 0
     records = []
-    select_query_object = rdflib.plugins.sparql.prepareQuery(
+    select_query_object = rdflib.plugins.sparql.processor.prepareQuery(
         select_query_text, initNs=nsdict
     )
     for (row_no, row) in enumerate(graph.query(select_query_object)):

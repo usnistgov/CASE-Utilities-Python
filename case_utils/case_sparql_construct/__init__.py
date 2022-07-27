@@ -23,7 +23,7 @@ import os
 import sys
 import typing
 
-import rdflib.plugins.sparql  # type: ignore
+import rdflib.plugins.sparql
 
 import case_utils.ontology
 from case_utils.ontology.version_info import (
@@ -90,7 +90,7 @@ def main() -> None:
             in_graph, built_version=args.built_version
         )
 
-    construct_query_object = rdflib.plugins.sparql.prepareQuery(
+    construct_query_object = rdflib.plugins.sparql.processor.prepareQuery(
         construct_query_text, initNs=nsdict
     )
 
