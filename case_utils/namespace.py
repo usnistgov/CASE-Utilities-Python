@@ -19,7 +19,7 @@ To use, add "from case_utils.namespace import *".  Namespace variables starting 
 
 __version__ = "0.1.0"
 
-import rdflib  # type: ignore
+import rdflib
 
 NS_SH = rdflib.SH
 NS_RDF = rdflib.RDF

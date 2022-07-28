@@ -25,7 +25,7 @@ import os
 import typing
 import warnings
 
-import rdflib  # type: ignore
+import rdflib
 
 import case_utils
 from case_utils.namespace import (

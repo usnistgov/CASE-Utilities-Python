@@ -39,7 +39,7 @@ import sys
 import typing
 
 import pyshacl  # type: ignore
-import rdflib.util  # type: ignore
+import rdflib.util
 
 import case_utils.ontology
 from case_utils.ontology.version_info import (
