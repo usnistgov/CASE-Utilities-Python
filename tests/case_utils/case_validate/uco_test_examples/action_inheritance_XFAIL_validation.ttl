@@ -3,7 +3,7 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
-@prefix vocabulary1: <https://ontology.unifiedcyberontology.org/uco/vocabulary/> .
+@prefix vocabulary: <https://ontology.unifiedcyberontology.org/uco/vocabulary/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 []
@@ -18,7 +18,7 @@
 			sh:resultSeverity sh:Violation ;
 			sh:sourceConstraintComponent sh:MaxCountConstraintComponent ;
 			sh:sourceShape [
-				sh:datatype vocabulary1:ActionStatusTypeVocab ;
+				sh:datatype vocabulary:ActionStatusTypeVocab ;
 				sh:maxCount "0"^^xsd:integer ;
 				sh:nodeKind sh:Literal ;
 				sh:path action:actionStatus ;
@@ -27,12 +27,12 @@
 		[
 			a sh:ValidationResult ;
 			sh:focusNode <http://example.org/kb/action-lifecycle1> ;
-			sh:resultMessage "Value is not Literal with datatype vocabulary1:ActionStatusTypeVocab" ;
+			sh:resultMessage "Value is not Literal with datatype vocabulary:ActionStatusTypeVocab" ;
 			sh:resultPath action:actionStatus ;
 			sh:resultSeverity sh:Violation ;
 			sh:sourceConstraintComponent sh:DatatypeConstraintComponent ;
 			sh:sourceShape [
-				sh:datatype vocabulary1:ActionStatusTypeVocab ;
+				sh:datatype vocabulary:ActionStatusTypeVocab ;
 				sh:maxCount "0"^^xsd:integer ;
 				sh:nodeKind sh:Literal ;
 				sh:path action:actionStatus ;
@@ -47,7 +47,7 @@
 			sh:resultSeverity sh:Info ;
 			sh:sourceConstraintComponent sh:DatatypeConstraintComponent ;
 			sh:sourceShape [
-				sh:datatype vocabulary1:ActionStatusTypeVocab ;
+				sh:datatype vocabulary:ActionStatusTypeVocab ;
 				sh:message "Value is outside the default vocabulary ActionStatusTypeVocab." ;
 				sh:path action:actionStatus ;
 				sh:severity sh:Info ;
@@ -62,7 +62,7 @@
 			sh:resultSeverity sh:Info ;
 			sh:sourceConstraintComponent sh:DatatypeConstraintComponent ;
 			sh:sourceShape [
-				sh:datatype vocabulary1:ActionStatusTypeVocab ;
+				sh:datatype vocabulary:ActionStatusTypeVocab ;
 				sh:message "Value is outside the default vocabulary ActionStatusTypeVocab." ;
 				sh:path action:actionStatus ;
 				sh:severity sh:Info ;
@@ -77,7 +77,7 @@
 			sh:resultSeverity sh:Info ;
 			sh:sourceConstraintComponent sh:DatatypeConstraintComponent ;
 			sh:sourceShape [
-				sh:datatype vocabulary1:ActionStatusTypeVocab ;
+				sh:datatype vocabulary:ActionStatusTypeVocab ;
 				sh:message "Value is outside the default vocabulary ActionStatusTypeVocab." ;
 				sh:path action:actionStatus ;
 				sh:severity sh:Info ;
@@ -92,7 +92,7 @@
 			sh:resultSeverity sh:Info ;
 			sh:sourceConstraintComponent sh:DatatypeConstraintComponent ;
 			sh:sourceShape [
-				sh:datatype vocabulary1:ActionStatusTypeVocab ;
+				sh:datatype vocabulary:ActionStatusTypeVocab ;
 				sh:message "Value is outside the default vocabulary ActionStatusTypeVocab." ;
 				sh:path action:actionStatus ;
 				sh:severity sh:Info ;
