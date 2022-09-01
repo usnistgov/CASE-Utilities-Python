@@ -87,7 +87,6 @@ check-mypy: \
 	source venv/bin/activate \
 	  && mypy \
 	    --exclude case_utils/case_validate/case_test_examples/test_case_validation.py \
-	    --exclude case_utils/case_validate/uco_test_examples/test_uco_validation.py \
 	    --exclude venv \
 	    --strict \
 	    $(top_srcdir)/case_utils \
