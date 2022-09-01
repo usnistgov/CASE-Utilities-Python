@@ -25,7 +25,7 @@ tests_srcdir := $(top_srcdir)/tests
 
 RDF_TOOLKIT_JAR := $(uco_srcdir)/lib/rdf-toolkit.jar
 
-all: \
+validation_ttls := \
   action_inheritance_PASS_validation.ttl \
   action_inheritance_XFAIL_validation.ttl \
   action_result_PASS_validation.ttl \
@@ -35,6 +35,9 @@ all: \
   location_XFAIL_validation.ttl \
   relationship_PASS_validation.ttl \
   relationship_XFAIL_validation.ttl
+
+all: \
+  $(validation_ttls)
 
 .PRECIOUS: \
   %_validation.ttl
@@ -75,15 +78,7 @@ all: \
 	mv _$@ $@
 
 check: \
-  action_inheritance_PASS_validation.ttl \
-  action_inheritance_XFAIL_validation.ttl \
-  action_result_PASS_validation.ttl \
-  hash_PASS_validation.ttl \
-  hash_XFAIL_validation.ttl \
-  location_PASS_validation.ttl \
-  location_XFAIL_validation.ttl \
-  relationship_PASS_validation.ttl \
-  relationship_XFAIL_validation.ttl
+  $(validation_ttls)
 	source $(tests_srcdir)/venv/bin/activate \
 	  && pytest \
 	    --log-level=DEBUG
