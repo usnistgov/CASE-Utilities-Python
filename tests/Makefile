@@ -55,6 +55,7 @@ all: \
 all-case_utils: \
   .venv.done.log
 	$(MAKE) \
+	  PYTHON3=$(PYTHON3) \
 	  --directory case_utils
 
 # These check calls are provided in preferred run-order.
@@ -70,6 +71,7 @@ check: \
 check-case_utils: \
   .venv.done.log
 	$(MAKE) \
+	  PYTHON3=$(PYTHON3) \
 	  --directory case_utils \
 	  check
 
@@ -93,6 +95,7 @@ check-mypy: \
 
 clean:
 	@$(MAKE) \
+	  PYTHON3=$(PYTHON3) \
 	  --directory case_utils \
 	  clean
 	@rm -f \
