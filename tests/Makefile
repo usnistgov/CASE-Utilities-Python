@@ -55,6 +55,7 @@ all: \
 all-case_utils: \
   .venv.done.log
 	$(MAKE) \
+	  PYTHON3=$(PYTHON3) \
 	  --directory case_utils
 
 # These check calls are provided in preferred run-order.
@@ -70,6 +71,7 @@ check: \
 check-case_utils: \
   .venv.done.log
 	$(MAKE) \
+	  PYTHON3=$(PYTHON3) \
 	  --directory case_utils \
 	  check
 
@@ -85,7 +87,6 @@ check-mypy: \
 	source venv/bin/activate \
 	  && mypy \
 	    --exclude case_utils/case_validate/case_test_examples/test_case_validation.py \
-	    --exclude case_utils/case_validate/uco_test_examples/test_uco_validation.py \
 	    --exclude venv \
 	    --strict \
 	    $(top_srcdir)/case_utils \
@@ -93,6 +94,7 @@ check-mypy: \
 
 clean:
 	@$(MAKE) \
+	  PYTHON3=$(PYTHON3) \
 	  --directory case_utils \
 	  clean
 	@rm -f \
