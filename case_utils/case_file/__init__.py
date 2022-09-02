@@ -15,7 +15,7 @@
 This module creates a graph object that provides a basic UCO characterization of a single file.  The gathered metadata is among the more "durable" file characteristics, i.e. characteristics that would remain consistent when transferring a file between locations.
 """
 
-__version__ = "0.3.2"
+__version__ = "0.4.0"
 
 import argparse
 import datetime
@@ -25,7 +25,7 @@ import os
 import typing
 import warnings
 
-import rdflib  # type: ignore
+import rdflib
 
 import case_utils
 from case_utils.namespace import (
@@ -82,9 +82,11 @@ def create_file_node(
     :returns: The File Observable Object's node.
     :rtype: rdflib.URIRef
     """
+    node_namespace = rdflib.Namespace(node_prefix)
+
     if node_iri is None:
         node_slug = "file-" + case_utils.local_uuid.local_uuid()
-        node_iri = rdflib.Namespace(node_prefix)[node_slug]
+        node_iri = node_namespace[node_slug]
     n_file = rdflib.URIRef(node_iri)
     graph.add((n_file, NS_RDF.type, NS_UCO_OBSERVABLE.File))
 
@@ -92,7 +94,7 @@ def create_file_node(
     literal_basename = rdflib.Literal(basename)
 
     file_stat = os.stat(filepath)
-    n_file_facet = rdflib.BNode()
+    n_file_facet = node_namespace["file-facet-" + case_utils.local_uuid.local_uuid()]
     graph.add(
         (
             n_file_facet,
@@ -119,7 +121,9 @@ def create_file_node(
         graph.add((n_file_facet, NS_UCO_OBSERVABLE.modifiedTime, literal_mtime))
 
     if not disable_hashes:
-        n_contentdata_facet = rdflib.BNode()
+        n_contentdata_facet = node_namespace[
+            "content-data-facet-" + case_utils.local_uuid.local_uuid()
+        ]
         graph.add((n_file, NS_UCO_CORE.hasFacet, n_contentdata_facet))
         graph.add(
             (n_contentdata_facet, NS_RDF.type, NS_UCO_OBSERVABLE.ContentDataFacet)
@@ -191,7 +195,7 @@ def create_file_node(
         for key in successful_hashdict._fields:
             if key not in ("md5", "sha1", "sha256", "sha512"):
                 continue
-            n_hash = rdflib.BNode()
+            n_hash = node_namespace["hash-" + case_utils.local_uuid.local_uuid()]
             graph.add((n_contentdata_facet, NS_UCO_OBSERVABLE.hash, n_hash))
             graph.add((n_hash, NS_RDF.type, NS_UCO_TYPES.Hash))
             graph.add(
