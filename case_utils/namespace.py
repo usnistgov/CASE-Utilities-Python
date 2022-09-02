@@ -21,8 +21,10 @@ __version__ = "0.1.0"
 
 import rdflib
 
-NS_SH = rdflib.SH
+NS_OWL = rdflib.OWL
 NS_RDF = rdflib.RDF
+NS_RDFS = rdflib.RDFS
+NS_SH = rdflib.SH
 NS_XSD = rdflib.XSD
 
 NS_CASE_INVESTIGATION = rdflib.Namespace(
@@ -31,8 +33,12 @@ NS_CASE_INVESTIGATION = rdflib.Namespace(
 NS_CASE_VOCABULARY = rdflib.Namespace(
     "https://ontology.caseontology.org/case/vocabulary/"
 )
+NS_CO = rdflib.Namespace("http://purl.org/co/")
 NS_UCO_ACTION = rdflib.Namespace(
     "https://ontology.unifiedcyberontology.org/uco/action/"
+)
+NS_UCO_CONFIGURATION = rdflib.Namespace(
+    "https://ontology.unifiedcyberontology.org/uco/configuration/"
 )
 NS_UCO_CORE = rdflib.Namespace("https://ontology.unifiedcyberontology.org/uco/core/")
 NS_UCO_IDENTITY = rdflib.Namespace(
