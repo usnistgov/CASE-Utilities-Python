@@ -142,6 +142,37 @@ def main() -> None:
             _logger.debug("arg_ontology_graph = %r.", arg_ontology_graph)
             ontology_graph.parse(arg_ontology_graph)
 
+    # Filter the graph pyshacl uses as its ontology mix-in to exclude
+    # all SHACL-related triples.
+    # This is done because, at the time of pyshacl 0.20.0, the entirety
+    # of the ontology graph is mixed into the data graph.  UCO 1.0.0
+    # includes some mechanisms to cross-check SHACL PropertyShapes
+    # versus OWL property definitions.  Because of the mix-in, all of
+    # the ontology graph (.validate ont_graph kwarg) is reviewed by the
+    # SHACL graph (.validate shacl_graph kwarg), so for UCO 1.0.0 that
+    # adds around 30 seconds to each case_validate call, redundantly
+    # reviewing UCO.
+    # The ontology graph (.validate ont_graph kwarg) is currently
+    # believed to never need to know about SHACL concepts.
+    ontology_graph_without_shacl = rdflib.Graph()
+    SH_prefix = str(rdflib.SH)
+    for triple in ontology_graph.triples((None, None, None)):
+        skip_triple = False
+        for triple_part in triple:
+            if isinstance(triple_part, rdflib.URIRef):
+                if str(triple_part).startswith(SH_prefix):
+                    skip_triple = True
+            if skip_triple:
+                break
+        if skip_triple:
+            continue
+        ontology_graph_without_shacl.add(triple)
+    # _logger.debug("len(ontology_graph) = %d.", len(ontology_graph))
+    # _logger.debug("len(ontology_graph_without_shacl) = %d.", len(ontology_graph_without_shacl))
+    # At the time of CASE 1.0.0, this was the debug output:
+    # DEBUG:__init__.py:len(ontology_graph) = 13499.
+    # DEBUG:__init__.py:len(ontology_graph_without_shacl) = 7639.
+
     # Determine output format.
     # pySHACL's determination of output formatting is handled solely
     # through the -f flag.  Other CASE CLI tools handle format
@@ -158,7 +189,7 @@ def main() -> None:
     validate_result = pyshacl.validate(
         data_graph,
         shacl_graph=ontology_graph,
-        ont_graph=ontology_graph,
+        ont_graph=ontology_graph_without_shacl,
         inference=args.inference,
         abort_on_first=args.abort,
         allow_warnings=True if args.allow_warnings else False,
