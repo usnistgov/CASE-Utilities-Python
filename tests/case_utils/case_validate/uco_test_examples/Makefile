@@ -76,7 +76,7 @@ all: \
   $(top_srcdir)/case_utils/ontology/__init__.py
 	source $(tests_srcdir)/venv/bin/activate \
 	  && case_validate \
-	    --allow-warnings \
+	    --allow-infos \
 	    --debug \
 	    --format turtle \
 	    $< \

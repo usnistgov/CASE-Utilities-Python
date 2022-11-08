@@ -87,9 +87,19 @@ def main() -> None:
         help="(As with pyshacl CLI) Abort on first invalid data.",
     )
     parser.add_argument(
+        "--allow-info",
+        "--allow-infos",
+        dest="allow_infos",
+        action="store_true",
+        default=False,
+        help="(As with pyshacl CLI) Shapes marked with severity of Info will not cause result to be invalid.",
+    )
+    parser.add_argument(
         "-w",
+        "--allow-warning",
         "--allow-warnings",
         action="store_true",
+        dest="allow_warnings",
         help="(As with pyshacl CLI) Shapes marked with severity of Warning or Info will not cause result to be invalid.",
     )
     parser.add_argument(
@@ -161,6 +171,7 @@ def main() -> None:
         ont_graph=ontology_graph,
         inference=args.inference,
         abort_on_first=args.abort,
+        allow_infos=True if args.allow_infos else False,
         allow_warnings=True if args.allow_warnings else False,
         debug=True if args.debug else False,
         do_owl_imports=True if args.imports else False,
