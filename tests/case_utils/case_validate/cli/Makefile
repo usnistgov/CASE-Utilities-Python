@@ -41,7 +41,8 @@ files_to_generate := \
   format_unspecified_output_txt.txt \
   format_unspecified_output_unspecified.txt \
   split_data_graph_PASS.txt \
-  split_data_graph_XFAIL.txt
+  split_data_graph_XFAIL.txt \
+  thing_metashacl_PASS.txt
 
 all: \
   $(files_to_generate)
@@ -215,4 +216,18 @@ split_data_graph_XFAIL.txt: \
 	    split_data_graph_1.json \
 	    > _$@ \
 	    ; rc=$$? ; test 1 -eq $$rc
+	mv _$@ $@
+
+thing_metashacl_PASS.txt: \
+  $(tests_srcdir)/.venv.done.log \
+  $(top_srcdir)/.ontology.done.log \
+  $(top_srcdir)/case_utils/case_validate/__init__.py \
+  $(top_srcdir)/case_utils/ontology/__init__.py \
+  thing.ttl
+	rm -f _$@
+	source $(tests_srcdir)/venv/bin/activate \
+	  && case_validate \
+	    --metashacl \
+	    thing.ttl \
+	    > _$@
 	mv _$@ $@
