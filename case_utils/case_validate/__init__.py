@@ -180,7 +180,9 @@ def main() -> None:
             _logger.debug("arg_ontology_graph = %r.", arg_ontology_graph)
             ontology_graph.parse(arg_ontology_graph)
 
+    # Construct set of CDO concepts for data graph concept-existence review.
     cdo_concepts: typing.Set[rdflib.URIRef] = set()
+
     for n_structural_class in [
         NS_OWL.Class,
         NS_OWL.AnnotationProperty,
@@ -213,6 +215,16 @@ def main() -> None:
         if not isinstance(ontology_triple[0], rdflib.URIRef):
             continue
         cdo_concepts.add(ontology_triple[0])
+
+    # Also load historical ontology and version IRIs.
+    ontology_and_version_iris_data = importlib.resources.read_text(
+        case_utils.ontology, "ontology_and_version_iris.txt"
+    )
+    for line in ontology_and_version_iris_data.split("\n"):
+        cleaned_line = line.strip()
+        if cleaned_line == "":
+            continue
+        cdo_concepts.add(rdflib.URIRef(cleaned_line))
 
     data_cdo_concepts: typing.Set[rdflib.URIRef] = set()
     for data_triple in data_graph.triples((None, None, None)):

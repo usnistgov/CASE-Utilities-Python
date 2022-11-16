@@ -42,6 +42,8 @@ files_to_generate := \
   format_unspecified_output_turtle.ttl \
   format_unspecified_output_txt.txt \
   format_unspecified_output_unspecified.txt \
+  past_version_reference_PASS.txt \
+  past_version_reference_XFAIL.txt \
   split_data_graph_PASS.txt \
   split_data_graph_XFAIL.txt \
   thing_metashacl_PASS.txt
@@ -218,6 +220,36 @@ format_unspecified_output_unspecified.txt: \
 	    --debug \
 	    $< \
 	    > _$@
+	mv _$@ $@
+
+past_version_reference_PASS.txt: \
+  $(tests_srcdir)/.venv.done.log \
+  $(top_srcdir)/.ontology.done.log \
+  $(top_srcdir)/case_utils/case_validate/__init__.py \
+  $(top_srcdir)/case_utils/ontology/__init__.py \
+  $(top_srcdir)/case_utils/ontology/ontology_and_version_iris.txt \
+  past_version_reference_PASS.ttl
+	rm -f _$@
+	source $(tests_srcdir)/venv/bin/activate \
+	  && case_validate \
+	    past_version_reference_PASS.ttl \
+	    > _$@
+	mv _$@ $@
+
+past_version_reference_XFAIL.txt: \
+  $(tests_srcdir)/.venv.done.log \
+  $(top_srcdir)/.ontology.done.log \
+  $(top_srcdir)/case_utils/case_validate/__init__.py \
+  $(top_srcdir)/case_utils/ontology/__init__.py \
+  $(top_srcdir)/case_utils/ontology/ontology_and_version_iris.txt \
+  past_version_reference_XFAIL.ttl
+	rm -f _$@
+	source $(tests_srcdir)/venv/bin/activate \
+	  && case_validate \
+	    past_version_reference_XFAIL.ttl \
+	    > _$@ \
+	    ; rc=$$? ; test 1 -eq $$rc
+	test -s _$@
 	mv _$@ $@
 
 split_data_graph_PASS.txt: \
