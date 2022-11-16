@@ -123,6 +123,14 @@ def main() -> None:
         help='(As with pyshacl CLI) Choose a type of inferencing to run against the Data Graph before validating. Default is "none".',
     )
     parser.add_argument(
+        "-m",
+        "--metashacl",
+        dest="metashacl",
+        action="store_true",
+        default=False,
+        help="(As with pyshacl CLI) Validate the SHACL Shapes graph against the shacl-shacl Shapes Graph before validating the Data Graph.",
+    )
+    parser.add_argument(
         "-o",
         "--output",
         dest="output",
@@ -170,6 +178,7 @@ def main() -> None:
         shacl_graph=ontology_graph,
         ont_graph=ontology_graph,
         inference=args.inference,
+        meta_shacl=args.metashacl,
         abort_on_first=args.abort,
         allow_infos=True if args.allow_infos else False,
         allow_warnings=True if args.allow_warnings else False,
