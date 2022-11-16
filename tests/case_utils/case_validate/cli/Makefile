@@ -87,6 +87,7 @@ errant_cdo_concept_XFAIL.txt: \
 	    --debug \
 	    > _$@ \
 	    ; test 1 -eq $$?
+	test -s _$@
 	mv _$@ $@
 
 format_human_output_%: \
@@ -248,6 +249,7 @@ split_data_graph_XFAIL.txt: \
 	    split_data_graph_1.json \
 	    > _$@ \
 	    ; rc=$$? ; test 1 -eq $$rc
+	test -s _$@
 	mv _$@ $@
 
 thing_metashacl_PASS.txt: \
