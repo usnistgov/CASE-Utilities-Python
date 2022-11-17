@@ -24,7 +24,7 @@ RDF_TOOLKIT_JAR := $(uco_srcdir)/lib/rdf-toolkit.jar
 case_version := $(shell python3 version_info.py)
 
 all: \
-  case-$(case_version)-subclasses.ttl
+  ontology_and_version_iris.txt
 
 .PRECIOUS: \
   case-$(case_version).ttl
@@ -79,3 +79,16 @@ case-$(case_version)-subclasses.ttl: \
 clean:
 	@rm -f \
 	  case-$(case_version)*.ttl
+
+ontology_and_version_iris.txt: \
+  src/ontology_and_version_iris.py \
+  case-$(case_version)-subclasses.ttl
+	# Guarantee venv is built.  (Same rationale as in the subclasses.ttl recipe.)
+	$(MAKE) \
+	  --directory $(case_srcdir)/tests \
+	    .venv.done.log
+	source $(case_srcdir)/tests/venv/bin/activate \
+	  && python3 src/ontology_and_version_iris.py \
+	    _$@ \
+	    case-*.ttl
+	mv _$@ $@
