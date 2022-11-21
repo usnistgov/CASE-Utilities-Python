@@ -35,18 +35,9 @@ case-$(case_version).ttl: \
 	$(MAKE) \
 	  --directory $(case_srcdir)/tests \
 	    case_monolithic.ttl
-	#TODO This cleanup step should be removed after the 0.3.0 release of CASE-Utility-SHACL-Inheritance-Reviewer.
-	test ! -d $(uco_srcdir)/dependencies/CASE-Utility-SHACL-Inheritance-Reviewer/build \
-	  || rm -rf \
-	    $(uco_srcdir)/dependencies/CASE-Utility-SHACL-Inheritance-Reviewer/build
-	#TODO This normalization step will not be needed after resolution of ONT-445.
-	java -jar $(RDF_TOOLKIT_JAR) \
-	  --inline-blank-nodes \
-	  --source $(case_srcdir)/tests/case_monolithic.ttl \
-	  --source-format turtle \
-	  --target _$@ \
-	  --target-format turtle
-	mv _$@ $@
+	cp \
+	  $(case_srcdir)/tests/case_monolithic.ttl \
+	  $@
 
 case-$(case_version)-subclasses.ttl: \
   case-$(case_version).ttl \
@@ -59,10 +50,6 @@ case-$(case_version)-subclasses.ttl: \
 	$(MAKE) \
 	  --directory $(case_srcdir)/tests \
 	    .venv.done.log
-	#TODO This cleanup step should be removed after the 0.3.0 release of CASE-Utility-SHACL-Inheritance-Reviewer.
-	test ! -d $(uco_srcdir)/dependencies/CASE-Utility-SHACL-Inheritance-Reviewer/build \
-	  || rm -rf \
-	    $(uco_srcdir)/dependencies/CASE-Utility-SHACL-Inheritance-Reviewer/build
 	source $(case_srcdir)/tests/venv/bin/activate \
 	  && python3 src/subclasses_ttl.py \
 	  __$@ \
