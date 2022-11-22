@@ -37,6 +37,9 @@ NS_CO = rdflib.Namespace("http://purl.org/co/")
 NS_UCO_ACTION = rdflib.Namespace(
     "https://ontology.unifiedcyberontology.org/uco/action/"
 )
+NS_UCO_ANALYSIS = rdflib.Namespace(
+    "https://ontology.unifiedcyberontology.org/uco/analysis/"
+)
 NS_UCO_CONFIGURATION = rdflib.Namespace(
     "https://ontology.unifiedcyberontology.org/uco/configuration/"
 )
