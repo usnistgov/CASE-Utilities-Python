@@ -92,7 +92,7 @@ def main() -> None:
         "--built-version",
         choices=tuple(built_version_choices_list),
         default="case-" + CURRENT_CASE_VERSION,
-        help="Monolithic aggregation of CASE ontology files at certain versions.  Does not require networking to use.  Default is most recent CASE release.",
+        help="Monolithic aggregation of CASE ontology files at certain versions.  Does not require networking to use.  Default is most recent CASE release.  Passing 'none' will mean no pre-built CASE ontology versions accompanying this tool will be included in the analysis.",
     )
     parser.add_argument(
         "--ontology-graph",
