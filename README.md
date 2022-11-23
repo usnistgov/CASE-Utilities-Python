@@ -55,7 +55,7 @@ To produce the validation report as a machine-readable graph output, the `--form
 case_validate --format turtle input.json > result.ttl
 ```
 
-To use one or more supplementary ontology or shapes files, the `--ontology-graph` flag can be used, more than once if desired, to supplement the selected CASE version:
+To use one or more supplementary ontology or shape files, the `--ontology-graph` flag can be used, more than once if desired, to supplement the selected CASE version:
 
 ```bash
 case_validate \
