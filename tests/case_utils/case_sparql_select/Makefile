@@ -33,6 +33,7 @@ all: \
   check-w3-markdown
 
 .PRECIOUS: \
+  prefixed_results.% \
   subclass-% \
   w3-output.%
 
