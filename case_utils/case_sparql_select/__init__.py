@@ -149,6 +149,7 @@ def main() -> None:
 
     table_text: typing.Optional[str] = None
     if args.out_table.endswith(".csv") or args.out_table.endswith(".tsv"):
+        # https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_csv.html
         sep: str
         if args.out_table.endswith(".csv"):
             sep = ","
