@@ -153,6 +153,9 @@ def main() -> None:
 
     with open(args.out_table, "w") as out_fh:
         out_fh.write(table_text)
+        if table_text[-1] != "\n":
+            # End file with newline.
+            out_fh.write("\n")
 
 
 if __name__ == "__main__":
