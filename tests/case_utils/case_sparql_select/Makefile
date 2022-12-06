@@ -18,6 +18,8 @@ top_srcdir := $(shell cd ../../.. ; pwd)
 tests_srcdir := $(top_srcdir)/tests
 
 all: \
+  prefixed_results.html \
+  prefixed_results.md \
   subclass-explicit-none.md \
   subclass-implicit-any.md \
   w3-output.html \
@@ -31,13 +33,29 @@ all: \
   check-w3-markdown
 
 .PRECIOUS: \
+  prefixed_results.% \
   subclass-% \
   w3-output.%
 
 check: \
   check-w3-html \
   check-w3-markdown \
+  check-prefixed_results \
   check-subclass
+
+check-prefixed_results: \
+  check-prefixed_results-html \
+  check-prefixed_results-md
+
+check-prefixed_results-html: \
+  .check-prefixed_results.html \
+  prefixed_results.html
+	diff $^
+
+check-prefixed_results-md: \
+  .check-prefixed_results.md \
+  prefixed_results.md
+	diff $^
 
 check-subclass: \
   check-subclass-explicit-none \
@@ -70,6 +88,21 @@ clean:
 	  *.html \
 	  *.md \
 	  _*
+
+prefixed_results.%: \
+  $(tests_srcdir)/.venv.done.log \
+  $(top_srcdir)/case_utils/case_sparql_select/__init__.py \
+  $(top_srcdir)/case_utils/ontology/__init__.py \
+  $(top_srcdir)/case_utils/ontology/version_info.py \
+  subclass.json \
+  subclass.sparql
+	source $(tests_srcdir)/venv/bin/activate \
+	  && case_sparql_select \
+	    --use-prefixes \
+	    _$@ \
+	    subclass.sparql \
+	    subclass.json
+	mv _$@ $@
 
 subclass-explicit-none.md: \
   $(tests_srcdir)/.venv.done.log \
