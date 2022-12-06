@@ -18,8 +18,10 @@ top_srcdir := $(shell cd ../../.. ; pwd)
 tests_srcdir := $(top_srcdir)/tests
 
 all: \
+  prefixed_results.csv \
   prefixed_results.html \
   prefixed_results.md \
+  prefixed_results.tsv \
   subclass-explicit-none.md \
   subclass-implicit-any.md \
   w3-output.csv \
@@ -50,8 +52,15 @@ check: \
   check-subclass
 
 check-prefixed_results: \
+  check-prefixed_results-csv \
   check-prefixed_results-html \
-  check-prefixed_results-md
+  check-prefixed_results-md \
+  check-prefixed_results-tsv
+
+check-prefixed_results-csv: \
+  .check-prefixed_results.csv \
+  prefixed_results.csv
+	diff $^
 
 check-prefixed_results-html: \
   .check-prefixed_results.html \
@@ -61,6 +70,11 @@ check-prefixed_results-html: \
 check-prefixed_results-md: \
   .check-prefixed_results.md \
   prefixed_results.md
+	diff $^
+
+check-prefixed_results-tsv: \
+  .check-prefixed_results.tsv \
+  prefixed_results.tsv
 	diff $^
 
 check-subclass: \
