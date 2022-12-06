@@ -71,6 +71,11 @@ def main() -> None:
         help="Raise error if no results are returned for query.",
     )
     parser.add_argument(
+        "--use-prefixes",
+        action="store_true",
+        help="Abbreviate node IDs according to graph's encoded prefixes.  (This will use prefixes in the graph, not the query.)",
+    )
+    parser.add_argument(
         "out_table",
         help="Expected extensions are .html for HTML tables or .md for Markdown tables.",
     )
@@ -124,6 +129,11 @@ def main() -> None:
                 # The render to ASCII is in support of this script rendering results for website viewing.
                 # .decode() is because hexlify returns bytes.
                 column_value = binascii.hexlify(column.toPython()).decode()
+            elif isinstance(column, rdflib.URIRef):
+                if args.use_prefixes:
+                    column_value = graph.namespace_manager.qname(column.toPython())
+                else:
+                    column_value = column.toPython()
             else:
                 column_value = column.toPython()
             if row_no == 0:
