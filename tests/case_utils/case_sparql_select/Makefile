@@ -20,23 +20,29 @@ tests_srcdir := $(top_srcdir)/tests
 all: \
   subclass-explicit-none.md \
   subclass-implicit-any.md \
+  w3-output.csv \
   w3-output.html \
-  w3-output.md
+  w3-output.md \
+  w3-output.tsv
 
 .PHONY: \
   check-subclass \
   check-subclass-explicit-none \
   check-subclass-implicit-any \
+  check-w3-csv \
   check-w3-html \
-  check-w3-markdown
+  check-w3-markdown \
+  check-w3-tsv
 
 .PRECIOUS: \
   subclass-% \
   w3-output.%
 
 check: \
+  check-w3-csv \
   check-w3-html \
   check-w3-markdown \
+  check-w3-tsv \
   check-subclass
 
 check-subclass: \
@@ -53,6 +59,11 @@ check-subclass-implicit-any: \
   subclass-implicit-any.md
 	diff $^
 
+check-w3-csv: \
+  .check-w3-output.csv \
+  w3-output.csv
+	diff $^
+
 check-w3-html: \
   .check-w3-output.html \
   w3-output.html
@@ -63,12 +74,19 @@ check-w3-markdown: \
   w3-output.md
 	diff $^
 
+check-w3-tsv: \
+  .check-w3-output.tsv \
+  w3-output.tsv
+	diff $^
+
 clean:
 	@rm -rf \
 	  __pycache__
 	@rm -f \
+	  *.csv \
 	  *.html \
 	  *.md \
+	  *.tsv \
 	  _*
 
 subclass-explicit-none.md: \

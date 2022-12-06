@@ -33,6 +33,7 @@ import binascii
 import logging
 import os
 import sys
+import typing
 
 import pandas as pd  # type: ignore
 import rdflib.plugins.sparql
@@ -72,7 +73,7 @@ def main() -> None:
     )
     parser.add_argument(
         "out_table",
-        help="Expected extensions are .html for HTML tables or .md for Markdown tables.",
+        help="Expected extensions are .html for HTML tables, .md for Markdown tables, .csv for comma-separated values, and .tsv for tab-separated values.",
     )
     parser.add_argument(
         "in_sparql",
@@ -136,8 +137,19 @@ def main() -> None:
 
     df = pd.DataFrame(records, columns=variables)
 
-    table_text = None
-    if args.out_table.endswith(".html"):
+    table_text: typing.Optional[str] = None
+    if args.out_table.endswith(".csv") or args.out_table.endswith(".tsv"):
+        sep: str
+        if args.out_table.endswith(".csv"):
+            sep = ","
+        elif args.out_table.endswith(".tsv"):
+            sep = "\t"
+        else:
+            raise NotImplementedError(
+                "Output extension not implemented in CSV-style output."
+            )
+        table_text = df.to_csv(sep=sep)
+    elif args.out_table.endswith(".html"):
         # https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_html.html
         # Add CSS classes for CASE website Bootstrap support.
         table_text = df.to_html(classes=("table", "table-bordered", "table-condensed"))
