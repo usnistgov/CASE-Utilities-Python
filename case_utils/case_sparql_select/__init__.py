@@ -123,6 +123,8 @@ def graph_and_query_to_data_frame(
 def data_frame_to_table_text(
     df: pd.DataFrame,
     *args: typing.Any,
+    json_indent: typing.Optional[int] = None,
+    json_orient: str,
     output_mode: str,
     **kwargs: typing.Any,
 ) -> str:
@@ -143,6 +145,12 @@ def data_frame_to_table_text(
         # https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_html.html
         # Add CSS classes for CASE website Bootstrap support.
         table_text = df.to_html(classes=("table", "table-bordered", "table-condensed"))
+    elif output_mode == "json":
+        # https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_json.html
+
+        table_text = df.to_json(
+            indent=json_indent, orient=json_orient, date_format="iso"
+        )
     elif output_mode == "md":
         # https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_markdown.html
         # https://pypi.org/project/tabulate/
@@ -180,13 +188,24 @@ def main() -> None:
         help="Raise error if no results are returned for query.",
     )
     parser.add_argument(
+        "--json-indent",
+        type=int,
+        help="Number of whitespace characters to use for indentation.  Only applicable for JSON output.",
+    )
+    parser.add_argument(
+        "--json-orient",
+        default="columns",
+        choices=("columns", "index", "records", "split", "table", "values"),
+        help="Orientation to use for Pandas DataFrame JSON output.  Only applicable for JSON output.",
+    )
+    parser.add_argument(
         "--use-prefixes",
         action="store_true",
         help="Abbreviate node IDs according to graph's encoded prefixes.  (This will use prefixes in the graph, not the query.)",
     )
     parser.add_argument(
         "out_table",
-        help="Expected extensions are .html for HTML tables, .md for Markdown tables, .csv for comma-separated values, and .tsv for tab-separated values.",
+        help="Expected extensions are .html for HTML tables, .json for JSON tables, .md for Markdown tables, .csv for comma-separated values, and .tsv for tab-separated values.  Note that JSON is a Pandas output JSON format (chosen by '--json-orient'), and not JSON-LD.",
     )
     parser.add_argument(
         "in_sparql",
@@ -231,6 +250,8 @@ def main() -> None:
 
     table_text = data_frame_to_table_text(
         df,
+        json_indent=args.json_indent,
+        json_orient=args.json_orient,
         output_mode=output_mode,
     )
     with open(args.out_table, "w") as out_fh:
