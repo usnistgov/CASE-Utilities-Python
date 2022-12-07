@@ -165,8 +165,11 @@ def data_frame_to_table_text(
     elif output_mode == "json":
         # https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_json.html
 
+        # Drop unsupported kwarg.
+        del general_kwargs["header"]
+
         table_text = df.to_json(
-            indent=json_indent, orient=json_orient, date_format="iso"
+            indent=json_indent, orient=json_orient, date_format="iso", **general_kwargs
         )
     elif output_mode == "md":
         # https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_markdown.html
@@ -253,7 +256,7 @@ def main() -> None:
     parser_index_group.add_argument(
         "--no-index",
         action="store_true",
-        help="Do not print index.",
+        help="Do not print index.  If output is JSON, --json-orient must be 'split' or 'table'.",
     )
 
     parser.add_argument("in_graph", nargs="+")
@@ -301,6 +304,15 @@ def main() -> None:
         use_index = False
     else:
         use_index = True
+
+    if (
+        output_mode == "json"
+        and use_index is False
+        and args.json_orient not in {"split", "table"}
+    ):
+        raise ValueError(
+            "For JSON output, --no-index flag requires --json-orient to be either 'split' or 'table'."
+        )
 
     df = graph_and_query_to_data_frame(
         graph,

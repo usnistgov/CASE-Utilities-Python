@@ -37,36 +37,59 @@ DATA_FRAME = case_utils.case_sparql_select.graph_and_query_to_data_frame(
 
 
 def make_data_frame_to_json_table_text_parameters() -> typing.Iterator[
-    typing.Tuple[str, bool, bool]
+    typing.Tuple[str, str, bool, bool]
 ]:
     for use_header in [False, True]:
         for use_index in [False, True]:
-            for output_mode in ["csv", "html", "md", "tsv"]:
-                yield (output_mode, use_header, use_index)
+            for output_mode in ["csv", "html", "json", "md", "tsv"]:
+                if output_mode == "json":
+                    for json_orient in [
+                        "columns",
+                        "index",
+                        "records",
+                        "split",
+                        "table",
+                        "values",
+                    ]:
+                        # Handle incompatible parameter pairings for JSON mode.
+                        if use_index is False:
+                            if json_orient not in {"split", "table"}:
+                                continue
+
+                        yield (json_orient, output_mode, use_header, use_index)
+                else:
+                    yield ("columns", output_mode, use_header, use_index)
 
 
 @pytest.mark.parametrize(
-    "output_mode, use_header, use_index",
+    "json_orient, output_mode, use_header, use_index",
     make_data_frame_to_json_table_text_parameters(),
 )
 def test_data_frame_to_table_text_json(
+    json_orient: str,
     output_mode: str,
     use_header: bool,
     use_index: bool,
 ) -> None:
     table_text = case_utils.case_sparql_select.data_frame_to_table_text(
         DATA_FRAME,
+        json_orient=json_orient,
         output_mode=output_mode,
         use_header=use_header,
         use_index=use_index,
     )
 
-    output_filename_template = ".check-w3-output-%s_header-%s_index.%s"
+    output_filename_template = ".check-w3-output-%s_header-%s_index%s.%s"
     header_part = "with" if use_header else "without"
     index_part = "with" if use_index else "without"
+    if output_mode == "json":
+        json_orient_part = "-orient-" + json_orient
+    else:
+        json_orient_part = ""
     output_filename = output_filename_template % (
         header_part,
         index_part,
+        json_orient_part,
         output_mode,
     )
     with (SRCDIR / output_filename).open("w") as out_fh:
