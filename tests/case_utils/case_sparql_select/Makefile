@@ -18,19 +18,25 @@ top_srcdir := $(shell cd ../../.. ; pwd)
 tests_srcdir := $(top_srcdir)/tests
 
 all: \
+  prefixed_results.csv \
   prefixed_results.html \
   prefixed_results.md \
+  prefixed_results.tsv \
   subclass-explicit-none.md \
   subclass-implicit-any.md \
+  w3-output.csv \
   w3-output.html \
-  w3-output.md
+  w3-output.md \
+  w3-output.tsv
 
 .PHONY: \
   check-subclass \
   check-subclass-explicit-none \
   check-subclass-implicit-any \
+  check-w3-csv \
   check-w3-html \
-  check-w3-markdown
+  check-w3-markdown \
+  check-w3-tsv
 
 .PRECIOUS: \
   prefixed_results.% \
@@ -38,14 +44,23 @@ all: \
   w3-output.%
 
 check: \
+  check-w3-csv \
   check-w3-html \
   check-w3-markdown \
+  check-w3-tsv \
   check-prefixed_results \
   check-subclass
 
 check-prefixed_results: \
+  check-prefixed_results-csv \
   check-prefixed_results-html \
-  check-prefixed_results-md
+  check-prefixed_results-md \
+  check-prefixed_results-tsv
+
+check-prefixed_results-csv: \
+  .check-prefixed_results.csv \
+  prefixed_results.csv
+	diff $^
 
 check-prefixed_results-html: \
   .check-prefixed_results.html \
@@ -55,6 +70,11 @@ check-prefixed_results-html: \
 check-prefixed_results-md: \
   .check-prefixed_results.md \
   prefixed_results.md
+	diff $^
+
+check-prefixed_results-tsv: \
+  .check-prefixed_results.tsv \
+  prefixed_results.tsv
 	diff $^
 
 check-subclass: \
@@ -71,6 +91,11 @@ check-subclass-implicit-any: \
   subclass-implicit-any.md
 	diff $^
 
+check-w3-csv: \
+  .check-w3-output.csv \
+  w3-output.csv
+	diff $^
+
 check-w3-html: \
   .check-w3-output.html \
   w3-output.html
@@ -81,12 +106,19 @@ check-w3-markdown: \
   w3-output.md
 	diff $^
 
+check-w3-tsv: \
+  .check-w3-output.tsv \
+  w3-output.tsv
+	diff $^
+
 clean:
 	@rm -rf \
 	  __pycache__
 	@rm -f \
+	  *.csv \
 	  *.html \
 	  *.md \
+	  *.tsv \
 	  _*
 
 prefixed_results.%: \
