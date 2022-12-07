@@ -50,6 +50,9 @@ check: \
   check-w3-tsv \
   check-prefixed_results \
   check-subclass
+	source $(tests_srcdir)/venv/bin/activate \
+	  && pytest \
+	    --log-level=DEBUG
 
 check-prefixed_results: \
   check-prefixed_results-csv \

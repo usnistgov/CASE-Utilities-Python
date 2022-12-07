@@ -124,9 +124,24 @@ def data_frame_to_table_text(
     df: pd.DataFrame,
     *args: typing.Any,
     output_mode: str,
+    use_header: bool,
+    use_index: bool,
     **kwargs: typing.Any,
 ) -> str:
     table_text: typing.Optional[str] = None
+
+    # Set up kwargs dicts.  One kwarg behaves slightly differently for Markdown vs. other formats.
+    general_kwargs: typing.Dict[str, typing.Any] = dict()
+    md_kwargs: typing.Dict[str, typing.Any] = dict()
+
+    # Note some output modes will drop 'header' from general_kwargs, due to alternate support or lack of support.
+    if use_header:
+        general_kwargs["header"] = True
+    else:
+        general_kwargs["header"] = False
+        md_kwargs["headers"] = tuple()
+
+    general_kwargs["index"] = use_index
 
     if output_mode in {"csv", "tsv"}:
         sep: str
@@ -138,17 +153,22 @@ def data_frame_to_table_text(
             raise NotImplementedError(
                 "Output extension not implemented in CSV-style output."
             )
-        table_text = df.to_csv(sep=sep)
+        table_text = df.to_csv(sep=sep, **general_kwargs)
     elif output_mode == "html":
         # https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_html.html
         # Add CSS classes for CASE website Bootstrap support.
-        table_text = df.to_html(classes=("table", "table-bordered", "table-condensed"))
+        table_text = df.to_html(
+            classes=("table", "table-bordered", "table-condensed"), **general_kwargs
+        )
     elif output_mode == "md":
         # https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_markdown.html
         # https://pypi.org/project/tabulate/
         # Assume Github-flavored Markdown.
 
-        table_text = df.to_markdown(tablefmt="github")
+        # Drop unsupported kwarg.
+        del general_kwargs["header"]
+
+        table_text = df.to_markdown(tablefmt="github", **general_kwargs, **md_kwargs)
     else:
         if table_text is None:
             raise NotImplementedError("Unimplemented output mode: %r." % output_mode)
@@ -193,6 +213,30 @@ def main() -> None:
         help="File containing a SPARQL SELECT query.  Note that prefixes not mapped with a PREFIX statement will be mapped according to their first occurrence among input graphs.",
     )
 
+    parser_header_group = parser.add_mutually_exclusive_group(required=False)
+    parser_header_group.add_argument(
+        "--header",
+        action="store_true",
+        help="Print column labels.  This is the default behavior.",
+    )
+    parser_header_group.add_argument(
+        "--no-header",
+        action="store_true",
+        help="Do not print column labels.",
+    )
+
+    parser_index_group = parser.add_mutually_exclusive_group(required=False)
+    parser_index_group.add_argument(
+        "--index",
+        action="store_true",
+        help="Print index (auto-incrementing row labels as left untitled column).  This is the default behavior.",
+    )
+    parser_index_group.add_argument(
+        "--no-index",
+        action="store_true",
+        help="Do not print index.",
+    )
+
     parser.add_argument("in_graph", nargs="+")
     args = parser.parse_args()
 
@@ -221,6 +265,24 @@ def main() -> None:
         raise ValueError("Failed to load query.")
     _logger.debug("select_query_text = %r." % select_query_text)
 
+    # Process --header and --no-header.
+    use_header: bool
+    if args.header is True:
+        use_header = True
+    if args.no_header is True:
+        use_header = False
+    else:
+        use_header = True
+
+    # Process --index and --no-index.
+    use_index: bool
+    if args.index is True:
+        use_index = True
+    if args.no_index is True:
+        use_index = False
+    else:
+        use_index = True
+
     df = graph_and_query_to_data_frame(
         graph,
         select_query_text,
@@ -232,6 +294,8 @@ def main() -> None:
     table_text = data_frame_to_table_text(
         df,
         output_mode=output_mode,
+        use_header=use_header,
+        use_index=use_index,
     )
     with open(args.out_table, "w") as out_fh:
         out_fh.write(table_text)
