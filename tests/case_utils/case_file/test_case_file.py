@@ -85,7 +85,11 @@ WHERE {
     )
 
     for result in graph_case_file.query(query_object):
-        (l_hash_method, l_hash_value) = result
+        assert isinstance(result, rdflib.query.ResultRow)
+        assert isinstance(result[0], rdflib.Literal)
+        assert isinstance(result[1], rdflib.Literal)
+        l_hash_method = result[0]
+        l_hash_value = result[1]
         # .toPython() with the non-XSD datatype returns the original Literal object again.  Hence, str().
         hash_method = str(l_hash_method)
         hash_value = binascii.hexlify(l_hash_value.toPython()).decode().upper()
@@ -117,6 +121,7 @@ WHERE {
 
     n_observable_object = None
     for result in graph_case_file_disable_hashes.query(query_object):
+        assert isinstance(result, rdflib.query.ResultRow)
         (n_observable_object,) = result
     assert (
         n_observable_object is not None
@@ -124,6 +129,7 @@ WHERE {
 
     n_observable_object = None
     for result in graph_case_file.query(query_object):
+        assert isinstance(result, rdflib.query.ResultRow)
         (n_observable_object,) = result
     assert (
         n_observable_object is not None
