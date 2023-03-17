@@ -86,11 +86,11 @@ def graph_and_query_to_data_frame(
     select_query_object = rdflib.plugins.sparql.processor.prepareQuery(
         select_query_text, initNs=nsdict
     )
-    for (row_no, row) in enumerate(_graph.query(select_query_object)):
+    for row_no, row in enumerate(_graph.query(select_query_object)):
         assert isinstance(row, rdflib.query.ResultRow)
         tally = row_no + 1
         record = []
-        for (column_no, column) in enumerate(row):
+        for column_no, column in enumerate(row):
             if column is None:
                 column_value = ""
             elif isinstance(column, rdflib.term.Literal):
