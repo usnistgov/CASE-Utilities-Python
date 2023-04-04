@@ -1,5 +1,0 @@
-PyLD
-mypy
-pytest
-python-dateutil
-types-python-dateutil
