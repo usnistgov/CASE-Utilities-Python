@@ -31,8 +31,7 @@ all: \
   $(top_srcdir)/.git_submodule_init.done.log \
   $(top_srcdir)/case_utils/__init__.py \
   $(top_srcdir)/setup.cfg \
-  $(top_srcdir)/setup.py \
-  requirements.txt
+  $(top_srcdir)/setup.py
 	rm -rf venv
 	$(PYTHON3) -m venv \
 	  venv
@@ -43,13 +42,10 @@ all: \
 	    setuptools \
 	    wheel
 	source venv/bin/activate \
-	  && pip install \
-	    --requirement requirements.txt
-	source venv/bin/activate \
 	  && cd $(top_srcdir) \
 	    && pip install \
 	      --editable \
-	      .
+	      .[testing]
 	touch $@
 
 all-case_utils: \
