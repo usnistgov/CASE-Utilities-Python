@@ -49,6 +49,8 @@ class HashDict(typing.NamedTuple):
     sha1: str
     sha256: str
     sha512: str
+    sha3_256: str
+    sha3_512: str
 
 
 def create_file_node(
@@ -141,6 +143,8 @@ def create_file_node(
             sha1obj = hashlib.sha1()
             sha256obj = hashlib.sha256()
             sha512obj = hashlib.sha512()
+            sha3_256obj = hashlib.sha3_256()
+            sha3_512obj = hashlib.sha3_512()
             stashed_error = None
             byte_tally = 0
             with open(filepath, "rb") as in_fh:
@@ -159,6 +163,8 @@ def create_file_node(
                     sha1obj.update(buf)
                     sha256obj.update(buf)
                     sha512obj.update(buf)
+                    sha3_256obj.update(buf)
+                    sha3_512obj.update(buf)
             if stashed_error is not None:
                 raise stashed_error
             current_hashdict = HashDict(
@@ -167,6 +173,8 @@ def create_file_node(
                 sha1obj.hexdigest(),
                 sha256obj.hexdigest(),
                 sha512obj.hexdigest(),
+                sha3_256obj.hexdigest(),
+                sha3_512obj.hexdigest(),
             )
             if last_hashdict == current_hashdict:
                 successful_hashdict = current_hashdict
@@ -194,18 +202,25 @@ def create_file_node(
 
         # Add confirmed hashes into graph.
         for key in successful_hashdict._fields:
-            if key not in ("md5", "sha1", "sha256", "sha512"):
+            if key not in ("md5", "sha1", "sha256", "sha512", "sha3_256", "sha3_512"):
                 continue
             n_hash = node_namespace["hash-" + case_utils.local_uuid.local_uuid()]
             graph.add((n_contentdata_facet, NS_UCO_OBSERVABLE.hash, n_hash))
             graph.add((n_hash, NS_RDF.type, NS_UCO_TYPES.Hash))
+            if key in ("sha3_256", "sha3_512"):
+                l_hash_method = rdflib.Literal(
+                    key.replace("_", "-").upper(),
+                    datatype=NS_UCO_VOCABULARY.HashNameVocab,
+                )
+            else:
+                l_hash_method = rdflib.Literal(
+                    key.upper(), datatype=NS_UCO_VOCABULARY.HashNameVocab
+                )
             graph.add(
                 (
                     n_hash,
                     NS_UCO_TYPES.hashMethod,
-                    rdflib.Literal(
-                        key.upper(), datatype=NS_UCO_VOCABULARY.HashNameVocab
-                    ),
+                    l_hash_method,
                 )
             )
             hash_value = getattr(successful_hashdict, key)
