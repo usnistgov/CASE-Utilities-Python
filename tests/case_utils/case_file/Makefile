@@ -110,6 +110,7 @@ sample.txt.json: \
   $(tests_srcdir)/src/compact.py \
   $(tests_srcdir)/src/isomorphic_diff.py \
   $(top_srcdir)/case_utils/case_file/__init__.py \
+  $(top_srcdir)/case_utils/inherent_uuid.py \
   $(top_srcdir)/case_utils/local_uuid.py \
   $(top_srcdir)/case_utils/namespace.py \
   sample.txt-nocompact.json
@@ -118,6 +119,7 @@ sample.txt.json: \
 	  && source $(tests_srcdir)/venv/bin/activate \
 	    && case_file \
 	      --debug \
+	      --use-deterministic-uuids \
 	      __$@ \
 	      sample.txt
 	source $(tests_srcdir)/venv/bin/activate \
@@ -143,6 +145,7 @@ sample.txt.ttl: \
   $(RDF_TOOLKIT_JAR) \
   $(tests_srcdir)/.venv.done.log \
   $(top_srcdir)/case_utils/case_file/__init__.py \
+  $(top_srcdir)/case_utils/inherent_uuid.py \
   $(top_srcdir)/case_utils/local_uuid.py \
   $(top_srcdir)/case_utils/namespace.py \
   sample.txt.done.log
@@ -151,6 +154,7 @@ sample.txt.ttl: \
 	  && source $(tests_srcdir)/venv/bin/activate \
 	    && case_file \
 	      --debug \
+	      --use-deterministic-uuids \
 	      __$@ \
 	      sample.txt
 	java -jar $(RDF_TOOLKIT_JAR) \
@@ -167,6 +171,7 @@ sample.txt-disable_hashes.ttl: \
   $(RDF_TOOLKIT_JAR) \
   $(tests_srcdir)/.venv.done.log \
   $(top_srcdir)/case_utils/case_file/__init__.py \
+  $(top_srcdir)/case_utils/inherent_uuid.py \
   $(top_srcdir)/case_utils/local_uuid.py \
   $(top_srcdir)/case_utils/namespace.py \
   sample.txt.done.log
@@ -176,6 +181,7 @@ sample.txt-disable_hashes.ttl: \
 	    && case_file \
 	      --debug \
 	      --disable-hashes \
+	      --use-deterministic-uuids \
 	      __$@ \
 	      sample.txt
 	java -jar $(RDF_TOOLKIT_JAR) \
@@ -193,6 +199,7 @@ sample.txt-nocompact.json: \
   $(tests_srcdir)/.venv.done.log \
   $(tests_srcdir)/src/isomorphic_diff.py \
   $(top_srcdir)/case_utils/case_file/__init__.py \
+  $(top_srcdir)/case_utils/inherent_uuid.py \
   $(top_srcdir)/case_utils/local_uuid.py \
   $(top_srcdir)/case_utils/namespace.py \
   sample.txt.done.log
@@ -201,6 +208,7 @@ sample.txt-nocompact.json: \
 	  && source $(tests_srcdir)/venv/bin/activate \
 	    && case_file \
 	      --debug \
+	      --use-deterministic-uuids \
 	      _$@ \
 	      sample.txt
 	# To avoid making noisy, uninformative updates from blank node identifiers, only move the new file into place if it is not isomorphic with the Git-tracked version of the target.
