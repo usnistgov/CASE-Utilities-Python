@@ -9,6 +9,51 @@
     },
     "@graph": [
         {
+            "@id": "kb:File-800784de-5c9e-5eb2-b843-0ac51a1bd4b9",
+            "@type": "uco-observable:File",
+            "uco-core:hasFacet": {
+                "@id": "kb:FileFacet-ffa3e6bb-dffc-549d-a7c4-ffc5e90ac55d"
+            }
+        },
+        {
+            "@id": "kb:File-ace6460a-92a9-58b9-83ea-a18ae87f6e04",
+            "@type": "uco-observable:File",
+            "uco-core:hasFacet": [
+                {
+                    "@id": "kb:FileFacet-1297a4bd-563b-54c3-ad8a-f67f01ba9b10"
+                },
+                {
+                    "@id": "kb:content-data-facet-1833f979-1f19-5543-9d82-6cefd144b169"
+                }
+            ]
+        },
+        {
+            "@id": "kb:FileFacet-1297a4bd-563b-54c3-ad8a-f67f01ba9b10",
+            "@type": "uco-observable:FileFacet",
+            "uco-observable:fileName": "sample.txt",
+            "uco-observable:modifiedTime": {
+                "@type": "xsd:dateTime",
+                "@value": "2010-01-02T03:04:56+00:00"
+            },
+            "uco-observable:sizeInBytes": {
+                "@type": "xsd:integer",
+                "@value": "4"
+            }
+        },
+        {
+            "@id": "kb:FileFacet-ffa3e6bb-dffc-549d-a7c4-ffc5e90ac55d",
+            "@type": "uco-observable:FileFacet",
+            "uco-observable:fileName": "sample.txt",
+            "uco-observable:modifiedTime": {
+                "@type": "xsd:dateTime",
+                "@value": "2010-01-02T03:04:56+00:00"
+            },
+            "uco-observable:sizeInBytes": {
+                "@type": "xsd:integer",
+                "@value": "4"
+            }
+        },
+        {
             "@id": "kb:content-data-facet-1833f979-1f19-5543-9d82-6cefd144b169",
             "@type": "uco-observable:ContentDataFacet",
             "uco-observable:hash": [
@@ -31,51 +76,6 @@
                     "@id": "kb:hash-b02ebdb3-edf7-5fbf-8088-3d064e316b93"
                 }
             ],
-            "uco-observable:sizeInBytes": {
-                "@type": "xsd:integer",
-                "@value": "4"
-            }
-        },
-        {
-            "@id": "kb:file-800784de-5c9e-5eb2-b843-0ac51a1bd4b9",
-            "@type": "uco-observable:File",
-            "uco-core:hasFacet": {
-                "@id": "kb:file-facet-ffa3e6bb-dffc-549d-a7c4-ffc5e90ac55d"
-            }
-        },
-        {
-            "@id": "kb:file-ace6460a-92a9-58b9-83ea-a18ae87f6e04",
-            "@type": "uco-observable:File",
-            "uco-core:hasFacet": [
-                {
-                    "@id": "kb:content-data-facet-1833f979-1f19-5543-9d82-6cefd144b169"
-                },
-                {
-                    "@id": "kb:file-facet-1297a4bd-563b-54c3-ad8a-f67f01ba9b10"
-                }
-            ]
-        },
-        {
-            "@id": "kb:file-facet-1297a4bd-563b-54c3-ad8a-f67f01ba9b10",
-            "@type": "uco-observable:FileFacet",
-            "uco-observable:fileName": "sample.txt",
-            "uco-observable:modifiedTime": {
-                "@type": "xsd:dateTime",
-                "@value": "2010-01-02T03:04:56+00:00"
-            },
-            "uco-observable:sizeInBytes": {
-                "@type": "xsd:integer",
-                "@value": "4"
-            }
-        },
-        {
-            "@id": "kb:file-facet-ffa3e6bb-dffc-549d-a7c4-ffc5e90ac55d",
-            "@type": "uco-observable:FileFacet",
-            "uco-observable:fileName": "sample.txt",
-            "uco-observable:modifiedTime": {
-                "@type": "xsd:dateTime",
-                "@value": "2010-01-02T03:04:56+00:00"
-            },
             "uco-observable:sizeInBytes": {
                 "@type": "xsd:integer",
                 "@value": "4"
