@@ -61,6 +61,11 @@ check: \
   check-case_utils
 	source venv/bin/activate \
 	  && pytest \
+	    --doctest-modules \
+	    --log-level=DEBUG \
+	    $(top_srcdir)/case_utils
+	source venv/bin/activate \
+	  && pytest \
 	    --ignore case_utils \
 	    --log-level=DEBUG
 
