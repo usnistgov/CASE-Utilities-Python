@@ -34,17 +34,18 @@ Examples
 A knowledge base ontology currently uses a prefix 'kb:', expanding to 'http://example.org/kb/'.  This knowledge base has a node kb:File-ac6b44cf-dc6b-4f2c-a09d-c9beb0a345a9. What is the IRI of its FileFacet?
 
 >>> from case_utils.namespace import NS_UCO_OBSERVABLE
->>> file_iri: str = "http://example.org/kb/File-ac6b44cf-dc6b-4f2c-a09d-c9beb0a345a9"
->>> n_file = URIRef(file_iri)
->>> n_file_facet = get_facet_uriref(n_file, NS_UCO_OBSERVABLE.FileFacet)
+>>> ns_kb = Namespace("http://example.org/kb/")
+>>> n_file = ns_kb["File-ac6b44cf-dc6b-4f2c-a09d-c9beb0a345a9"]
+>>> n_file_facet = get_facet_uriref(n_file, NS_UCO_OBSERVABLE.FileFacet, namespace=ns_kb)
 >>> n_file_facet
 rdflib.term.URIRef('http://example.org/kb/FileFacet-01d292e3-0f38-5974-868d-006ef07f5186')
 
 A documentation policy change has been enacted, and now all knowledge base individuals need to use the URN example form.  What is the FileFacet IRI now?
 
+>>> ns_kb_2 = Namespace("urn:example:kb:")
 >>> file_iri_2: str = "urn:example:kb:File-ac6b44cf-dc6b-4f2c-a09d-c9beb0a345a9"
 >>> n_file_2 = URIRef(file_iri_2)
->>> n_file_facet_2 = get_facet_uriref(n_file_2, NS_UCO_OBSERVABLE.FileFacet)
+>>> n_file_facet_2 = get_facet_uriref(n_file_2, NS_UCO_OBSERVABLE.FileFacet, namespace=ns_kb_2)
 >>> n_file_facet_2
 rdflib.term.URIRef('urn:example:kb:FileFacet-01d292e3-0f38-5974-868d-006ef07f5186')
 
@@ -53,7 +54,7 @@ The two IRIs end with the same UUID.
 >>> assert str(n_file_facet)[-36:] == str(n_file_facet_2)[-36:]
 """
 
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 
 import binascii
 import re
@@ -148,85 +149,37 @@ def facet_inherence_uuid(
     return uuid.uuid5(uco_object_inherence_uuid, str(n_facet_class))
 
 
-def guess_namespace(n_node: URIRef, *args: Any, **kwargs: Any) -> Namespace:
-    """
-    This function attempts simple heuristics to extract from a URIRef its namespace IRI.  The heuristics, being simple, are not necessarily going to provide desirable answers, and might be semantically incorrect.
-
-    :rtype rdflib.Namespace:
-
-    Examples
-    ========
-
-    >>> guess_namespace(URIRef("http://example.org/kb/Foo"))
-    Namespace('http://example.org/kb/')
-    >>> guess_namespace(URIRef("http://example.org/kb#Foo"))
-    Namespace('http://example.org/kb#')
-    >>> guess_namespace(URIRef("urn:example:kb#Foo"))
-    Namespace('urn:example:kb#')
-
-    Note this function might not always give desirable answers.
-
-    >>> guess_namespace(URIRef("urn:example:kb#Foo/Bar"))
-    Namespace('urn:example:kb#')
-    >>> guess_namespace(URIRef("urn:example:kb/Foo#Bar"))
-    Namespace('urn:example:kb/Foo#')
-
-    Some patterns, such as Simple Storage Service (S3) URLs being treated as RDF IRIs, should avoid using this function.  This object that houses a PCAP blob can function as an IRI, but the guessed namespace value does not serve as an RDF namespace.
-
-    >>> guess_namespace(URIRef("s3://digitalcorpora/corpora/scenarios/2008-nitroba/nitroba.pcap"))
-    Namespace('s3://digitalcorpora/corpora/scenarios/2008-nitroba/')
-    """
-    node_iri = str(n_node)
-    if "#" in node_iri:
-        namespace_iri = node_iri[: 1 + node_iri.rindex("#")]
-    elif "/" in node_iri:
-        namespace_iri = node_iri[: 1 + node_iri.rindex("/")]
-    else:
-        namespace_iri = node_iri[: 1 + node_iri.rindex(":")]
-    return Namespace(namespace_iri)
-
-
 def get_facet_uriref(
     n_uco_object: URIRef,
     n_facet_class: URIRef,
     *args: Any,
-    namespace: Optional[Namespace] = None,
+    namespace: Namespace,
     **kwargs: Any
 ) -> URIRef:
     """
-    :param namespace: An optional RDFLib Namespace object to use for prefixing the Facet IRI with a knowledge base prefix IRI.  If not provided, will be guessed from a right-truncation of n_uco_object under some namespace forms (hash-, then slash-, then colon-terminated).  This is a potentially fragile guessing mechanism, so users should feel encouraged to provide this optional parameter.
-    :type namespace rdflib.Namespace or None:
+    :param namespace: An RDFLib Namespace object to use for prefixing the Facet IRI with a knowledge base prefix IRI.
+    :type namespace rdflib.Namespace:
 
     Examples
     ========
 
-    What is the URLFacet pertaining to the Nitroba University Scenario's PCAP file, when being interpreted as a Simple Storage Service (S3) object?  Note that this example will show that in some cases a (RDFLib) Namespace will be desired.
+    What is the URLFacet pertaining to the Nitroba University Scenario's PCAP file, when being interpreted as a Simple Storage Service (S3) object?
 
     >>> from case_utils.namespace import NS_UCO_OBSERVABLE
     >>> pcap_url: str = "s3://digitalcorpora/corpora/scenarios/2008-nitroba/nitroba.pcap"
     >>> n_pcap = URIRef(pcap_url)
-    >>> n_pcap_url_facet_try1 = get_facet_uriref(n_pcap, NS_UCO_OBSERVABLE.URLFacet)
-    >>> n_pcap_url_facet_try1
-    rdflib.term.URIRef('s3://digitalcorpora/corpora/scenarios/2008-nitroba/URLFacet-4b6023da-dbc4-5e1e-9a2f-aca2a6f6405c')
-    >>> # Looks like a (RDFLib) Namespace object should be provided.
     >>> ns_kb = Namespace("http://example.org/kb/")
-    >>> n_pcap_url_facet_try2 = get_facet_uriref(n_pcap, NS_UCO_OBSERVABLE.URLFacet, namespace=ns_kb)
-    >>> n_pcap_url_facet_try2
+    >>> n_pcap_url_facet = get_facet_uriref(n_pcap, NS_UCO_OBSERVABLE.URLFacet, namespace=ns_kb)
+    >>> n_pcap_url_facet
     rdflib.term.URIRef('http://example.org/kb/URLFacet-4b6023da-dbc4-5e1e-9a2f-aca2a6f6405c')
     """
     uco_object_uuid_namespace: uuid.UUID = inherence_uuid(n_uco_object)
     facet_uuid = facet_inherence_uuid(uco_object_uuid_namespace, n_facet_class)
 
-    _namespace: Namespace
-    if namespace is None:
-        _namespace = guess_namespace(n_uco_object)
-    else:
-        _namespace = namespace
-
     # NOTE: This encodes an assumption that Facets (including extension Facets) use the "Slash" IRI style.
     facet_class_local_name = str(n_facet_class).rsplit("/")[-1]
 
-    return _namespace[facet_class_local_name + "-" + str(facet_uuid)]
+    return namespace[facet_class_local_name + "-" + str(facet_uuid)]
 
 
 def hash_method_value_uuid(l_hash_method: Literal, l_hash_value: Literal) -> uuid.UUID:

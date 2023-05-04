@@ -104,7 +104,7 @@ def create_file_node(
     n_file_facet: rdflib.URIRef
     if use_deterministic_uuids:
         n_file_facet = case_utils.inherent_uuid.get_facet_uriref(
-            n_file, NS_UCO_OBSERVABLE.FileFacet
+            n_file, NS_UCO_OBSERVABLE.FileFacet, namespace=node_namespace
         )
     else:
         n_file_facet = node_namespace["FileFacet-" + case_utils.local_uuid.local_uuid()]
@@ -138,7 +138,7 @@ def create_file_node(
         n_contentdata_facet: rdflib.URIRef
         if use_deterministic_uuids:
             n_contentdata_facet = case_utils.inherent_uuid.get_facet_uriref(
-                n_file, NS_UCO_OBSERVABLE.ContentDataFacet
+                n_file, NS_UCO_OBSERVABLE.ContentDataFacet, namespace=node_namespace
             )
         else:
             n_contentdata_facet = node_namespace[
