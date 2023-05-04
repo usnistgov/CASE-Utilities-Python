@@ -70,7 +70,7 @@ def create_file_node(
     :param filepath: The path to the file to characterize.  Can be relative or absolute.
     :type filepath: str
 
-    :param node_iri: The desired full IRI for the node.  If absent, will make an IRI of the pattern ``ns_base + 'file-' + uuid4``
+    :param node_iri: The desired full IRI for the node.  If absent, will make an IRI of the pattern ``ns_base + 'File-' + uuid4``
     :type node_iri: str
 
     :param node_prefix: The base prefix to use if node_iri is not supplied.
@@ -88,7 +88,7 @@ def create_file_node(
     node_namespace = rdflib.Namespace(node_prefix)
 
     if node_iri is None:
-        node_slug = "file-" + case_utils.local_uuid.local_uuid()
+        node_slug = "File-" + case_utils.local_uuid.local_uuid()
         node_iri = node_namespace[node_slug]
     n_file = rdflib.URIRef(node_iri)
     graph.add((n_file, NS_RDF.type, NS_UCO_OBSERVABLE.File))
@@ -97,7 +97,7 @@ def create_file_node(
     literal_basename = rdflib.Literal(basename)
 
     file_stat = os.stat(filepath)
-    n_file_facet = node_namespace["file-facet-" + case_utils.local_uuid.local_uuid()]
+    n_file_facet = node_namespace["FileFacet-" + case_utils.local_uuid.local_uuid()]
     graph.add(
         (
             n_file_facet,
@@ -273,7 +273,7 @@ def main() -> None:
         context_dictionary = {k: v for (k, v) in graph.namespace_manager.namespaces()}
         serialize_kwargs["context"] = context_dictionary
 
-    node_iri = NS_BASE["file-" + case_utils.local_uuid.local_uuid()]
+    node_iri = NS_BASE["File-" + case_utils.local_uuid.local_uuid()]
     create_file_node(
         graph,
         args.in_file,
