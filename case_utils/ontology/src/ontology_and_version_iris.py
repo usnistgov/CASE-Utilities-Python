@@ -29,6 +29,11 @@ NS_RDF = rdflib.RDF
 def concept_is_cdo_concept(n_concept: rdflib.URIRef) -> bool:
     """
     This function is purposefully distinct from the function used in case_validate.  Within this script, the publishing history of CASE and UCO is reviewed.
+
+    >>> concept_is_cdo_concept(rdflib.URIRef("http://example.org/ontology/Thing"))
+    False
+    >>> concept_is_cdo_concept(rdflib.URIRef("https://ontology.unifiedcyberontology.org/uco/core/UcoThing"))
+    True
     """
     concept_iri = str(n_concept)
     return (
