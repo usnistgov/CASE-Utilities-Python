@@ -15,7 +15,7 @@
 This module creates a graph object that provides a basic UCO characterization of a single file.  The gathered metadata is among the more "durable" file characteristics, i.e. characteristics that would remain consistent when transferring a file between locations.
 """
 
-__version__ = "0.4.0"
+__version__ = "0.5.0"
 
 import argparse
 import datetime
@@ -27,7 +27,7 @@ import warnings
 
 import rdflib
 
-import case_utils
+import case_utils.inherent_uuid
 from case_utils.namespace import (
     NS_RDF,
     NS_UCO_CORE,
@@ -49,6 +49,8 @@ class HashDict(typing.NamedTuple):
     sha1: str
     sha256: str
     sha512: str
+    sha3_256: str
+    sha3_512: str
 
 
 def create_file_node(
@@ -58,6 +60,9 @@ def create_file_node(
     node_prefix: str = DEFAULT_PREFIX,
     disable_hashes: bool = False,
     disable_mtime: bool = False,
+    *args: typing.Any,
+    use_deterministic_uuids: bool = False,
+    **kwargs: typing.Any,
 ) -> rdflib.URIRef:
     r"""
     This function characterizes the file at filepath.
@@ -68,7 +73,7 @@ def create_file_node(
     :param filepath: The path to the file to characterize.  Can be relative or absolute.
     :type filepath: str
 
-    :param node_iri: The desired full IRI for the node.  If absent, will make an IRI of the pattern ``ns_base + 'file-' + uuid4``
+    :param node_iri: The desired full IRI for the node.  If absent, will make an IRI of the pattern ``ns_base + 'File-' + uuid``
     :type node_iri: str
 
     :param node_prefix: The base prefix to use if node_iri is not supplied.
@@ -86,7 +91,7 @@ def create_file_node(
     node_namespace = rdflib.Namespace(node_prefix)
 
     if node_iri is None:
-        node_slug = "file-" + case_utils.local_uuid.local_uuid()
+        node_slug = "File-" + case_utils.local_uuid.local_uuid()
         node_iri = node_namespace[node_slug]
     n_file = rdflib.URIRef(node_iri)
     graph.add((n_file, NS_RDF.type, NS_UCO_OBSERVABLE.File))
@@ -95,7 +100,15 @@ def create_file_node(
     literal_basename = rdflib.Literal(basename)
 
     file_stat = os.stat(filepath)
-    n_file_facet = node_namespace["file-facet-" + case_utils.local_uuid.local_uuid()]
+
+    n_file_facet: rdflib.URIRef
+    if use_deterministic_uuids:
+        n_file_facet = case_utils.inherent_uuid.get_facet_uriref(
+            n_file, NS_UCO_OBSERVABLE.FileFacet, namespace=node_namespace
+        )
+    else:
+        n_file_facet = node_namespace["FileFacet-" + case_utils.local_uuid.local_uuid()]
+
     graph.add(
         (
             n_file_facet,
@@ -122,9 +135,16 @@ def create_file_node(
         graph.add((n_file_facet, NS_UCO_OBSERVABLE.modifiedTime, literal_mtime))
 
     if not disable_hashes:
-        n_contentdata_facet = node_namespace[
-            "content-data-facet-" + case_utils.local_uuid.local_uuid()
-        ]
+        n_contentdata_facet: rdflib.URIRef
+        if use_deterministic_uuids:
+            n_contentdata_facet = case_utils.inherent_uuid.get_facet_uriref(
+                n_file, NS_UCO_OBSERVABLE.ContentDataFacet, namespace=node_namespace
+            )
+        else:
+            n_contentdata_facet = node_namespace[
+                "ContentDataFacet-" + case_utils.local_uuid.local_uuid()
+            ]
+
         graph.add((n_file, NS_UCO_CORE.hasFacet, n_contentdata_facet))
         graph.add(
             (n_contentdata_facet, NS_RDF.type, NS_UCO_OBSERVABLE.ContentDataFacet)
@@ -141,6 +161,8 @@ def create_file_node(
             sha1obj = hashlib.sha1()
             sha256obj = hashlib.sha256()
             sha512obj = hashlib.sha512()
+            sha3_256obj = hashlib.sha3_256()
+            sha3_512obj = hashlib.sha3_512()
             stashed_error = None
             byte_tally = 0
             with open(filepath, "rb") as in_fh:
@@ -159,6 +181,8 @@ def create_file_node(
                     sha1obj.update(buf)
                     sha256obj.update(buf)
                     sha512obj.update(buf)
+                    sha3_256obj.update(buf)
+                    sha3_512obj.update(buf)
             if stashed_error is not None:
                 raise stashed_error
             current_hashdict = HashDict(
@@ -167,6 +191,8 @@ def create_file_node(
                 sha1obj.hexdigest(),
                 sha256obj.hexdigest(),
                 sha512obj.hexdigest(),
+                sha3_256obj.hexdigest(),
+                sha3_512obj.hexdigest(),
             )
             if last_hashdict == current_hashdict:
                 successful_hashdict = current_hashdict
@@ -194,26 +220,48 @@ def create_file_node(
 
         # Add confirmed hashes into graph.
         for key in successful_hashdict._fields:
-            if key not in ("md5", "sha1", "sha256", "sha512"):
+            if key not in ("md5", "sha1", "sha256", "sha512", "sha3_256", "sha3_512"):
                 continue
-            n_hash = node_namespace["hash-" + case_utils.local_uuid.local_uuid()]
+
+            l_hash_method: rdflib.Literal
+            if key in ("sha3_256", "sha3_512"):
+                l_hash_method = rdflib.Literal(
+                    key.replace("_", "-").upper(),
+                    datatype=NS_UCO_VOCABULARY.HashNameVocab,
+                )
+            else:
+                l_hash_method = rdflib.Literal(
+                    key.upper(), datatype=NS_UCO_VOCABULARY.HashNameVocab
+                )
+
+            hash_value: str = getattr(successful_hashdict, key)
+            l_hash_value = rdflib.Literal(hash_value.upper(), datatype=NS_XSD.hexBinary)
+
+            hash_uuid: str
+            if use_deterministic_uuids:
+                hash_uuid = str(
+                    case_utils.inherent_uuid.hash_method_value_uuid(
+                        l_hash_method, l_hash_value
+                    )
+                )
+            else:
+                hash_uuid = case_utils.local_uuid.local_uuid()
+            n_hash = node_namespace["Hash-" + hash_uuid]
+
             graph.add((n_contentdata_facet, NS_UCO_OBSERVABLE.hash, n_hash))
             graph.add((n_hash, NS_RDF.type, NS_UCO_TYPES.Hash))
             graph.add(
                 (
                     n_hash,
                     NS_UCO_TYPES.hashMethod,
-                    rdflib.Literal(
-                        key.upper(), datatype=NS_UCO_VOCABULARY.HashNameVocab
-                    ),
+                    l_hash_method,
                 )
             )
-            hash_value = getattr(successful_hashdict, key)
             graph.add(
                 (
                     n_hash,
                     NS_UCO_TYPES.hashValue,
-                    rdflib.Literal(hash_value.upper(), datatype=NS_XSD.hexBinary),
+                    l_hash_value,
                 )
             )
 
@@ -226,6 +274,11 @@ def main() -> None:
     parser.add_argument("--debug", action="store_true")
     parser.add_argument("--disable-hashes", action="store_true")
     parser.add_argument("--disable-mtime", action="store_true")
+    parser.add_argument(
+        "--use-deterministic-uuids",
+        action="store_true",
+        help="Use UUIDs computed using the case_utils.inherent_uuid module.",
+    )
     parser.add_argument(
         "--output-format", help="Override extension-based format guesser."
     )
@@ -258,7 +311,7 @@ def main() -> None:
         context_dictionary = {k: v for (k, v) in graph.namespace_manager.namespaces()}
         serialize_kwargs["context"] = context_dictionary
 
-    node_iri = NS_BASE["file-" + case_utils.local_uuid.local_uuid()]
+    node_iri = NS_BASE["File-" + case_utils.local_uuid.local_uuid()]
     create_file_node(
         graph,
         args.in_file,
@@ -266,6 +319,7 @@ def main() -> None:
         node_prefix=args.base_prefix,
         disable_hashes=args.disable_hashes,
         disable_mtime=args.disable_mtime,
+        use_deterministic_uuids=args.use_deterministic_uuids,
     )
 
     graph.serialize(args.out_graph, **serialize_kwargs)
