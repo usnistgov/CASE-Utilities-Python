@@ -93,11 +93,11 @@ RX_UUID = re.compile(
 )
 
 
-def inherence_uuid(n_uco_thing: URIRef, *args: Any, **kwargs: Any) -> uuid.UUID:
+def inherence_uuid(n_thing: URIRef, *args: Any, **kwargs: Any) -> uuid.UUID:
     """
-    This function returns a UUIDv5 for any UcoThing, that can be used as a UUID Namespace in further `uuid.uuidv5` calls.
+    This function returns a UUIDv5 for any OWL Thing, that can be used as a UUID Namespace in further `uuid.uuidv5` calls.
 
-    In the case that the UcoThing ends with a UUID, that UUID string will be returned wrapped in a UUID object.  In all other cases, a UUID version 5 object will be returned for the node as a name under the URL namespace [#rfc4122ac]_.
+    In the case that the Thing is a UcoThing that ends with a UUID, that UUID string will be returned wrapped in a UUID object.  In all other cases, a UUID version 5 object will be returned for the Thing as a name under the URL namespace [#rfc4122ac]_.
 
     References
     ==========
@@ -123,7 +123,7 @@ def inherence_uuid(n_uco_thing: URIRef, *args: Any, **kwargs: Any) -> uuid.UUID:
     >>> case_homepage_uuid_namespace
     UUID('2c6406b7-3396-5fdd-b9bf-c6e21273e40a')
     """
-    node_iri = str(n_uco_thing)
+    node_iri = str(n_thing)
     if len(node_iri) < 40 or RX_UUID.search(node_iri) is None:
         # <40 -> Too short to have a UUID and scheme.
         return uuid.uuid5(uuid.NAMESPACE_URL, node_iri)
@@ -138,7 +138,7 @@ def facet_inherence_uuid(
     **kwargs: Any
 ) -> uuid.UUID:
     """
-    :param n_facet_class: This node is expected to be the `rdflib.term.URIRef` for an OWL Class that is either in UCO or extends a class in UCO, such as `case_utils.namespace.NS_UCO_OBSERVABLE.FileFacet`.  The Facet class SHOULD be a 'leaf' class - that is, it should have no OWL subclasses.  (This 'SHOULD' might become a more stringent requirement in the future.  uco-core:Facet must not be used.  There is some question on how this rule should apply for uco-observable:WifiAddressFacet and its parent class uco-observable:MACAddressFacet.)
+    :param n_facet_class: This node is expected to be the `rdflib.term.URIRef` for an OWL Class that is either in UCO or extends a class in UCO, such as `case_utils.namespace.NS_UCO_OBSERVABLE.FileFacet`.  The Facet class SHOULD be a 'leaf' class - that is, it should have no OWL subclasses.  (This 'SHOULD' might become a more stringent requirement in the future.  uco-core:Facet MUST not be used.  There is some question on how this rule should apply for uco-observable:WifiAddressFacet and its parent class uco-observable:MACAddressFacet.)
     :type n_facet_class: rdflib.term.URIRef
     """
 
