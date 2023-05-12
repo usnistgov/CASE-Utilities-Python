@@ -13,9 +13,13 @@
 
 """
 This library is a wrapper for uuid, provided to generate repeatable UUIDs if requested.
+
+The function local_uuid() should be used in code where a user could be expected to opt in to non-random UUIDs.
 """
 
 __version__ = "0.3.2"
+
+__all__ = ["configure", "local_uuid"]
 
 import logging
 import os
@@ -34,13 +38,13 @@ _logger = logging.getLogger(pathlib.Path(__file__).name)
 
 def configure() -> None:
     """
-    This function is part of setting up demo_uuid() to generate non-random UUIDs.  See demo_uuid() documentation for further setup notes.
+    This function is part of setting up _demo_uuid() to generate non-random UUIDs.  See _demo_uuid() documentation for further setup notes.
     """
     global DEMO_UUID_BASE
 
     if os.getenv("DEMO_UUID_REQUESTING_NONRANDOM") == "NONRANDOM_REQUESTED":
         warnings.warn(
-            "Environment variable DEMO_UUID_REQUESTING_NONRANDOM is deprecated.  See case_utils.local_uuid.demo_uuid for usage notes on its replacement, CASE_DEMO_NONRANDOM_UUID_BASE.  Proceeding with random UUIDs.",
+            "Environment variable DEMO_UUID_REQUESTING_NONRANDOM is deprecated.  See case_utils.local_uuid._demo_uuid for usage notes on its replacement, CASE_DEMO_NONRANDOM_UUID_BASE.  Proceeding with random UUIDs.",
             FutureWarning,
         )
         return
@@ -109,9 +113,11 @@ def configure() -> None:
     DEMO_UUID_BASE = "/".join(demo_uuid_base_parts)
 
 
-def demo_uuid() -> str:
+def _demo_uuid() -> str:
     """
     This function generates a repeatable UUID, drawing on non-varying elements of the environment and process call for entropy.
+
+    This function is not intended to be called outside of this module.  Instead, local_uuid() should be called.
 
     WARNING: This function was developed for use ONLY for reducing (but not eliminating) version-control edits to identifiers when generating sample data.  It creates UUIDs that are decidedly NOT random, and should remain consistent on repeated calls to the importing script.
 
@@ -148,4 +154,4 @@ def local_uuid() -> str:
     if DEMO_UUID_BASE is None:
         return str(uuid.uuid4())
     else:
-        return demo_uuid()
+        return _demo_uuid()
