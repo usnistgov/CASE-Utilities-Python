@@ -229,7 +229,7 @@ def validate(
     result.conforms = validate_result[0]
     result.graph = validate_result[1]
     result.text = validate_result[2]
-    result.undefined_cdo_concepts = undefined_cdo_concepts
+    result.undefined_concepts = undefined_cdo_concepts
 
     return result
 
