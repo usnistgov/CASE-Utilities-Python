@@ -36,11 +36,12 @@ import importlib.resources
 import logging
 import os
 import sys
-import typing
 import warnings
+from typing import Optional, Set, Union, Dict, Tuple
 
 import pyshacl  # type: ignore
 import rdflib
+from rdflib import Graph
 
 import case_utils.ontology
 from case_utils.ontology.version_info import (
@@ -64,11 +65,166 @@ class NonExistentCDOConceptWarning(UserWarning):
     pass
 
 
+class ValidationResult:
+    conforms: bool
+    graph: Graph
+    text: str
+    undefined_concepts: Set[rdflib.URIRef]
+
+
 def concept_is_cdo_concept(n_concept: rdflib.URIRef) -> bool:
+    """
+    Determine if a concept is part of the CDO ontology.
+
+    :param n_concept: The concept to check.
+    :return: whether the concept is part of the CDO ontology.
+    """
     concept_iri = str(n_concept)
     return concept_iri.startswith(
         "https://ontology.unifiedcyberontology.org/"
     ) or concept_iri.startswith("https://ontology.caseontology.org/")
+
+
+def get_ontology_graph(case_version: Optional[str] = None,
+                       supplemental_graphs: Optional[list[str]] = None) -> rdflib.Graph:
+    """
+    Get the ontology graph for the given case_version and any supplemental graphs.
+
+    :param case_version: the version of the CASE ontology to use.  If None, the most recent version will be used.
+    :param supplemental_graphs: a list of supplemental graphs to use.  If None, no supplemental graphs will be used.
+    :return: the ontology graph against which to validate the data graph.
+    """
+    ontology_graph = rdflib.Graph()
+    if case_version and case_version != "none":
+        ttl_filename = case_version + ".ttl"
+        _logger.debug("ttl_filename = %r.", ttl_filename)
+        ttl_data = importlib.resources.read_text(case_utils.ontology, ttl_filename)
+        ontology_graph.parse(data=ttl_data, format="turtle")
+    if supplemental_graphs:
+        for arg_ontology_graph in supplemental_graphs:
+            _logger.debug("arg_ontology_graph = %r.", arg_ontology_graph)
+            ontology_graph.parse(arg_ontology_graph)
+    return ontology_graph
+
+
+def get_invalid_cdo_concepts(data_graph: Graph, ontology_graph: Graph) -> Set[rdflib.URIRef]:
+    """
+    Get the set of concepts in the data graph that are not part of the CDO ontology.
+
+    :param data_graph: The data graph to validate.
+    :param ontology_graph: The ontology graph to use for validation.
+    :return: The list of concepts in the data graph that are not part of the CDO ontology.
+    """
+    # Construct set of CDO concepts for data graph concept-existence review.
+    cdo_concepts: Set[rdflib.URIRef] = set()
+
+    for n_structural_class in [
+        NS_OWL.Class,
+        NS_OWL.AnnotationProperty,
+        NS_OWL.DatatypeProperty,
+        NS_OWL.ObjectProperty,
+        NS_RDFS.Datatype,
+        NS_SH.NodeShape,
+        NS_SH.PropertyShape,
+        NS_SH.Shape,
+    ]:
+        for ontology_triple in ontology_graph.triples(
+                (None, NS_RDF.type, n_structural_class)
+        ):
+            if not isinstance(ontology_triple[0], rdflib.URIRef):
+                continue
+            if concept_is_cdo_concept(ontology_triple[0]):
+                cdo_concepts.add(ontology_triple[0])
+    for n_ontology_predicate in [
+        NS_OWL.backwardCompatibleWith,
+        NS_OWL.imports,
+        NS_OWL.incompatibleWith,
+        NS_OWL.priorVersion,
+        NS_OWL.versionIRI,
+    ]:
+        for ontology_triple in ontology_graph.triples(
+                (None, n_ontology_predicate, None)
+        ):
+            assert isinstance(ontology_triple[0], rdflib.URIRef)
+            assert isinstance(ontology_triple[2], rdflib.URIRef)
+            cdo_concepts.add(ontology_triple[0])
+            cdo_concepts.add(ontology_triple[2])
+    for ontology_triple in ontology_graph.triples((None, NS_RDF.type, NS_OWL.Ontology)):
+        if not isinstance(ontology_triple[0], rdflib.URIRef):
+            continue
+        cdo_concepts.add(ontology_triple[0])
+
+    # Also load historical ontology and version IRIs.
+    ontology_and_version_iris_data = importlib.resources.read_text(
+        case_utils.ontology, "ontology_and_version_iris.txt"
+    )
+    for line in ontology_and_version_iris_data.split("\n"):
+        cleaned_line = line.strip()
+        if cleaned_line == "":
+            continue
+        cdo_concepts.add(rdflib.URIRef(cleaned_line))
+
+    data_cdo_concepts: Set[rdflib.URIRef] = set()
+    for data_triple in data_graph.triples((None, None, None)):
+        for data_triple_member in data_triple:
+            if isinstance(data_triple_member, rdflib.URIRef):
+                if concept_is_cdo_concept(data_triple_member):
+                    data_cdo_concepts.add(data_triple_member)
+            elif isinstance(data_triple_member, rdflib.Literal):
+                if isinstance(data_triple_member.datatype, rdflib.URIRef):
+                    if concept_is_cdo_concept(data_triple_member.datatype):
+                        data_cdo_concepts.add(data_triple_member.datatype)
+
+    return data_cdo_concepts - cdo_concepts
+
+
+def validate(input_file: str, case_version: Optional[str] = None, supplemental_graphs: Optional[list[str]] = None,
+             abort_on_first: bool = False) -> ValidationResult:
+    """
+    Validate the given data graph against the given CASE ontology version and supplemental graphs.
+
+    :param input_file: The path to the file containing the data graph to validate.
+    :param case_version: The version of the CASE ontology to use.  If None, the most recent version will be used.
+    :param supplemental_graphs: The supplemental graphs to use.  If None, no supplemental graphs will be used.
+    :param abort_on_first: Whether to abort on the first validation error.
+    :return: The validation result object containing the defined properties.
+    """
+    # Convert the data graph string to a rdflib.Graph object.
+    data_graph = rdflib.Graph()
+    data_graph.parse(input_file)
+
+    # Get the ontology graph from the case_version and supplemental_graphs arguments
+    ontology_graph: Graph = get_ontology_graph(case_version, supplemental_graphs)
+
+    # Get the undefined CDO concepts
+    undefined_cdo_concepts = get_invalid_cdo_concepts(data_graph, ontology_graph)
+
+    # Validate data graph against ontology graph.
+    validate_result: Tuple[
+        bool, Union[Exception, bytes, str, rdflib.Graph], str
+    ] = pyshacl.validate(
+        data_graph,
+        shacl_graph=ontology_graph,
+        ont_graph=ontology_graph,
+        inference="none",
+        meta_shacl=False,
+        abort_on_first=abort_on_first,
+        allow_infos=False,
+        allow_warnings=False,
+        debug=False,
+        do_owl_imports=False,
+    )
+
+    # Relieve RAM of the data graph after validation has run.
+    del data_graph
+
+    result = ValidationResult()
+    result.conforms = validate_result[0]
+    result.graph = validate_result[1]
+    result.text = validate_result[2]
+    result.undefined_cdo_concepts = undefined_cdo_concepts
+
+    return result
 
 
 def main() -> None:
@@ -170,83 +326,16 @@ def main() -> None:
         _logger.debug("in_graph = %r.", in_graph)
         data_graph.parse(in_graph)
 
-    ontology_graph = rdflib.Graph()
-    if args.built_version != "none":
-        ttl_filename = args.built_version + ".ttl"
-        _logger.debug("ttl_filename = %r.", ttl_filename)
-        ttl_data = importlib.resources.read_text(case_utils.ontology, ttl_filename)
-        ontology_graph.parse(data=ttl_data, format="turtle")
-    if args.ontology_graph:
-        for arg_ontology_graph in args.ontology_graph:
-            _logger.debug("arg_ontology_graph = %r.", arg_ontology_graph)
-            ontology_graph.parse(arg_ontology_graph)
+    # Get the ontology graph based on the CASE version and supplemental graphs specified by the CLI
+    ontology_graph = get_ontology_graph(case_version=args.built_version, supplemental_graphs=args.ontology_graph)
 
-    # Construct set of CDO concepts for data graph concept-existence review.
-    cdo_concepts: typing.Set[rdflib.URIRef] = set()
-
-    for n_structural_class in [
-        NS_OWL.Class,
-        NS_OWL.AnnotationProperty,
-        NS_OWL.DatatypeProperty,
-        NS_OWL.ObjectProperty,
-        NS_RDFS.Datatype,
-        NS_SH.NodeShape,
-        NS_SH.PropertyShape,
-        NS_SH.Shape,
-    ]:
-        for ontology_triple in ontology_graph.triples(
-            (None, NS_RDF.type, n_structural_class)
-        ):
-            if not isinstance(ontology_triple[0], rdflib.URIRef):
-                continue
-            if concept_is_cdo_concept(ontology_triple[0]):
-                cdo_concepts.add(ontology_triple[0])
-    for n_ontology_predicate in [
-        NS_OWL.backwardCompatibleWith,
-        NS_OWL.imports,
-        NS_OWL.incompatibleWith,
-        NS_OWL.priorVersion,
-        NS_OWL.versionIRI,
-    ]:
-        for ontology_triple in ontology_graph.triples(
-            (None, n_ontology_predicate, None)
-        ):
-            assert isinstance(ontology_triple[0], rdflib.URIRef)
-            assert isinstance(ontology_triple[2], rdflib.URIRef)
-            cdo_concepts.add(ontology_triple[0])
-            cdo_concepts.add(ontology_triple[2])
-    for ontology_triple in ontology_graph.triples((None, NS_RDF.type, NS_OWL.Ontology)):
-        if not isinstance(ontology_triple[0], rdflib.URIRef):
-            continue
-        cdo_concepts.add(ontology_triple[0])
-
-    # Also load historical ontology and version IRIs.
-    ontology_and_version_iris_data = importlib.resources.read_text(
-        case_utils.ontology, "ontology_and_version_iris.txt"
-    )
-    for line in ontology_and_version_iris_data.split("\n"):
-        cleaned_line = line.strip()
-        if cleaned_line == "":
-            continue
-        cdo_concepts.add(rdflib.URIRef(cleaned_line))
-
-    data_cdo_concepts: typing.Set[rdflib.URIRef] = set()
-    for data_triple in data_graph.triples((None, None, None)):
-        for data_triple_member in data_triple:
-            if isinstance(data_triple_member, rdflib.URIRef):
-                if concept_is_cdo_concept(data_triple_member):
-                    data_cdo_concepts.add(data_triple_member)
-            elif isinstance(data_triple_member, rdflib.Literal):
-                if isinstance(data_triple_member.datatype, rdflib.URIRef):
-                    if concept_is_cdo_concept(data_triple_member.datatype):
-                        data_cdo_concepts.add(data_triple_member.datatype)
-
-    undefined_cdo_concepts = data_cdo_concepts - cdo_concepts
+    # Get the list of undefined CDO concepts in the graph
+    undefined_cdo_concepts = get_invalid_cdo_concepts(data_graph, ontology_graph)
     for undefined_cdo_concept in sorted(undefined_cdo_concepts):
         warnings.warn(undefined_cdo_concept, NonExistentCDOConceptWarning)
     undefined_cdo_concepts_message = (
-        "There were %d concepts with CDO IRIs in the data graph that are not in the ontology graph."
-        % len(undefined_cdo_concepts)
+            "There were %d concepts with CDO IRIs in the data graph that are not in the ontology graph."
+            % len(undefined_cdo_concepts)
     )
 
     # Determine output format.
@@ -255,14 +344,13 @@ def main() -> None:
     # determination by output file extension.  case_validate will defer
     # to pySHACL behavior, as other CASE tools don't (at the time of
     # this writing) have the value "human" as an output format.
-    validator_kwargs: typing.Dict[str, str] = dict()
+    validator_kwargs: Dict[str, str] = dict()
     if args.format != "human":
         validator_kwargs["serialize_report_graph"] = args.format
 
-    validate_result: typing.Tuple[
-        bool, typing.Union[Exception, bytes, str, rdflib.Graph], str
-    ]
-    validate_result = pyshacl.validate(
+    validate_result: Tuple[
+        bool, Union[Exception, bytes, str, rdflib.Graph], str
+    ] = pyshacl.validate(
         data_graph,
         shacl_graph=ontology_graph,
         ont_graph=ontology_graph,
