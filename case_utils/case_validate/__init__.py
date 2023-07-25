@@ -37,7 +37,7 @@ import logging
 import os
 import sys
 import warnings
-from typing import Optional, Set, Union, Dict, Tuple
+from typing import Dict, Optional, Set, Tuple, Union
 
 import pyshacl  # type: ignore
 import rdflib
@@ -85,8 +85,9 @@ def concept_is_cdo_concept(n_concept: rdflib.URIRef) -> bool:
     ) or concept_iri.startswith("https://ontology.caseontology.org/")
 
 
-def get_ontology_graph(case_version: Optional[str] = None,
-                       supplemental_graphs: Optional[list[str]] = None) -> rdflib.Graph:
+def get_ontology_graph(
+    case_version: Optional[str] = None, supplemental_graphs: Optional[list[str]] = None
+) -> rdflib.Graph:
     """
     Get the ontology graph for the given case_version and any supplemental graphs.
 
@@ -107,7 +108,9 @@ def get_ontology_graph(case_version: Optional[str] = None,
     return ontology_graph
 
 
-def get_invalid_cdo_concepts(data_graph: Graph, ontology_graph: Graph) -> Set[rdflib.URIRef]:
+def get_invalid_cdo_concepts(
+    data_graph: Graph, ontology_graph: Graph
+) -> Set[rdflib.URIRef]:
     """
     Get the set of concepts in the data graph that are not part of the CDO ontology.
 
@@ -129,7 +132,7 @@ def get_invalid_cdo_concepts(data_graph: Graph, ontology_graph: Graph) -> Set[rd
         NS_SH.Shape,
     ]:
         for ontology_triple in ontology_graph.triples(
-                (None, NS_RDF.type, n_structural_class)
+            (None, NS_RDF.type, n_structural_class)
         ):
             if not isinstance(ontology_triple[0], rdflib.URIRef):
                 continue
@@ -143,7 +146,7 @@ def get_invalid_cdo_concepts(data_graph: Graph, ontology_graph: Graph) -> Set[rd
         NS_OWL.versionIRI,
     ]:
         for ontology_triple in ontology_graph.triples(
-                (None, n_ontology_predicate, None)
+            (None, n_ontology_predicate, None)
         ):
             assert isinstance(ontology_triple[0], rdflib.URIRef)
             assert isinstance(ontology_triple[2], rdflib.URIRef)
@@ -178,8 +181,12 @@ def get_invalid_cdo_concepts(data_graph: Graph, ontology_graph: Graph) -> Set[rd
     return data_cdo_concepts - cdo_concepts
 
 
-def validate(input_file: str, case_version: Optional[str] = None, supplemental_graphs: Optional[list[str]] = None,
-             abort_on_first: bool = False) -> ValidationResult:
+def validate(
+    input_file: str,
+    case_version: Optional[str] = None,
+    supplemental_graphs: Optional[list[str]] = None,
+    abort_on_first: bool = False,
+) -> ValidationResult:
     """
     Validate the given data graph against the given CASE ontology version and supplemental graphs.
 
@@ -327,15 +334,17 @@ def main() -> None:
         data_graph.parse(in_graph)
 
     # Get the ontology graph based on the CASE version and supplemental graphs specified by the CLI
-    ontology_graph = get_ontology_graph(case_version=args.built_version, supplemental_graphs=args.ontology_graph)
+    ontology_graph = get_ontology_graph(
+        case_version=args.built_version, supplemental_graphs=args.ontology_graph
+    )
 
     # Get the list of undefined CDO concepts in the graph
     undefined_cdo_concepts = get_invalid_cdo_concepts(data_graph, ontology_graph)
     for undefined_cdo_concept in sorted(undefined_cdo_concepts):
         warnings.warn(undefined_cdo_concept, NonExistentCDOConceptWarning)
     undefined_cdo_concepts_message = (
-            "There were %d concepts with CDO IRIs in the data graph that are not in the ontology graph."
-            % len(undefined_cdo_concepts)
+        "There were %d concepts with CDO IRIs in the data graph that are not in the ontology graph."
+        % len(undefined_cdo_concepts)
     )
 
     # Determine output format.
