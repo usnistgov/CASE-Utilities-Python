@@ -37,7 +37,7 @@ import logging
 import os
 import sys
 import warnings
-from typing import Any, Dict, Optional, Set, Tuple, Union
+from typing import Any, Dict, List, Optional, Set, Tuple, Union
 
 import pyshacl  # type: ignore
 import rdflib
@@ -86,7 +86,7 @@ def concept_is_cdo_concept(n_concept: rdflib.URIRef) -> bool:
 
 
 def get_ontology_graph(
-    case_version: Optional[str] = None, supplemental_graphs: Optional[list[str]] = None
+    case_version: Optional[str] = None, supplemental_graphs: Optional[List[str]] = None
 ) -> rdflib.Graph:
     """
     Get the ontology graph for the given case_version and any supplemental graphs.
@@ -184,7 +184,7 @@ def get_invalid_cdo_concepts(
 def validate(
     input_file: str,
     case_version: Optional[str] = None,
-    supplemental_graphs: Optional[list[str]] = None,
+    supplemental_graphs: Optional[List[str]] = None,
     abort_on_first: bool = False,
 ) -> ValidationResult:
     """
