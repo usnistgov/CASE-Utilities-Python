@@ -36,8 +36,8 @@ import importlib.resources
 import logging
 import os
 import sys
-import typing
 import warnings
+from typing import Dict, Set, Tuple, Union
 
 import pyshacl  # type: ignore
 import rdflib
@@ -182,7 +182,7 @@ def main() -> None:
             ontology_graph.parse(arg_ontology_graph)
 
     # Construct set of CDO concepts for data graph concept-existence review.
-    cdo_concepts: typing.Set[rdflib.URIRef] = set()
+    cdo_concepts: Set[rdflib.URIRef] = set()
 
     for n_structural_class in [
         NS_OWL.Class,
@@ -230,7 +230,7 @@ def main() -> None:
             continue
         cdo_concepts.add(rdflib.URIRef(cleaned_line))
 
-    data_cdo_concepts: typing.Set[rdflib.URIRef] = set()
+    data_cdo_concepts: Set[rdflib.URIRef] = set()
     for data_triple in data_graph.triples((None, None, None)):
         for data_triple_member in data_triple:
             if isinstance(data_triple_member, rdflib.URIRef):
@@ -255,13 +255,11 @@ def main() -> None:
     # determination by output file extension.  case_validate will defer
     # to pySHACL behavior, as other CASE tools don't (at the time of
     # this writing) have the value "human" as an output format.
-    validator_kwargs: typing.Dict[str, str] = dict()
+    validator_kwargs: Dict[str, str] = dict()
     if args.format != "human":
         validator_kwargs["serialize_report_graph"] = args.format
 
-    validate_result: typing.Tuple[
-        bool, typing.Union[Exception, bytes, str, rdflib.Graph], str
-    ]
+    validate_result: Tuple[bool, Union[Exception, bytes, str, rdflib.Graph], str]
     validate_result = pyshacl.validate(
         data_graph,
         shacl_graph=ontology_graph,
