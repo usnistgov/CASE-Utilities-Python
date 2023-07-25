@@ -37,7 +37,7 @@ import logging
 import os
 import sys
 import warnings
-from typing import Dict, Optional, Set, Tuple, Union
+from typing import Any, Dict, Optional, Set, Tuple, Union
 
 import pyshacl  # type: ignore
 import rdflib
@@ -67,7 +67,7 @@ class NonExistentCDOConceptWarning(UserWarning):
 
 class ValidationResult:
     conforms: bool
-    graph: Graph
+    graph: Any
     text: str
     undefined_concepts: Set[rdflib.URIRef]
 
