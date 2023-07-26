@@ -77,7 +77,7 @@ def concept_is_cdo_concept(n_concept: rdflib.URIRef) -> bool:
     Determine if a concept is part of the CDO ontology.
 
     :param n_concept: The concept to check.
-    :return: whether the concept is part of the CDO ontology.
+    :return: whether the concept is part of the CDO ontologies.
     """
     concept_iri = str(n_concept)
     return concept_iri.startswith(
@@ -95,12 +95,14 @@ def get_ontology_graph(
     :param supplemental_graphs: a list of supplemental graphs to use.  If None, no supplemental graphs will be used.
     :return: the ontology graph against which to validate the data graph.
     """
+    if not case_version or case_version == "none":
+        case_version = CURRENT_CASE_VERSION
+
     ontology_graph = rdflib.Graph()
-    if case_version and case_version != "none":
-        ttl_filename = case_version + ".ttl"
-        _logger.debug("ttl_filename = %r.", ttl_filename)
-        ttl_data = importlib.resources.read_text(case_utils.ontology, ttl_filename)
-        ontology_graph.parse(data=ttl_data, format="turtle")
+    ttl_filename = case_version + ".ttl"
+    _logger.debug("ttl_filename = %r.", ttl_filename)
+    ttl_data = importlib.resources.read_text(case_utils.ontology, ttl_filename)
+    ontology_graph.parse(data=ttl_data, format="turtle")
     if supplemental_graphs:
         for arg_ontology_graph in supplemental_graphs:
             _logger.debug("arg_ontology_graph = %r.", arg_ontology_graph)
@@ -112,11 +114,11 @@ def get_invalid_cdo_concepts(
     data_graph: Graph, ontology_graph: Graph
 ) -> Set[rdflib.URIRef]:
     """
-    Get the set of concepts in the data graph that are not part of the CDO ontology.
+    Get the set of concepts in the data graph that are not part of the CDO ontologies.
 
     :param data_graph: The data graph to validate.
     :param ontology_graph: The ontology graph to use for validation.
-    :return: The list of concepts in the data graph that are not part of the CDO ontology.
+    :return: The set of concepts in the data graph that are not part of the CDO ontologies.
     """
     # Construct set of CDO concepts for data graph concept-existence review.
     cdo_concepts: Set[rdflib.URIRef] = set()
@@ -186,6 +188,7 @@ def validate(
     case_version: Optional[str] = None,
     supplemental_graphs: Optional[List[str]] = None,
     abort_on_first: bool = False,
+    inference: Optional[str] = "none",
 ) -> ValidationResult:
     """
     Validate the given data graph against the given CASE ontology version and supplemental graphs.
@@ -194,6 +197,7 @@ def validate(
     :param case_version: The version of the CASE ontology to use.  If None, the most recent version will be used.
     :param supplemental_graphs: The supplemental graphs to use.  If None, no supplemental graphs will be used.
     :param abort_on_first: Whether to abort on the first validation error.
+    :param inference: The type of inference to use.  If "none", no inference will be used.
     :return: The validation result object containing the defined properties.
     """
     # Convert the data graph string to a rdflib.Graph object.
@@ -213,7 +217,7 @@ def validate(
         data_graph,
         shacl_graph=ontology_graph,
         ont_graph=ontology_graph,
-        inference="none",
+        inference=inference,
         meta_shacl=False,
         abort_on_first=abort_on_first,
         allow_infos=False,
