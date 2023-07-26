@@ -66,10 +66,17 @@ class NonExistentCDOConceptWarning(UserWarning):
 
 
 class ValidationResult:
-    conforms: bool
-    graph: Any
-    text: str
-    undefined_concepts: Set[rdflib.URIRef]
+    def __init__(
+        self,
+        conforms: bool,
+        graph: Any,
+        text: str,
+        undefined_concepts: Set[rdflib.URIRef],
+    ):
+        self.conforms = conforms
+        self.graph = graph
+        self.text = text
+        self.undefined_concepts = undefined_concepts
 
 
 def concept_is_cdo_concept(n_concept: rdflib.URIRef) -> bool:
@@ -229,13 +236,12 @@ def validate(
     # Relieve RAM of the data graph after validation has run.
     del data_graph
 
-    result = ValidationResult()
-    result.conforms = validate_result[0]
-    result.graph = validate_result[1]
-    result.text = validate_result[2]
-    result.undefined_concepts = undefined_cdo_concepts
-
-    return result
+    return ValidationResult(
+        validate_result[0],
+        validate_result[1],
+        validate_result[2],
+        undefined_cdo_concepts,
+    )
 
 
 def main() -> None:
