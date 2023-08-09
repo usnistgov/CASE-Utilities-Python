@@ -75,11 +75,36 @@ def get_invalid_cdo_concepts(
     data_graph: rdflib.Graph, ontology_graph: rdflib.Graph
 ) -> Set[rdflib.URIRef]:
     """
-    Get the set of concepts in the data graph that are not part of the CDO ontology.
+    Get the set of concepts in the data graph that are not part of the CDO ontologies as specified with the ontology_graph argument.
 
     :param data_graph: The data graph to validate.
     :param ontology_graph: The ontology graph to use for validation.
     :return: The list of concepts in the data graph that are not part of the CDO ontology.
+
+    >>> from case_utils.namespace import NS_RDF, NS_OWL, NS_UCO_CORE
+    >>> from rdflib import Graph, Literal, Namespace, URIRef
+    >>> # Define a namespace for a knowledge base, and a namespace for custom extensions.
+    >>> ns_kb = Namespace("http://example.org/kb/")
+    >>> ns_ex = Namespace("http://example.org/ontology/")
+    >>> dg = Graph()
+    >>> og = Graph()
+    >>> # Use an ontology graph in review that includes only a single class and a single property excerpted from UCO, but also a single custom property.
+    >>> _ = og.add((NS_UCO_CORE.UcoObject, NS_RDF.type, NS_OWL.Class))
+    >>> _ = og.add((NS_UCO_CORE.name, NS_RDF.type, NS_OWL.DatatypeProperty))
+    >>> _ = og.add((ns_ex.ourCustomProperty, NS_RDF.type, NS_OWL.DatatypeProperty))
+    >>> # Define an individual.
+    >>> n_uco_object = ns_kb["UcoObject-f494d239-d9fd-48da-bc07-461ba86d8c6c"]
+    >>> n_uco_object
+    rdflib.term.URIRef('http://example.org/kb/UcoObject-f494d239-d9fd-48da-bc07-461ba86d8c6c')
+    >>> # Review a data graph that includes only the single individual, class typo'd (capitalized incorrectly), but property OK.
+    >>> _ = dg.add((n_uco_object, NS_RDF.type, NS_UCO_CORE.UCOObject))
+    >>> _ = dg.add((n_uco_object, NS_UCO_CORE.name, Literal("Test")))
+    >>> _ = dg.add((n_uco_object, ns_ex.customProperty, Literal("Custom Value")))
+    >>> invalid_cdo_concepts = get_invalid_cdo_concepts(dg, og)
+    >>> invalid_cdo_concepts
+    {rdflib.term.URIRef('https://ontology.unifiedcyberontology.org/uco/core/UCOObject')}
+    >>> # Note that the property "ourCustomProperty" was typo'd in the data graph, but this was not reported.
+    >>> assert ns_ex.ourCustomProperty not in invalid_cdo_concepts
     """
     # Construct set of CDO concepts for data graph concept-existence review.
     cdo_concepts: Set[rdflib.URIRef] = set()
