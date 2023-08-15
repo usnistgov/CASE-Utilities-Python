@@ -98,22 +98,26 @@ def get_ontology_graph(
     """
     Get the ontology graph for the given case_version and any supplemental graphs.
 
-    :param case_version: the version of the CASE ontology to use.  If None, the most recent version will be used.
+    :param case_version: the version of the CASE ontology to use.  If None (i.e. null), the most recent version will be used.  If "none" (the string), no pre-built version of CASE will be used.
     :param supplemental_graphs: a list of supplemental graphs to use.  If None, no supplemental graphs will be used.
     :return: the ontology graph against which to validate the data graph.
     """
-    if not case_version or case_version == "none":
-        case_version = CURRENT_CASE_VERSION
-
     ontology_graph = rdflib.Graph()
-    ttl_filename = case_version + ".ttl"
-    _logger.debug("ttl_filename = %r.", ttl_filename)
-    ttl_data = importlib.resources.read_text(case_utils.ontology, ttl_filename)
-    ontology_graph.parse(data=ttl_data, format="turtle")
+
+    if case_version != "none":
+        # Load bundled CASE ontology at requested version.
+        if case_version is None:
+            case_version = CURRENT_CASE_VERSION
+        ttl_filename = case_version + ".ttl"
+        _logger.debug("ttl_filename = %r.", ttl_filename)
+        ttl_data = importlib.resources.read_text(case_utils.ontology, ttl_filename)
+        ontology_graph.parse(data=ttl_data, format="turtle")
+
     if supplemental_graphs:
         for arg_ontology_graph in supplemental_graphs:
             _logger.debug("arg_ontology_graph = %r.", arg_ontology_graph)
             ontology_graph.parse(arg_ontology_graph)
+
     return ontology_graph
 
 
