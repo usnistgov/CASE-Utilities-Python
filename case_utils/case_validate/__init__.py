@@ -72,7 +72,7 @@ class ValidationResult:
         graph: Any,
         text: str,
         undefined_concepts: Set[rdflib.URIRef],
-    ):
+    ) -> None:
         self.conforms = conforms
         self.graph = graph
         self.text = text
