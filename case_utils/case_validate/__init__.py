@@ -37,7 +37,7 @@ import logging
 import os
 import sys
 import warnings
-from typing import Any, Dict, List, Optional, Set, Tuple, Union
+from typing import Dict, List, Optional, Set, Tuple, Union
 
 import pyshacl  # type: ignore
 import rdflib
@@ -69,7 +69,7 @@ class ValidationResult:
     def __init__(
         self,
         conforms: bool,
-        graph: Any,
+        graph: Union[Exception, bytes, str, rdflib.Graph],
         text: str,
         undefined_concepts: Set[rdflib.URIRef],
     ) -> None:
