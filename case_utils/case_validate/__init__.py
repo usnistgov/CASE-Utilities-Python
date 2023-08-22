@@ -37,7 +37,7 @@ import logging
 import os
 import sys
 import warnings
-from typing import Dict, List, Optional, Set, Tuple, Union
+from typing import Any, Dict, List, Optional, Set, Tuple, Union
 
 import pyshacl  # type: ignore
 import rdflib
@@ -60,6 +60,14 @@ _logger = logging.getLogger(os.path.basename(__file__))
 class NonExistentCDOConceptWarning(UserWarning):
     """
     This class is used when a concept is encountered in the data graph that is not part of CDO ontologies, according to the --built-version flags and --ontology-graph flags.
+    """
+
+    pass
+
+
+class NonExistentCASEVersionError(Exception):
+    """
+    This class is used when an invalid CASE version is requested that is not supported by the library.
     """
 
     pass
@@ -204,10 +212,21 @@ def get_ontology_graph(
 
     if case_version != "none":
         # Load bundled CASE ontology at requested version.
-        if case_version is None:
+        if case_version is None or case_version == "":
             case_version = CURRENT_CASE_VERSION
+        # If the first character case_version is numeric, prepend case- to it. This allows for the version to be passed
+        # by the library as both case-1.2.0 and 1.2.0
+        if case_version[0].isdigit():
+            case_version = "case-" + case_version
         ttl_filename = case_version + ".ttl"
         _logger.debug("ttl_filename = %r.", ttl_filename)
+        # Ensure the requested version of the CASE ontology is available and if not, throw an appropriate exception
+        # that can be returned in a user-friendly message.
+        if not importlib.resources.is_resource(case_utils.ontology, ttl_filename):
+            raise NonExistentCASEVersionError(
+                f"The requested version ({case_version}) of the CASE ontology is not available.  Please choose a "
+                f"different version. The latest supported version is: {CURRENT_CASE_VERSION}"
+            )
         ttl_data = importlib.resources.read_text(case_utils.ontology, ttl_filename)
         ontology_graph.parse(data=ttl_data, format="turtle")
 
@@ -221,19 +240,23 @@ def get_ontology_graph(
 
 def validate(
     input_file: str,
+    *args: Any,
     case_version: Optional[str] = None,
     supplemental_graphs: Optional[List[str]] = None,
     abort_on_first: bool = False,
     inference: Optional[str] = "none",
+    **kwargs: Any,
 ) -> ValidationResult:
     """
     Validate the given data graph against the given CASE ontology version and supplemental graphs.
-
+    :param *args: The positional arguments to pass to the underlying pyshacl.validate function.
     :param input_file: The path to the file containing the data graph to validate.
-    :param case_version: The version of the CASE ontology to use.  If None, the most recent version will be used.
+    :param case_version: The version of the CASE ontology to use (e.g. 1.2.0).  If None, the most recent version will
+        be used.
     :param supplemental_graphs: The supplemental graphs to use.  If None, no supplemental graphs will be used.
     :param abort_on_first: Whether to abort on the first validation error.
     :param inference: The type of inference to use.  If "none", no inference will be used.
+    :param **kwargs: The keyword arguments to pass to the underlying pyshacl.validate function.
     :return: The validation result object containing the defined properties.
     """
     # Convert the data graph string to a rdflib.Graph object.
@@ -260,6 +283,8 @@ def validate(
         allow_warnings=False,
         debug=False,
         do_owl_imports=False,
+        args=args,
+        kwargs=kwargs,
     )
 
     # Relieve RAM of the data graph after validation has run.
@@ -409,7 +434,7 @@ def main() -> None:
         allow_warnings=True if args.allow_warnings else False,
         debug=True if args.debug else False,
         do_owl_imports=True if args.imports else False,
-        **validator_kwargs
+        **validator_kwargs,
     )
 
     # Relieve RAM of the data graph after validation has run.
