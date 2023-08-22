@@ -23,6 +23,7 @@ all: \
 .PHONY: \
   all-case_utils \
   check-case_utils \
+  check-doctest \
   check-isomorphic_diff \
   check-mypy \
   download
@@ -57,13 +58,9 @@ all-case_utils: \
 # These check calls are provided in preferred run-order.
 check: \
   check-mypy \
+  check-doctest \
   check-isomorphic_diff \
   check-case_utils
-	source venv/bin/activate \
-	  && pytest \
-	    --doctest-modules \
-	    --log-level=DEBUG \
-	    $(top_srcdir)/case_utils
 	source venv/bin/activate \
 	  && pytest \
 	    --ignore case_utils \
@@ -75,6 +72,14 @@ check-case_utils: \
 	  PYTHON3=$(PYTHON3) \
 	  --directory case_utils \
 	  check
+
+check-doctest: \
+  .venv.done.log
+	source venv/bin/activate \
+	  && pytest \
+	    --doctest-modules \
+	    --log-level=DEBUG \
+	    $(top_srcdir)/case_utils
 
 check-isomorphic_diff: \
   .venv.done.log
