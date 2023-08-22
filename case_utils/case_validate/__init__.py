@@ -92,44 +92,40 @@ def concept_is_cdo_concept(n_concept: rdflib.URIRef) -> bool:
     ) or concept_iri.startswith("https://ontology.caseontology.org/")
 
 
-def get_ontology_graph(
-    case_version: Optional[str] = None, supplemental_graphs: Optional[List[str]] = None
-) -> rdflib.Graph:
-    """
-    Get the ontology graph for the given case_version and any supplemental graphs.
-
-    :param case_version: the version of the CASE ontology to use.  If None (i.e. null), the most recent version will be used.  If "none" (the string), no pre-built version of CASE will be used.
-    :param supplemental_graphs: a list of supplemental graphs to use.  If None, no supplemental graphs will be used.
-    :return: the ontology graph against which to validate the data graph.
-    """
-    ontology_graph = rdflib.Graph()
-
-    if case_version != "none":
-        # Load bundled CASE ontology at requested version.
-        if case_version is None:
-            case_version = CURRENT_CASE_VERSION
-        ttl_filename = case_version + ".ttl"
-        _logger.debug("ttl_filename = %r.", ttl_filename)
-        ttl_data = importlib.resources.read_text(case_utils.ontology, ttl_filename)
-        ontology_graph.parse(data=ttl_data, format="turtle")
-
-    if supplemental_graphs:
-        for arg_ontology_graph in supplemental_graphs:
-            _logger.debug("arg_ontology_graph = %r.", arg_ontology_graph)
-            ontology_graph.parse(arg_ontology_graph)
-
-    return ontology_graph
-
-
 def get_invalid_cdo_concepts(
-    data_graph: Graph, ontology_graph: Graph
+    data_graph: rdflib.Graph, ontology_graph: rdflib.Graph
 ) -> Set[rdflib.URIRef]:
     """
-    Get the set of concepts in the data graph that are not part of the CDO ontologies.
+    Get the set of concepts in the data graph that are not part of the CDO ontologies as specified with the ontology_graph argument.
 
     :param data_graph: The data graph to validate.
     :param ontology_graph: The ontology graph to use for validation.
-    :return: The set of concepts in the data graph that are not part of the CDO ontologies.
+    :return: The list of concepts in the data graph that are not part of the CDO ontology.
+
+    >>> from case_utils.namespace import NS_RDF, NS_OWL, NS_UCO_CORE
+    >>> from rdflib import Graph, Literal, Namespace, URIRef
+    >>> # Define a namespace for a knowledge base, and a namespace for custom extensions.
+    >>> ns_kb = Namespace("http://example.org/kb/")
+    >>> ns_ex = Namespace("http://example.org/ontology/")
+    >>> dg = Graph()
+    >>> og = Graph()
+    >>> # Use an ontology graph in review that includes only a single class and a single property excerpted from UCO, but also a single custom property.
+    >>> _ = og.add((NS_UCO_CORE.UcoObject, NS_RDF.type, NS_OWL.Class))
+    >>> _ = og.add((NS_UCO_CORE.name, NS_RDF.type, NS_OWL.DatatypeProperty))
+    >>> _ = og.add((ns_ex.ourCustomProperty, NS_RDF.type, NS_OWL.DatatypeProperty))
+    >>> # Define an individual.
+    >>> n_uco_object = ns_kb["UcoObject-f494d239-d9fd-48da-bc07-461ba86d8c6c"]
+    >>> n_uco_object
+    rdflib.term.URIRef('http://example.org/kb/UcoObject-f494d239-d9fd-48da-bc07-461ba86d8c6c')
+    >>> # Review a data graph that includes only the single individual, class typo'd (capitalized incorrectly), but property OK.
+    >>> _ = dg.add((n_uco_object, NS_RDF.type, NS_UCO_CORE.UCOObject))
+    >>> _ = dg.add((n_uco_object, NS_UCO_CORE.name, Literal("Test")))
+    >>> _ = dg.add((n_uco_object, ns_ex.customProperty, Literal("Custom Value")))
+    >>> invalid_cdo_concepts = get_invalid_cdo_concepts(dg, og)
+    >>> invalid_cdo_concepts
+    {rdflib.term.URIRef('https://ontology.unifiedcyberontology.org/uco/core/UCOObject')}
+    >>> # Note that the property "ourCustomProperty" was typo'd in the data graph, but this was not reported.
+    >>> assert ns_ex.ourCustomProperty not in invalid_cdo_concepts
     """
     # Construct set of CDO concepts for data graph concept-existence review.
     cdo_concepts: Set[rdflib.URIRef] = set()
@@ -192,6 +188,35 @@ def get_invalid_cdo_concepts(
                         data_cdo_concepts.add(data_triple_member.datatype)
 
     return data_cdo_concepts - cdo_concepts
+
+
+def get_ontology_graph(
+    case_version: Optional[str] = None, supplemental_graphs: Optional[List[str]] = None
+) -> rdflib.Graph:
+    """
+    Get the ontology graph for the given case_version and any supplemental graphs.
+
+    :param case_version: the version of the CASE ontology to use.  If None (i.e. null), the most recent version will be used.  If "none" (the string), no pre-built version of CASE will be used.
+    :param supplemental_graphs: a list of supplemental graphs to use.  If None, no supplemental graphs will be used.
+    :return: the ontology graph against which to validate the data graph.
+    """
+    ontology_graph = rdflib.Graph()
+
+    if case_version != "none":
+        # Load bundled CASE ontology at requested version.
+        if case_version is None:
+            case_version = CURRENT_CASE_VERSION
+        ttl_filename = case_version + ".ttl"
+        _logger.debug("ttl_filename = %r.", ttl_filename)
+        ttl_data = importlib.resources.read_text(case_utils.ontology, ttl_filename)
+        ontology_graph.parse(data=ttl_data, format="turtle")
+
+    if supplemental_graphs:
+        for arg_ontology_graph in supplemental_graphs:
+            _logger.debug("arg_ontology_graph = %r.", arg_ontology_graph)
+            ontology_graph.parse(arg_ontology_graph)
+
+    return ontology_graph
 
 
 def validate(
