@@ -7,7 +7,7 @@ import rdflib
 
 import case_utils
 from case_utils.case_validate.validate_types import NonExistentCASEVersionError
-from case_utils.ontology import CURRENT_CASE_VERSION
+from case_utils.ontology.version_info import CURRENT_CASE_VERSION
 
 NS_OWL = rdflib.OWL
 NS_RDF = rdflib.RDF
