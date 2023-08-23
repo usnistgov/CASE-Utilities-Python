@@ -64,7 +64,7 @@ def validate(
     case_version: Optional[str] = None,
     supplemental_graphs: Optional[List[str]] = None,
     abort_on_first: bool = False,
-    inference: Optional[str] = "none",
+    inference: Optional[str] = None,
     **kwargs: Any,
 ) -> ValidationResult:
     """
@@ -75,7 +75,7 @@ def validate(
         be used.
     :param supplemental_graphs: The supplemental graphs to use.  If None, no supplemental graphs will be used.
     :param abort_on_first: Whether to abort on the first validation error.
-    :param inference: The type of inference to use.  If "none", no inference will be used.
+    :param inference: The type of inference to use.  If "none" (type str), no inference will be used.  If None (type NoneType), pyshacl defaults will be used.  Note that at the time of this writing (pySHACL 0.23.0), pyshacl defaults are no inferencing for the data graph, and RDFS inferencing for the SHACL graph, which for case_utils.validate includes the SHACL and OWL graphs.
     :param **kwargs: The keyword arguments to pass to the underlying pyshacl.validate function.
     :return: The validation result object containing the defined properties.
     """
