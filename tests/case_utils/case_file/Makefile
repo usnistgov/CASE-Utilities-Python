@@ -82,6 +82,9 @@ kb.ttl: \
 
 #TODO - kb.json has a conversion error with context dictionary construction and custom datatypes.
 kb_validation.ttl: \
+  $(top_srcdir)/case_utils/case_validate/__init__.py \
+  $(top_srcdir)/case_utils/case_validate/validate_types.py \
+  $(top_srcdir)/case_utils/case_validate/validate_utils.py \
   kb.ttl
 	source $(tests_srcdir)/venv/bin/activate \
 	  && case_validate \

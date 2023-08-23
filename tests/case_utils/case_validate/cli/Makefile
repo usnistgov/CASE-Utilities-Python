@@ -23,6 +23,11 @@ tests_srcdir := $(top_srcdir)/tests
 
 RDF_TOOLKIT_JAR := $(case_srcdir)/lib/rdf-toolkit.jar
 
+case_validate_sources := \
+  $(top_srcdir)/case_utils/case_validate/__init__.py \
+  $(top_srcdir)/case_utils/case_validate/validate_types.py \
+  $(top_srcdir)/case_utils/case_validate/validate_utils.py
+
 files_to_generate := \
   errant_cdo_concept_PASS.txt \
   errant_cdo_concept_XFAIL.txt \
@@ -62,9 +67,9 @@ clean:
 	  $(files_to_generate)
 
 errant_cdo_concept_PASS.txt: \
+  $(case_validate_sources) \
   $(tests_srcdir)/.venv.done.log \
   $(top_srcdir)/.ontology.done.log \
-  $(top_srcdir)/case_utils/case_validate/__init__.py \
   $(top_srcdir)/case_utils/ontology/__init__.py \
   errant_cdo_concept.ttl
 	rm -f _$@
@@ -77,9 +82,9 @@ errant_cdo_concept_PASS.txt: \
 	mv _$@ $@
 
 errant_cdo_concept_XFAIL.txt: \
+  $(case_validate_sources) \
   $(tests_srcdir)/.venv.done.log \
   $(top_srcdir)/.ontology.done.log \
-  $(top_srcdir)/case_utils/case_validate/__init__.py \
   $(top_srcdir)/case_utils/ontology/__init__.py \
   errant_cdo_concept.ttl
 	rm -f _$@
@@ -94,9 +99,9 @@ errant_cdo_concept_XFAIL.txt: \
 
 format_human_output_%: \
   $(examples_srcdir)/investigative_action_PASS_validation.ttl \
+  $(case_validate_sources) \
   $(tests_srcdir)/.venv.done.log \
   $(top_srcdir)/.ontology.done.log \
-  $(top_srcdir)/case_utils/case_validate/__init__.py \
   $(top_srcdir)/case_utils/ontology/__init__.py
 	rm -f _$@
 	source $(tests_srcdir)/venv/bin/activate \
@@ -109,9 +114,9 @@ format_human_output_%: \
 
 format_human_output_unspecified.txt: \
   $(examples_srcdir)/investigative_action_PASS_validation.ttl \
+  $(case_validate_sources) \
   $(tests_srcdir)/.venv.done.log \
   $(top_srcdir)/.ontology.done.log \
-  $(top_srcdir)/case_utils/case_validate/__init__.py \
   $(top_srcdir)/case_utils/ontology/__init__.py
 	rm -f _$@
 	source $(tests_srcdir)/venv/bin/activate \
@@ -126,9 +131,9 @@ format_human_output_unspecified.txt: \
 # blank node ID that does not serve to inform the example.
 format_jsonld_output_%: \
   $(examples_srcdir)/investigative_action_PASS_validation.ttl \
+  $(case_validate_sources) \
   $(tests_srcdir)/.venv.done.log \
   $(top_srcdir)/.ontology.done.log \
-  $(top_srcdir)/case_utils/case_validate/__init__.py \
   $(top_srcdir)/case_utils/ontology/__init__.py
 	rm -f __$@ _$@
 	source $(tests_srcdir)/venv/bin/activate \
@@ -146,9 +151,9 @@ format_jsonld_output_%: \
 
 format_jsonld_output_unspecified.jsonld: \
   $(examples_srcdir)/investigative_action_PASS_validation.ttl \
+  $(case_validate_sources) \
   $(tests_srcdir)/.venv.done.log \
   $(top_srcdir)/.ontology.done.log \
-  $(top_srcdir)/case_utils/case_validate/__init__.py \
   $(top_srcdir)/case_utils/ontology/__init__.py
 	rm -f __$@ _$@
 	source $(tests_srcdir)/venv/bin/activate \
@@ -166,9 +171,9 @@ format_jsonld_output_unspecified.jsonld: \
 
 format_turtle_output_%: \
   $(examples_srcdir)/investigative_action_PASS_validation.ttl \
+  $(case_validate_sources) \
   $(tests_srcdir)/.venv.done.log \
   $(top_srcdir)/.ontology.done.log \
-  $(top_srcdir)/case_utils/case_validate/__init__.py \
   $(top_srcdir)/case_utils/ontology/__init__.py
 	rm -f _$@
 	source $(tests_srcdir)/venv/bin/activate \
@@ -181,9 +186,9 @@ format_turtle_output_%: \
 
 format_turtle_output_unspecified.ttl: \
   $(examples_srcdir)/investigative_action_PASS_validation.ttl \
+  $(case_validate_sources) \
   $(tests_srcdir)/.venv.done.log \
   $(top_srcdir)/.ontology.done.log \
-  $(top_srcdir)/case_utils/case_validate/__init__.py \
   $(top_srcdir)/case_utils/ontology/__init__.py
 	rm -f _$@
 	source $(tests_srcdir)/venv/bin/activate \
@@ -196,9 +201,9 @@ format_turtle_output_unspecified.ttl: \
 
 format_unspecified_output_%: \
   $(examples_srcdir)/investigative_action_PASS_validation.ttl \
+  $(case_validate_sources) \
   $(tests_srcdir)/.venv.done.log \
   $(top_srcdir)/.ontology.done.log \
-  $(top_srcdir)/case_utils/case_validate/__init__.py \
   $(top_srcdir)/case_utils/ontology/__init__.py
 	rm -f _$@
 	source $(tests_srcdir)/venv/bin/activate \
@@ -210,9 +215,9 @@ format_unspecified_output_%: \
 
 format_unspecified_output_unspecified.txt: \
   $(examples_srcdir)/investigative_action_PASS_validation.ttl \
+  $(case_validate_sources) \
   $(tests_srcdir)/.venv.done.log \
   $(top_srcdir)/.ontology.done.log \
-  $(top_srcdir)/case_utils/case_validate/__init__.py \
   $(top_srcdir)/case_utils/ontology/__init__.py
 	rm -f _$@
 	source $(tests_srcdir)/venv/bin/activate \
@@ -223,9 +228,9 @@ format_unspecified_output_unspecified.txt: \
 	mv _$@ $@
 
 past_version_reference_PASS.txt: \
+  $(case_validate_sources) \
   $(tests_srcdir)/.venv.done.log \
   $(top_srcdir)/.ontology.done.log \
-  $(top_srcdir)/case_utils/case_validate/__init__.py \
   $(top_srcdir)/case_utils/ontology/__init__.py \
   $(top_srcdir)/case_utils/ontology/ontology_and_version_iris.txt \
   past_version_reference_PASS.ttl
@@ -237,9 +242,9 @@ past_version_reference_PASS.txt: \
 	mv _$@ $@
 
 past_version_reference_XFAIL.txt: \
+  $(case_validate_sources) \
   $(tests_srcdir)/.venv.done.log \
   $(top_srcdir)/.ontology.done.log \
-  $(top_srcdir)/case_utils/case_validate/__init__.py \
   $(top_srcdir)/case_utils/ontology/__init__.py \
   $(top_srcdir)/case_utils/ontology/ontology_and_version_iris.txt \
   past_version_reference_XFAIL.ttl
@@ -253,9 +258,9 @@ past_version_reference_XFAIL.txt: \
 	mv _$@ $@
 
 split_data_graph_PASS.txt: \
+  $(case_validate_sources) \
   $(tests_srcdir)/.venv.done.log \
   $(top_srcdir)/.ontology.done.log \
-  $(top_srcdir)/case_utils/case_validate/__init__.py \
   $(top_srcdir)/case_utils/ontology/__init__.py \
   split_data_graph_1.json \
   split_data_graph_2.json
@@ -269,9 +274,9 @@ split_data_graph_PASS.txt: \
 	mv _$@ $@
 
 split_data_graph_XFAIL.txt: \
+  $(case_validate_sources) \
   $(tests_srcdir)/.venv.done.log \
   $(top_srcdir)/.ontology.done.log \
-  $(top_srcdir)/case_utils/case_validate/__init__.py \
   $(top_srcdir)/case_utils/ontology/__init__.py \
   split_data_graph_1.json
 	rm -f _$@
@@ -285,9 +290,9 @@ split_data_graph_XFAIL.txt: \
 	mv _$@ $@
 
 thing_metashacl_PASS.txt: \
+  $(case_validate_sources) \
   $(tests_srcdir)/.venv.done.log \
   $(top_srcdir)/.ontology.done.log \
-  $(top_srcdir)/case_utils/case_validate/__init__.py \
   $(top_srcdir)/case_utils/ontology/__init__.py \
   thing.ttl
 	rm -f _$@

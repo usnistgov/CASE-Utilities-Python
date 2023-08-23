@@ -76,6 +76,8 @@ all: \
   $(tests_srcdir)/.venv.done.log \
   $(top_srcdir)/.ontology.done.log \
   $(top_srcdir)/case_utils/case_validate/__init__.py \
+  $(top_srcdir)/case_utils/case_validate/validate_types.py \
+  $(top_srcdir)/case_utils/case_validate/validate_utils.py \
   $(top_srcdir)/case_utils/ontology/__init__.py
 	source $(tests_srcdir)/venv/bin/activate \
 	  && case_validate \
