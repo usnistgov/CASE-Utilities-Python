@@ -183,12 +183,12 @@ def main() -> None:
         action="store_true",
         help="(As with pyshacl CLI) Allow import of sub-graphs defined in statements with owl:imports.",
     )
+    # NOTE: The "ontology graph" in the --inference help is the mix of the SHACL shapes graph and OWL ontology (or RDFS schema) graph.
     parser.add_argument(
         "-i",
         "--inference",
         choices=("none", "rdfs", "owlrl", "both"),
-        default="none",
-        help='(As with pyshacl CLI) Choose a type of inferencing to run against the Data Graph before validating. Default is "none".',
+        help='(As with pyshacl CLI) Choose a type of inferencing to run against the Data Graph before validating. The default behavior if this flag is not provided is to behave as "none", if not using the --metashacl flag.  The default behavior when using the --metashacl flag will apply "rdfs" inferencing to the ontology graph, but the data graph will still have no inferencing applied.  If the --inference flag is provided, it will apply to both the ontology graph, and the data graph.',
     )
     parser.add_argument(
         "-m",
