@@ -59,35 +59,48 @@ _logger = logging.getLogger(os.path.basename(__file__))
 
 
 def validate(
-    input_file: str,
+    input_file: Union[List[str], str],
     *args: Any,
     case_version: Optional[str] = None,
     supplemental_graphs: Optional[List[str]] = None,
-    abort_on_first: bool = False,
-    inference: Optional[str] = None,
     **kwargs: Any,
 ) -> ValidationResult:
     """
     Validate the given data graph against the given CASE ontology version and supplemental graphs.
+
     :param *args: The positional arguments to pass to the underlying pyshacl.validate function.
-    :param input_file: The path to the file containing the data graph to validate.
-    :param case_version: The version of the CASE ontology to use (e.g. 1.2.0).  If None, the most recent version will
-        be used.
-    :param supplemental_graphs: The supplemental graphs to use.  If None, no supplemental graphs will be used.
-    :param abort_on_first: Whether to abort on the first validation error.
+    :param input_file: The path to the file containing the data graph to validate.  This can also be a list of paths to files containing data graphs to pool together.
+    :param case_version: The version of the CASE ontology to use (e.g. 1.2.0).  If None, the most recent version will be used.
+    :param supplemental_graphs: File paths to supplemental graphs to use.  If None, no supplemental graphs will be used.
+    :param allow_warnings: In addition to affecting the conformance of SHACL validation, this will affect conformance based on unrecognized CDO concepts (likely, misspelled or miscapitalized) in the data graph.  If allow_warnings is not True, any unrecognized concept using a CDO IRI prefix will cause conformance to be False.
     :param inference: The type of inference to use.  If "none" (type str), no inference will be used.  If None (type NoneType), pyshacl defaults will be used.  Note that at the time of this writing (pySHACL 0.23.0), pyshacl defaults are no inferencing for the data graph, and RDFS inferencing for the SHACL graph, which for case_utils.validate includes the SHACL and OWL graphs.
     :param **kwargs: The keyword arguments to pass to the underlying pyshacl.validate function.
     :return: The validation result object containing the defined properties.
     """
     # Convert the data graph string to a rdflib.Graph object.
     data_graph = rdflib.Graph()
-    data_graph.parse(input_file)
+    if isinstance(input_file, str):
+        data_graph.parse(input_file)
+    elif isinstance(input_file, list):
+        for _data_graph_file in input_file:
+            _logger.debug("_data_graph_file = %r.", _data_graph_file)
+            if not isinstance(_data_graph_file, str):
+                raise TypeError("Expected str, received %s." % type(_data_graph_file))
+            data_graph.parse(_data_graph_file)
 
     # Get the ontology graph from the case_version and supplemental_graphs arguments
     ontology_graph: Graph = get_ontology_graph(case_version, supplemental_graphs)
 
-    # Get the undefined CDO concepts
+    # Get the undefined CDO concepts.
     undefined_cdo_concepts = get_invalid_cdo_concepts(data_graph, ontology_graph)
+
+    # Warn about typo'd concepts before performing SHACL review.
+    for undefined_cdo_concept in sorted(undefined_cdo_concepts):
+        warnings.warn(undefined_cdo_concept, NonExistentCDOConceptWarning)
+    undefined_cdo_concepts_message = (
+        "There were %d concepts with CDO IRIs in the data graph that are not in the ontology graph."
+        % len(undefined_cdo_concepts)
+    )
 
     # Validate data graph against ontology graph.
     validate_result: Tuple[
@@ -95,23 +108,25 @@ def validate(
     ] = pyshacl.validate(
         data_graph,
         *args,
-        shacl_graph=ontology_graph,
         ont_graph=ontology_graph,
-        inference=inference,
-        meta_shacl=False,
-        abort_on_first=abort_on_first,
-        allow_infos=False,
-        allow_warnings=False,
-        debug=False,
-        do_owl_imports=False,
+        shacl_graph=ontology_graph,
         **kwargs,
     )
 
     # Relieve RAM of the data graph after validation has run.
     del data_graph
 
+    conforms = validate_result[0]
+
+    if len(undefined_cdo_concepts) > 0:
+        warnings.warn(undefined_cdo_concepts_message)
+        if not kwargs.get("allow_warnings"):
+            undefined_cdo_concepts_alleviation_message = "The data graph is SHACL-conformant with the CDO ontologies, but nonexistent-concept references raise Warnings with this tool.  Please either correct the concept names in the data graph; use the --ontology-graph flag to pass a corrected CDO ontology file, also using --built-version none; or, use the --allow-warnings flag."
+            warnings.warn(undefined_cdo_concepts_alleviation_message)
+            conforms = False
+
     return ValidationResult(
-        validate_result[0],
+        conforms,
         validate_result[1],
         validate_result[2],
         undefined_cdo_concepts,
@@ -212,25 +227,6 @@ def main() -> None:
 
     args = parser.parse_args()
 
-    data_graph = rdflib.Graph()
-    for in_graph in args.in_graph:
-        _logger.debug("in_graph = %r.", in_graph)
-        data_graph.parse(in_graph)
-
-    # Get the ontology graph based on the CASE version and supplemental graphs specified by the CLI
-    ontology_graph = get_ontology_graph(
-        case_version=args.built_version, supplemental_graphs=args.ontology_graph
-    )
-
-    # Get the list of undefined CDO concepts in the graph
-    undefined_cdo_concepts = get_invalid_cdo_concepts(data_graph, ontology_graph)
-    for undefined_cdo_concept in sorted(undefined_cdo_concepts):
-        warnings.warn(undefined_cdo_concept, NonExistentCDOConceptWarning)
-    undefined_cdo_concepts_message = (
-        "There were %d concepts with CDO IRIs in the data graph that are not in the ontology graph."
-        % len(undefined_cdo_concepts)
-    )
-
     # Determine output format.
     # pySHACL's determination of output formatting is handled solely
     # through the -f flag.  Other CASE CLI tools handle format
@@ -241,28 +237,23 @@ def main() -> None:
     if args.format != "human":
         validator_kwargs["serialize_report_graph"] = args.format
 
-    validate_result: Tuple[
-        bool, Union[Exception, bytes, str, rdflib.Graph], str
-    ] = pyshacl.validate(
-        data_graph,
-        shacl_graph=ontology_graph,
-        ont_graph=ontology_graph,
-        inference=args.inference,
-        meta_shacl=args.metashacl,
+    validation_result: ValidationResult = validate(
+        args.in_graph,
         abort_on_first=args.abort,
         allow_infos=True if args.allow_infos else False,
         allow_warnings=True if args.allow_warnings else False,
+        case_version=args.built_version,
         debug=True if args.debug else False,
         do_owl_imports=True if args.imports else False,
+        inference=args.inference,
+        meta_shacl=args.metashacl,
+        supplemental_graphs=args.ontology_graph,
         **validator_kwargs,
     )
 
-    # Relieve RAM of the data graph after validation has run.
-    del data_graph
-
-    conforms = validate_result[0]
-    validation_graph = validate_result[1]
-    validation_text = validate_result[2]
+    conforms = validation_result.conforms
+    validation_graph = validation_result.graph
+    validation_text = validation_result.text
 
     # NOTE: The output logistics code is adapted from pySHACL's file
     # pyshacl/cli.py.  This section should be monitored for code drift.
@@ -283,13 +274,6 @@ def main() -> None:
                 "Unexpected result type returned from validate: %r."
                 % type(validation_graph)
             )
-
-    if len(undefined_cdo_concepts) > 0:
-        warnings.warn(undefined_cdo_concepts_message)
-        if not args.allow_warnings:
-            undefined_cdo_concepts_alleviation_message = "The data graph is SHACL-conformant with the CDO ontologies, but nonexistent-concept references raise Warnings with this tool.  Please either correct the concept names in the data graph; use the --ontology-graph flag to pass a corrected CDO ontology file, also using --built-version none; or, use the --allow-warnings flag."
-            warnings.warn(undefined_cdo_concepts_alleviation_message)
-            conforms = False
 
     sys.exit(0 if conforms else 1)
 
