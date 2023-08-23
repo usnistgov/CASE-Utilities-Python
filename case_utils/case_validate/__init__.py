@@ -94,6 +94,7 @@ def validate(
         bool, Union[Exception, bytes, str, rdflib.Graph], str
     ] = pyshacl.validate(
         data_graph,
+        *args,
         shacl_graph=ontology_graph,
         ont_graph=ontology_graph,
         inference=inference,
@@ -103,8 +104,7 @@ def validate(
         allow_warnings=False,
         debug=False,
         do_owl_imports=False,
-        args=args,
-        kwargs=kwargs,
+        **kwargs,
     )
 
     # Relieve RAM of the data graph after validation has run.
