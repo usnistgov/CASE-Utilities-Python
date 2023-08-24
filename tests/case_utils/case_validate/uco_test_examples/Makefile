@@ -33,6 +33,8 @@ validation_ttls := \
   co_XFAIL_validation.ttl \
   configuration_setting_PASS_validation.ttl \
   configuration_setting_XFAIL_validation.ttl \
+  database_records_PASS_validation.ttl \
+  database_records_XFAIL_validation.ttl \
   has_facet_inverse_functional_PASS_validation.ttl \
   has_facet_inverse_functional_XFAIL_validation.ttl \
   hash_PASS_validation.ttl \
@@ -41,6 +43,7 @@ validation_ttls := \
   location_XFAIL_validation.ttl \
   message_thread_PASS_validation.ttl \
   message_thread_XFAIL_validation.ttl \
+  observable_creation_time_PASS_validation.ttl \
   owl_axiom_PASS_validation.ttl \
   owl_axiom_XFAIL_validation.ttl \
   owl_properties_PASS_validation.ttl \
@@ -73,6 +76,8 @@ all: \
   $(tests_srcdir)/.venv.done.log \
   $(top_srcdir)/.ontology.done.log \
   $(top_srcdir)/case_utils/case_validate/__init__.py \
+  $(top_srcdir)/case_utils/case_validate/validate_types.py \
+  $(top_srcdir)/case_utils/case_validate/validate_utils.py \
   $(top_srcdir)/case_utils/ontology/__init__.py
 	source $(tests_srcdir)/venv/bin/activate \
 	  && case_validate \

@@ -24,29 +24,28 @@ RDF_TOOLKIT_JAR := $(uco_srcdir)/lib/rdf-toolkit.jar
 case_version := $(shell python3 version_info.py)
 
 all: \
-  case-$(case_version)-subclasses.ttl
+  ontology_and_version_iris.txt
 
 .PRECIOUS: \
   case-$(case_version).ttl
 
+$(case_srcdir)/.venv.done.log: \
+  $(top_srcdir)/.git_submodule_init.done.log
+	$(MAKE) \
+	  --directory $(case_srcdir) \
+	    .venv.done.log
+	touch -c $@
+	test -r $@
+
 case-$(case_version).ttl: \
-  $(top_srcdir)/.git_submodule_init.done.log \
+  $(case_srcdir)/.venv.done.log \
   $(RDF_TOOLKIT_JAR)
 	$(MAKE) \
 	  --directory $(case_srcdir)/tests \
 	    case_monolithic.ttl
-	#TODO This cleanup step should be removed after the 0.3.0 release of CASE-Utility-SHACL-Inheritance-Reviewer.
-	test ! -d $(uco_srcdir)/dependencies/CASE-Utility-SHACL-Inheritance-Reviewer/build \
-	  || rm -rf \
-	    $(uco_srcdir)/dependencies/CASE-Utility-SHACL-Inheritance-Reviewer/build
-	#TODO This normalization step will not be needed after resolution of ONT-445.
-	java -jar $(RDF_TOOLKIT_JAR) \
-	  --inline-blank-nodes \
-	  --source $(case_srcdir)/tests/case_monolithic.ttl \
-	  --source-format turtle \
-	  --target _$@ \
-	  --target-format turtle
-	mv _$@ $@
+	cp \
+	  $(case_srcdir)/tests/case_monolithic.ttl \
+	  $@
 
 case-$(case_version)-subclasses.ttl: \
   case-$(case_version).ttl \
@@ -56,14 +55,7 @@ case-$(case_version)-subclasses.ttl: \
 	# release is being made, that step will have been skipped.
 	# This recursive Make call guarantees the virtual environment is
 	# set up.
-	$(MAKE) \
-	  --directory $(case_srcdir)/tests \
-	    .venv.done.log
-	#TODO This cleanup step should be removed after the 0.3.0 release of CASE-Utility-SHACL-Inheritance-Reviewer.
-	test ! -d $(uco_srcdir)/dependencies/CASE-Utility-SHACL-Inheritance-Reviewer/build \
-	  || rm -rf \
-	    $(uco_srcdir)/dependencies/CASE-Utility-SHACL-Inheritance-Reviewer/build
-	source $(case_srcdir)/tests/venv/bin/activate \
+	source $(case_srcdir)/venv/bin/activate \
 	  && python3 src/subclasses_ttl.py \
 	  __$@ \
 	 $<
@@ -79,3 +71,12 @@ case-$(case_version)-subclasses.ttl: \
 clean:
 	@rm -f \
 	  case-$(case_version)*.ttl
+
+ontology_and_version_iris.txt: \
+  src/ontology_and_version_iris.py \
+  case-$(case_version)-subclasses.ttl
+	source $(case_srcdir)/venv/bin/activate \
+	  && python3 src/ontology_and_version_iris.py \
+	    _$@ \
+	    case-*.ttl
+	mv _$@ $@

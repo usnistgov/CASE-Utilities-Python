@@ -13,9 +13,13 @@
 
 """
 This library is a wrapper for uuid, provided to generate repeatable UUIDs if requested.
+
+The function local_uuid() should be used in code where a user could be expected to opt in to non-random UUIDs.
 """
 
-__version__ = "0.3.0"
+__version__ = "0.3.2"
+
+__all__ = ["configure", "local_uuid"]
 
 import logging
 import os
@@ -33,12 +37,15 @@ _logger = logging.getLogger(pathlib.Path(__file__).name)
 
 
 def configure() -> None:
+    """
+    This function is part of setting up _demo_uuid() to generate non-random UUIDs.  See _demo_uuid() documentation for further setup notes.
+    """
     global DEMO_UUID_BASE
 
     if os.getenv("DEMO_UUID_REQUESTING_NONRANDOM") == "NONRANDOM_REQUESTED":
         warnings.warn(
-            "Environment variable DEMO_UUID_REQUESTING_NONRANDOM is deprecated.  See case_utils.local_uuid.demo_uuid for usage notes on its replacement, CASE_DEMO_NONRANDOM_UUID_BASE.  Proceeding with random UUIDs.",
-            DeprecationWarning,
+            "Environment variable DEMO_UUID_REQUESTING_NONRANDOM is deprecated.  See case_utils.local_uuid._demo_uuid for usage notes on its replacement, CASE_DEMO_NONRANDOM_UUID_BASE.  Proceeding with random UUIDs.",
+            FutureWarning,
         )
         return
 
@@ -49,12 +56,14 @@ def configure() -> None:
     base_dir_original_path = pathlib.Path(env_base_dir_name)
     if not base_dir_original_path.exists():
         warnings.warn(
-            "Environment variable CASE_DEMO_NONRANDOM_UUID_BASE is expected to refer to an existing directory.  Proceeding with random UUIDs."
+            "Environment variable CASE_DEMO_NONRANDOM_UUID_BASE is expected to refer to an existing directory.  Proceeding with random UUIDs.",
+            RuntimeWarning,
         )
         return
     if not base_dir_original_path.is_dir():
         warnings.warn(
-            "Environment variable CASE_DEMO_NONRANDOM_UUID_BASE is expected to refer to a directory.  Proceeding with random UUIDs."
+            "Environment variable CASE_DEMO_NONRANDOM_UUID_BASE is expected to refer to a directory.  Proceeding with random UUIDs.",
+            RuntimeWarning,
         )
         return
 
@@ -104,13 +113,18 @@ def configure() -> None:
     DEMO_UUID_BASE = "/".join(demo_uuid_base_parts)
 
 
-def demo_uuid() -> str:
+def _demo_uuid() -> str:
     """
     This function generates a repeatable UUID, drawing on non-varying elements of the environment and process call for entropy.
 
-    WARNING: This function was developed for use ONLY for reducing (but not eliminating) version-control edits to identifiers in sample data.  It creates UUIDs that are decidedly NOT random, and should remain consistent on repeated calls to the importing script.
+    This function is not intended to be called outside of this module.  Instead, local_uuid() should be called.
 
-    To prevent accidental non-random UUID usage, an environment variable must be set to a string provided by the caller.  The variable's required value is the path to some directory.  The variable's recommended value is the equivalent of the Make variable "top_srcdir" - that is, the root directory of the containing Git repository, some parent of the current process's current working directory.
+    WARNING: This function was developed for use ONLY for reducing (but not eliminating) version-control edits to identifiers when generating sample data.  It creates UUIDs that are decidedly NOT random, and should remain consistent on repeated calls to the importing script.
+
+    To prevent accidental non-random UUID usage, two setup steps need to be done before calling this function:
+
+    * An environment variable, CASE_DEMO_NONRANDOM_UUID_BASE, must be set to a string provided by the caller.  The variable's required value is the path to some directory.  The variable's recommended value is the equivalent of the Make variable "top_srcdir" - that is, the root directory of the containing Git repository, some parent of the current process's current working directory.
+    * The configure() function in this module must be called.
     """
     global DEMO_UUID_BASE
     global DEMO_UUID_COUNTER
@@ -140,4 +154,4 @@ def local_uuid() -> str:
     if DEMO_UUID_BASE is None:
         return str(uuid.uuid4())
     else:
-        return demo_uuid()
+        return _demo_uuid()

@@ -15,7 +15,7 @@
 This script executes a SPARQL CONSTRUCT query, returning a graph of the generated triples.
 """
 
-__version__ = "0.2.3"
+__version__ = "0.2.5"
 
 import argparse
 import logging
@@ -49,7 +49,7 @@ def main() -> None:
         "--built-version",
         choices=tuple(built_version_choices_list),
         default="case-" + CURRENT_CASE_VERSION,
-        help="Ontology version to use to supplement query, such as for subclass querying.  Does not require networking to use.  Default is most recent CASE release.",
+        help="Ontology version to use to supplement query, such as for subclass querying.  Does not require networking to use.  Default is most recent CASE release.  Passing 'none' will mean no pre-built CASE ontology versions accompanying this tool will be included in the analysis.",
     )
     parser.add_argument(
         "--disallow-empty-results",
@@ -98,10 +98,11 @@ def main() -> None:
     construct_query_result = in_graph.query(construct_query_object)
     _logger.debug("type(construct_query_result) = %r." % type(construct_query_result))
     _logger.debug("len(construct_query_result) = %d." % len(construct_query_result))
-    for (row_no, row) in enumerate(construct_query_result):
+    for row_no, row in enumerate(construct_query_result):
+        assert isinstance(row, tuple)
         if row_no == 0:
             _logger.debug("row[0] = %r." % (row,))
-        out_graph.add(row)
+        out_graph.add((row[0], row[1], row[2]))
 
     output_format = None
     if args.output_format is None:

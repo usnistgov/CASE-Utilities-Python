@@ -23,6 +23,7 @@ all: \
 .PHONY: \
   all-case_utils \
   check-case_utils \
+  check-doctest \
   check-isomorphic_diff \
   check-mypy \
   download
@@ -31,8 +32,7 @@ all: \
   $(top_srcdir)/.git_submodule_init.done.log \
   $(top_srcdir)/case_utils/__init__.py \
   $(top_srcdir)/setup.cfg \
-  $(top_srcdir)/setup.py \
-  requirements.txt
+  $(top_srcdir)/setup.py
 	rm -rf venv
 	$(PYTHON3) -m venv \
 	  venv
@@ -43,13 +43,10 @@ all: \
 	    setuptools \
 	    wheel
 	source venv/bin/activate \
-	  && pip install \
-	    --requirement requirements.txt
-	source venv/bin/activate \
 	  && cd $(top_srcdir) \
 	    && pip install \
 	      --editable \
-	      .
+	      .[testing]
 	touch $@
 
 all-case_utils: \
@@ -61,6 +58,7 @@ all-case_utils: \
 # These check calls are provided in preferred run-order.
 check: \
   check-mypy \
+  check-doctest \
   check-isomorphic_diff \
   check-case_utils
 	source venv/bin/activate \
@@ -75,18 +73,27 @@ check-case_utils: \
 	  --directory case_utils \
 	  check
 
+check-doctest: \
+  .venv.done.log
+	source venv/bin/activate \
+	  && pytest \
+	    --doctest-modules \
+	    --log-level=DEBUG \
+	    $(top_srcdir)/case_utils
+
 check-isomorphic_diff: \
   .venv.done.log
 	$(MAKE) \
 	  --directory isomorphic_diff \
 	  check
 
-# TODO - Fix type signatures in UCO test.
+# TODO - Add and strict-check type signatures for CASE and UCO tests.
 check-mypy: \
   .venv.done.log
 	source venv/bin/activate \
 	  && mypy \
 	    --exclude case_utils/case_validate/case_test_examples/test_case_validation.py \
+	    --exclude case_utils/case_validate/uco_test_examples/test_uco_validation.py \
 	    --exclude venv \
 	    --strict \
 	    $(top_srcdir)/case_utils \
