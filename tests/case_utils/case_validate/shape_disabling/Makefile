@@ -32,6 +32,9 @@ clean:
 
 validation_with_uuid_shape_disabled.txt: \
   $(tests_srcdir)/.venv.done.log \
+  $(top_srcdir)/case_utils/case_validate/__init__.py \
+  $(top_srcdir)/case_utils/case_validate/validate_types.py \
+  $(top_srcdir)/case_utils/case_validate/validate_utils.py \
   disable_shape.ttl \
   example.ttl
 	source $(tests_srcdir)/venv/bin/activate \
@@ -43,6 +46,9 @@ validation_with_uuid_shape_disabled.txt: \
 
 validation_with_uuid_shape_enabled.txt: \
   $(tests_srcdir)/.venv.done.log \
+  $(top_srcdir)/case_utils/case_validate/__init__.py \
+  $(top_srcdir)/case_utils/case_validate/validate_types.py \
+  $(top_srcdir)/case_utils/case_validate/validate_utils.py \
   example.ttl
 	source $(tests_srcdir)/venv/bin/activate \
 	  && case_validate \
