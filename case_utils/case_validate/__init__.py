@@ -50,6 +50,7 @@ from case_utils.case_validate.validate_types import (
     ValidationResult,
 )
 from case_utils.case_validate.validate_utils import (
+    disable_tbox_review,
     get_invalid_cdo_concepts,
     get_ontology_graph,
 )
@@ -65,6 +66,7 @@ def validate(
     input_file: Union[List[str], str],
     *args: Any,
     case_version: Optional[str] = None,
+    review_tbox: bool = False,
     supplemental_graphs: Optional[List[str]] = None,
     **kwargs: Any,
 ) -> ValidationResult:
@@ -74,6 +76,7 @@ def validate(
     :param *args: The positional arguments to pass to the underlying pyshacl.validate function.
     :param input_file: The path to the file containing the data graph to validate.  This can also be a list of paths to files containing data graphs to pool together.
     :param case_version: The version of the CASE ontology to use (e.g. 1.2.0).  If None, the most recent version will be used.
+    :param review_tbox: If True, SHACL shapes that review OWL Classes, OWL Properties, and SHACL shapes that constrain those classes and properties will be used in the review.  Otherwise, those shapes will be deactivated before running validation.  Be aware that these shapes are known to significantly increase the validation run time.
     :param supplemental_graphs: File paths to supplemental graphs to use.  If None, no supplemental graphs will be used.
     :param allow_warnings: In addition to affecting the conformance of SHACL validation, this will affect conformance based on unrecognized CDO concepts (likely, misspelled or miscapitalized) in the data graph.  If allow_warnings is not True, any unrecognized concept using a CDO IRI prefix will cause conformance to be False.
     :param inference: The type of inference to use.  If "none" (type str), no inference will be used.  If None (type NoneType), pyshacl defaults will be used.  Note that at the time of this writing (pySHACL 0.23.0), pyshacl defaults are no inferencing for the data graph, and RDFS inferencing for the SHACL graph, which for case_utils.validate includes the SHACL and OWL graphs.
@@ -94,36 +97,16 @@ def validate(
     # Get the ontology graph from the case_version and supplemental_graphs arguments
     ontology_graph: Graph = get_ontology_graph(case_version, supplemental_graphs)
 
-    # Filter the graph pyshacl uses as its ontology mix-in to exclude
-    # all SHACL-related triples.
-    # This is done because, at the time of pyshacl 0.20.0, the entirety
-    # of the ontology graph is mixed into the data graph.  UCO 1.0.0
-    # includes some mechanisms to cross-check SHACL PropertyShapes
-    # versus OWL property definitions.  Because of the mix-in, all of
-    # the ontology graph (.validate ont_graph kwarg) is reviewed by the
-    # SHACL graph (.validate shacl_graph kwarg), so for UCO 1.0.0 that
-    # adds around 30 seconds to each case_validate call, redundantly
-    # reviewing UCO.
-    # The ontology graph (.validate ont_graph kwarg) is currently
-    # believed to never need to know about SHACL concepts.
-    ontology_graph_without_shacl = rdflib.Graph()
-    SH_prefix = str(rdflib.SH)
-    for triple in ontology_graph.triples((None, None, None)):
-        skip_triple = False
-        for triple_part in triple:
-            if isinstance(triple_part, rdflib.URIRef):
-                if str(triple_part).startswith(SH_prefix):
-                    skip_triple = True
-            if skip_triple:
-                break
-        if skip_triple:
-            continue
-        ontology_graph_without_shacl.add(triple)
-    # _logger.debug("len(ontology_graph) = %d.", len(ontology_graph))
-    # _logger.debug("len(ontology_graph_without_shacl) = %d.", len(ontology_graph_without_shacl))
-    # At the time of CASE 1.0.0, this was the debug output:
-    # DEBUG:__init__.py:len(ontology_graph) = 13499.
-    # DEBUG:__init__.py:len(ontology_graph_without_shacl) = 7639.
+    if not review_tbox:
+        # This is done because, at the time of pyshacl 0.20.0, the
+        # entirety of the ontology graph is mixed into the data graph.
+        # UCO 1.0.0 includes some mechanisms to cross-check SHACL
+        # PropertyShapes versus OWL property definitions.  Because of
+        # the mix-in, all of the ontology graph (.validate ont_graph
+        # kwarg) is reviewed by the SHACL graph (.validate shacl_graph
+        # kwarg), so for UCO 1.0.0 that adds around 30 seconds to each
+        # case_validate call, redundantly reviewing UCO.
+        disable_tbox_review(ontology_graph)
 
     # Get the undefined CDO concepts.
     undefined_cdo_concepts = get_invalid_cdo_concepts(data_graph, ontology_graph)
@@ -142,7 +125,7 @@ def validate(
     ] = pyshacl.validate(
         data_graph,
         *args,
-        ont_graph=ontology_graph_without_shacl,
+        ont_graph=ontology_graph,
         shacl_graph=ontology_graph,
         **kwargs,
     )
@@ -256,6 +239,11 @@ def main() -> None:
         help='(ALMOST as with pyshacl CLI) Send output to a file.  If absent, output will be written to stdout.  Difference: If specified, file is expected not to exist.  Clarification: Does NOT influence --format flag\'s default value of "human".  (I.e., any machine-readable serialization format must be specified with --format.)',
         default=sys.stdout,
     )
+    parser.add_argument(
+        "--review-tbox",
+        action="store_true",
+        help='Enable rules for reviewing OWL Classes, Properties, and SHACL shapes that constrain them (i.e. the "TBox", or "Theorem box", of the data graph and ontology graph; in contrast, the "ABox", or "Axiom box", contains the declarations of members of those classes, and users of those properties).  This should be used when adding extension classes or properties not adopted by UCO or its downstream ontologies, e.g. when using a drafting namespace.  Be aware that these rules are known to significantly increase the validation run time.',
+    )
 
     parser.add_argument("in_graph", nargs="+")
 
@@ -281,6 +269,7 @@ def main() -> None:
         do_owl_imports=True if args.imports else False,
         inference=args.inference,
         meta_shacl=args.metashacl,
+        review_tbox=True if args.review_tbox else False,
         supplemental_graphs=args.ontology_graph,
         **validator_kwargs,
     )
