@@ -182,3 +182,22 @@ def get_ontology_graph(
             ontology_graph.parse(arg_ontology_graph)
 
     return ontology_graph
+
+
+def disable_tbox_review(graph: rdflib.Graph) -> None:
+    l_true = rdflib.Literal(True)
+    ns_uco_owl = rdflib.Namespace("https://ontology.unifiedcyberontology.org/owl/")
+
+    for tbox_shape_basename in {
+        "DataOneOf-shape",
+        "DatatypeProperty-shacl-constraints-shape",
+        "Disjointedness-AP-DP-shape",
+        "Disjointedness-AP-OP-shape",
+        "Disjointedness-C-DT-shape",
+        "Disjointedness-DP-OP-shape",
+        "ObjectProperty-shacl-constraints-shape",
+        "ontologyIRI-versionIRI-prerequisite-shape",
+        "versionIRI-nodeKind-shape",
+    }:
+        n_tbox_shape = ns_uco_owl[tbox_shape_basename]
+        graph.add((n_tbox_shape, NS_SH.deactivated, l_true))
