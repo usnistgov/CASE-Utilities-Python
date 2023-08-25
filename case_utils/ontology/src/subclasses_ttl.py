@@ -18,7 +18,7 @@
 This script creates an excerpt of an ontology graph that consists solely of all rdfs:subClassOf statements.
 """
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 import argparse
 
