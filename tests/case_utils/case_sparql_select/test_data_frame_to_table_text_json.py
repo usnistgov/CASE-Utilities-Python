@@ -55,10 +55,22 @@ def make_data_frame_to_json_table_text_parameters() -> (
                         "values",
                     ]:
                         # Handle incompatible parameter pairings for JSON mode.
-                        if use_index is False:
-                            if json_orient not in {"split", "table"}:
+                        if use_index is True:
+                            if json_orient not in {
+                                "columns",
+                                "index",
+                                "split",
+                                "table",
+                            }:
                                 continue
-
+                        elif use_index is False:
+                            if json_orient not in {
+                                "records",
+                                "split",
+                                "table",
+                                "values",
+                            }:
+                                continue
                         yield (json_orient, output_mode, use_header, use_index)
                 else:
                     yield ("columns", output_mode, use_header, use_index)
