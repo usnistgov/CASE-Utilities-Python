@@ -104,6 +104,37 @@ all: \
 
 # NOTE - this more-specific recipe enables "tbox" review, but otherwise
 # matches the wildcarded recipe.
+rdf_list_XFAIL_validation.ttl: \
+  $(examples_srcdir)/rdf_list_XFAIL.json \
+  $(tests_srcdir)/.venv.done.log \
+  $(top_srcdir)/.ontology.done.log \
+  $(top_srcdir)/case_utils/case_validate/__init__.py \
+  $(top_srcdir)/case_utils/case_validate/validate_types.py \
+  $(top_srcdir)/case_utils/case_validate/validate_utils.py \
+  $(top_srcdir)/case_utils/ontology/__init__.py
+	source $(tests_srcdir)/venv/bin/activate \
+	  && case_validate \
+	    --allow-warnings \
+	    --debug \
+	    --format turtle \
+	    --review-tbox \
+	    $< \
+	    > __$@ \
+	    ; rc=$$? ; test 0 -eq $$rc -o 1 -eq $$rc
+	@#Fail if output is empty.
+	@test -s __$@ \
+	  || exit 1
+	java -jar $(RDF_TOOLKIT_JAR) \
+	  --inline-blank-nodes \
+	  --source __$@ \
+	  --source-format turtle \
+	  --target _$@ \
+	  --target-format turtle
+	rm __$@
+	mv _$@ $@
+
+# NOTE - this more-specific recipe enables "tbox" review, but otherwise
+# matches the wildcarded recipe.
 owl_properties_XFAIL_validation.ttl: \
   $(examples_srcdir)/owl_properties_XFAIL.json \
   $(tests_srcdir)/.venv.done.log \
