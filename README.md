@@ -122,7 +122,7 @@ case_sparql_select output.md input.sparql input.json [input-2.json ...]
 
 ### `local_uuid`
 
-This [module](case_utils/local_uuid.py) provides a wrapper UUID generator, `local_uuid()`.  Its main purpose is making example data generate consistent identifiers, and intentionally includes mechanisms to make it difficult to activate this mode without awareness of the caller.
+_Migration:_ Functionality previously in [`case_utils.local_uuid`](case_utils/local_uuid.py) has been exported to [`cdo-local-uuid`](https://github.com/Cyber-Domain-Ontology/CDO-Utility-Local-UUID).  A future `case-utils` release will drop this re-export.
 
 
 ### Built versions
