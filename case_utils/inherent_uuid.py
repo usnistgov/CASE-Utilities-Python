@@ -23,7 +23,7 @@ There are two general patterns implemented:
 2. A pattern based on inherence generates UUIDv5s based on how an inherent object (a.k.a. UcoInherentCharacterizationThing) structurally relates to the object in which it inheres.  For instance, a Facet is understood to only relate to its UcoObject by linking with the uco-core:hasFacet property.  So, a Facet's UUID is determined uniquely by (1) the "UUID namespace" of its corresponding UcoObject, and (2) its OWL Class.
    A. The term "UUID namespace" is described in RFC 4122 Section 4.3 [#rfc4122s43]_ , and is not intended be confused with `rdflib.term.Namespace`.  For any uco-core:UcoThing (or even owl:Thing), the function `inherence_uuid` defines the procedure for either extracting or generating a UUID for use as a namespace.
 
-This module is independent of, and complements, `case_utils.local_uuid`, which provides deterministic UUIDs based on calling process's environment.
+This module is independent of, and complements, `cdo_local_uuid.local_uuid`, which provides deterministic UUIDs based on calling process's environment.
 
 References
 ==========
