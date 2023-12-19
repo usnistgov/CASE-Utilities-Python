@@ -96,7 +96,7 @@ def main() -> None:
     construct_query_result = in_graph.query(construct_query_object)
     _logger.debug("type(construct_query_result) = %r." % type(construct_query_result))
     _logger.debug("len(construct_query_result) = %d." % len(construct_query_result))
-    for (row_no, row) in enumerate(construct_query_result):
+    for row_no, row in enumerate(construct_query_result):
         if row_no == 0:
             _logger.debug("row[0] = %r." % (row,))
         out_graph.add(row)
