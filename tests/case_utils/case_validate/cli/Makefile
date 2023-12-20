@@ -21,7 +21,7 @@ examples_srcdir := $(case_srcdir)/tests/examples
 
 tests_srcdir := $(top_srcdir)/tests
 
-RDF_TOOLKIT_JAR := $(case_srcdir)/lib/rdf-toolkit.jar
+RDF_TOOLKIT_JAR := $(tests_srcdir)/lib/rdf-toolkit.jar
 
 files_to_generate := \
   format_human_output_jsonld.jsonld \

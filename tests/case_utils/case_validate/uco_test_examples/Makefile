@@ -15,15 +15,11 @@ SHELL := /bin/bash
 
 top_srcdir := $(shell cd ../../../.. ; pwd)
 
-case_srcdir := $(top_srcdir)/dependencies/CASE
-
-uco_srcdir := $(case_srcdir)/dependencies/UCO
-
-examples_srcdir := $(uco_srcdir)/tests/examples
+examples_srcdir := $(top_srcdir)/dependencies/CASE/dependencies/UCO/tests/examples
 
 tests_srcdir := $(top_srcdir)/tests
 
-RDF_TOOLKIT_JAR := $(case_srcdir)/lib/rdf-toolkit.jar
+RDF_TOOLKIT_JAR := $(tests_srcdir)/lib/rdf-toolkit.jar
 
 all: \
   action_inheritance_PASS_validation.ttl \
