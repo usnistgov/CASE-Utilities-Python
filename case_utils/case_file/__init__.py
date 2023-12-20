@@ -32,6 +32,7 @@ from case_utils.namespace import *
 
 DEFAULT_PREFIX = "http://example.org/kb/"
 
+
 # Shortcut syntax for defining an immutable named tuple is noted here:
 # https://docs.python.org/3/library/typing.html#typing.NamedTuple
 # via the "See also" box here: https://docs.python.org/3/library/collections.html#collections.namedtuple
