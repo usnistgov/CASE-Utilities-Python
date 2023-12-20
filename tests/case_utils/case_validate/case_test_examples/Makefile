@@ -15,13 +15,11 @@ SHELL := /bin/bash
 
 top_srcdir := $(shell cd ../../../.. ; pwd)
 
-case_srcdir := $(top_srcdir)/dependencies/CASE
-
-examples_srcdir := $(case_srcdir)/tests/examples
+examples_srcdir := $(top_srcdir)/dependencies/CASE/tests/examples
 
 tests_srcdir := $(top_srcdir)/tests
 
-RDF_TOOLKIT_JAR := $(case_srcdir)/lib/rdf-toolkit.jar
+RDF_TOOLKIT_JAR := $(tests_srcdir)/lib/rdf-toolkit.jar
 
 all: \
   investigative_action_PASS_validation.ttl \

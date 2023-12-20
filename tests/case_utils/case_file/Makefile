@@ -17,9 +17,7 @@ top_srcdir := $(shell cd ../../.. ; pwd)
 
 tests_srcdir := $(top_srcdir)/tests
 
-case_srcdir := $(top_srcdir)/dependencies/CASE
-
-RDF_TOOLKIT_JAR := $(case_srcdir)/lib/rdf-toolkit.jar
+RDF_TOOLKIT_JAR := $(tests_srcdir)/lib/rdf-toolkit.jar
 
 all: \
   kb.json \
