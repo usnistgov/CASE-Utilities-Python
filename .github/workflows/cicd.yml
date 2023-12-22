@@ -16,13 +16,15 @@ name: Continuous Integration
 
 on:
   push:
-    branches: 
+    branches:
       - main
       - develop
+      - support-*
   pull_request:
-    branches: 
+    branches:
       - main
       - develop
+      - support-*
   release:
     types:
       - published
@@ -35,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: 
+        python-version:
           - '3.8'
           - '3.11'
 
@@ -57,7 +59,7 @@ jobs:
       run: make clean
     - name: Run tests
       run: make PYTHON3=python check
-    
+
     # Build the binary wheel as well as the source tar
     - name: Build Objects
       run: |
