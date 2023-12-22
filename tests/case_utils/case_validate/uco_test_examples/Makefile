@@ -15,9 +15,7 @@ SHELL := /bin/bash
 
 top_srcdir := $(shell cd ../../../.. ; pwd)
 
-case_srcdir := $(top_srcdir)/dependencies/CASE
-
-uco_srcdir := $(case_srcdir)/dependencies/UCO
+uco_srcdir := $(top_srcdir)/dependencies/CASE/dependencies/UCO
 
 examples_srcdir := $(uco_srcdir)/tests/examples
 
