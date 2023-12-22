@@ -22,7 +22,6 @@ all: \
 
 .PHONY: \
   all-case_utils \
-  all-lib \
   check-case_utils \
   check-isomorphic_diff \
   check-mypy \
@@ -54,14 +53,9 @@ all: \
 	touch $@
 
 all-case_utils: \
-  .venv.done.log \
-  all-lib
+  .venv.done.log
 	$(MAKE) \
 	  --directory case_utils
-
-all-lib:
-	$(MAKE) \
-	  --directory lib
 
 # These check calls are provided in preferred run-order.
 check: \
@@ -74,8 +68,7 @@ check: \
 	    --log-level=DEBUG
 
 check-case_utils: \
-  .venv.done.log \
-  all-lib
+  .venv.done.log
 	$(MAKE) \
 	  --directory case_utils \
 	  check
