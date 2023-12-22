@@ -110,10 +110,10 @@ def main() -> None:
     select_query_object = rdflib.plugins.sparql.processor.prepareQuery(
         select_query_text, initNs=nsdict
     )
-    for (row_no, row) in enumerate(graph.query(select_query_object)):
+    for row_no, row in enumerate(graph.query(select_query_object)):
         tally = row_no + 1
         record = []
-        for (column_no, column) in enumerate(row):
+        for column_no, column in enumerate(row):
             if column is None:
                 column_value = ""
             elif (
