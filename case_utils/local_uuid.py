@@ -20,7 +20,7 @@ This library is a wrapper for uuid, provided to generate repeatable UUIDs if req
 The function local_uuid() should be used in code where a user could be expected to opt in to non-random UUIDs.
 """
 
-__version__ = "0.4.0"
+__version__ = "0.4.1"
 
 __all__ = ["configure", "local_uuid"]
 
