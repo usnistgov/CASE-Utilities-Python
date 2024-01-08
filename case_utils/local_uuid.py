@@ -15,7 +15,7 @@
 This library is a wrapper for uuid, provided to generate repeatable UUIDs if requested.
 """
 
-__version__ = "0.3.2"
+__version__ = "0.3.3"
 
 import logging
 import os
