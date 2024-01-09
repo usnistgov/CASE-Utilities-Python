@@ -197,6 +197,7 @@ def disable_tbox_review(graph: rdflib.Graph) -> None:
         "Disjointedness-AP-OP-shape",
         "Disjointedness-C-DT-shape",
         "Disjointedness-DP-OP-shape",
+        "List-shape",
         "ObjectProperty-shacl-constraints-shape",
         "ontologyIRI-versionIRI-prerequisite-shape",
         "versionIRI-nodeKind-shape",
