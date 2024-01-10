@@ -18,7 +18,7 @@
 This module creates a graph object that provides a basic UCO characterization of a single file.  The gathered metadata is among the more "durable" file characteristics, i.e. characteristics that would remain consistent when transferring a file between locations.
 """
 
-__version__ = "0.5.1"
+__version__ = "0.6.0"
 
 import argparse
 import datetime
@@ -28,7 +28,9 @@ import os
 import typing
 import warnings
 
+import cdo_local_uuid
 import rdflib
+from cdo_local_uuid import local_uuid
 
 import case_utils.inherent_uuid
 from case_utils.namespace import (
@@ -94,7 +96,7 @@ def create_file_node(
     node_namespace = rdflib.Namespace(node_prefix)
 
     if node_iri is None:
-        node_slug = "File-" + case_utils.local_uuid.local_uuid()
+        node_slug = "File-" + local_uuid()
         node_iri = node_namespace[node_slug]
     n_file = rdflib.URIRef(node_iri)
     graph.add((n_file, NS_RDF.type, NS_UCO_OBSERVABLE.File))
@@ -110,7 +112,7 @@ def create_file_node(
             n_file, NS_UCO_OBSERVABLE.FileFacet, namespace=node_namespace
         )
     else:
-        n_file_facet = node_namespace["FileFacet-" + case_utils.local_uuid.local_uuid()]
+        n_file_facet = node_namespace["FileFacet-" + local_uuid()]
 
     graph.add(
         (
@@ -144,9 +146,7 @@ def create_file_node(
                 n_file, NS_UCO_OBSERVABLE.ContentDataFacet, namespace=node_namespace
             )
         else:
-            n_contentdata_facet = node_namespace[
-                "ContentDataFacet-" + case_utils.local_uuid.local_uuid()
-            ]
+            n_contentdata_facet = node_namespace["ContentDataFacet-" + local_uuid()]
 
         graph.add((n_file, NS_UCO_CORE.hasFacet, n_contentdata_facet))
         graph.add(
@@ -248,7 +248,7 @@ def create_file_node(
                     )
                 )
             else:
-                hash_uuid = case_utils.local_uuid.local_uuid()
+                hash_uuid = local_uuid()
             n_hash = node_namespace["Hash-" + hash_uuid]
 
             graph.add((n_contentdata_facet, NS_UCO_OBSERVABLE.hash, n_hash))
@@ -291,7 +291,7 @@ def main() -> None:
 
     logging.basicConfig(level=logging.DEBUG if args.debug else logging.INFO)
 
-    case_utils.local_uuid.configure()
+    cdo_local_uuid.configure()
 
     NS_BASE = rdflib.Namespace(args.base_prefix)
 
@@ -314,7 +314,7 @@ def main() -> None:
         context_dictionary = {k: v for (k, v) in graph.namespace_manager.namespaces()}
         serialize_kwargs["context"] = context_dictionary
 
-    node_iri = NS_BASE["File-" + case_utils.local_uuid.local_uuid()]
+    node_iri = NS_BASE["File-" + local_uuid()]
     create_file_node(
         graph,
         args.in_file,

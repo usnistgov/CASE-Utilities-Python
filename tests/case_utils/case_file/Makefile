@@ -117,11 +117,10 @@ sample.txt.json: \
   $(tests_srcdir)/src/isomorphic_diff.py \
   $(top_srcdir)/case_utils/case_file/__init__.py \
   $(top_srcdir)/case_utils/inherent_uuid.py \
-  $(top_srcdir)/case_utils/local_uuid.py \
   $(top_srcdir)/case_utils/namespace.py \
   sample.txt-nocompact.json
 	rm -f $@ _$@ __$@
-	export CASE_DEMO_NONRANDOM_UUID_BASE="$(top_srcdir)" \
+	export CDO_DEMO_NONRANDOM_UUID_BASE="$(top_srcdir)" \
 	  && source $(tests_srcdir)/venv/bin/activate \
 	    && case_file \
 	      --debug \
@@ -152,11 +151,10 @@ sample.txt.ttl: \
   $(tests_srcdir)/.venv.done.log \
   $(top_srcdir)/case_utils/case_file/__init__.py \
   $(top_srcdir)/case_utils/inherent_uuid.py \
-  $(top_srcdir)/case_utils/local_uuid.py \
   $(top_srcdir)/case_utils/namespace.py \
   sample.txt.done.log
 	rm -f _$@ __$@
-	export CASE_DEMO_NONRANDOM_UUID_BASE="$(top_srcdir)" \
+	export CDO_DEMO_NONRANDOM_UUID_BASE="$(top_srcdir)" \
 	  && source $(tests_srcdir)/venv/bin/activate \
 	    && case_file \
 	      --debug \
@@ -178,11 +176,10 @@ sample.txt-disable_hashes.ttl: \
   $(tests_srcdir)/.venv.done.log \
   $(top_srcdir)/case_utils/case_file/__init__.py \
   $(top_srcdir)/case_utils/inherent_uuid.py \
-  $(top_srcdir)/case_utils/local_uuid.py \
   $(top_srcdir)/case_utils/namespace.py \
   sample.txt.done.log
 	rm -f _$@ __$@
-	export CASE_DEMO_NONRANDOM_UUID_BASE="$(top_srcdir)" \
+	export CDO_DEMO_NONRANDOM_UUID_BASE="$(top_srcdir)" \
 	  && source $(tests_srcdir)/venv/bin/activate \
 	    && case_file \
 	      --debug \
@@ -206,11 +203,10 @@ sample.txt-nocompact.json: \
   $(tests_srcdir)/src/isomorphic_diff.py \
   $(top_srcdir)/case_utils/case_file/__init__.py \
   $(top_srcdir)/case_utils/inherent_uuid.py \
-  $(top_srcdir)/case_utils/local_uuid.py \
   $(top_srcdir)/case_utils/namespace.py \
   sample.txt.done.log
 	rm -f _$@
-	export CASE_DEMO_NONRANDOM_UUID_BASE="$(top_srcdir)" \
+	export CDO_DEMO_NONRANDOM_UUID_BASE="$(top_srcdir)" \
 	  && source $(tests_srcdir)/venv/bin/activate \
 	    && case_file \
 	      --debug \

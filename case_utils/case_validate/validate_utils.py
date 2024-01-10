@@ -14,7 +14,7 @@
 #
 # We would appreciate acknowledgement if the software is used.
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 import importlib
 import logging
@@ -197,6 +197,7 @@ def disable_tbox_review(graph: rdflib.Graph) -> None:
         "Disjointedness-AP-OP-shape",
         "Disjointedness-C-DT-shape",
         "Disjointedness-DP-OP-shape",
+        "List-shape",
         "ObjectProperty-shacl-constraints-shape",
         "ontologyIRI-versionIRI-prerequisite-shape",
         "versionIRI-nodeKind-shape",
