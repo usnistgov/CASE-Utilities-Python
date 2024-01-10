@@ -18,7 +18,7 @@
 This library was a wrapper for uuid, provided to generate repeatable UUIDs if requested.  It is now a temporary re-export of functionality migrated to cdo_local_uuid.
 """
 
-__version__ = "0.4.1"
+__version__ = "0.5.0"
 
 __all__ = ["configure", "local_uuid"]
 
