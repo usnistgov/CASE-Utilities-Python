@@ -18,7 +18,7 @@
 This script creates an excerpt of an ontology graph that consists solely of all rdfs:subClassOf statements.
 """
 
-__version__ = "0.1.1"
+__version__ = "0.2.0"
 
 import argparse
 
@@ -39,6 +39,10 @@ def main() -> None:
         in_graph.parse(in_ttl)
 
     for triple in in_graph.triples((None, rdflib.RDFS.subClassOf, None)):
+        # Avoid owl:Restrictions and set-complements, which would get
+        # emitted as empty blank nodes.
+        if isinstance(triple[2], rdflib.BNode):
+            continue
         out_graph.add(triple)
 
     out_graph.serialize(args.out_ttl)

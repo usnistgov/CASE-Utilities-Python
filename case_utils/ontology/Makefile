@@ -40,15 +40,30 @@ $(case_srcdir)/.venv.done.log: \
 	touch -c $@
 	test -r $@
 
+# Build monolith including transitive import closure outside of
+# CDO-maintained ontologies, removing need for network retrieval for
+# non-CDO class and property definitions.
 case-$(case_version).ttl: \
   $(case_srcdir)/.venv.done.log \
   $(RDF_TOOLKIT_JAR)
 	$(MAKE) \
 	  --directory $(case_srcdir)/tests \
 	    case_monolithic.ttl
-	cp \
-	  $(case_srcdir)/tests/case_monolithic.ttl \
-	  $@
+	source $(case_srcdir)/venv/bin/activate \
+	  && rdfpipe \
+	    --output-format turtle \
+	    $(case_srcdir)/tests/case_monolithic.ttl \
+	    $(uco_srcdir)/dependencies/collections-ontology/collections.owl \
+	    $(uco_srcdir)/dependencies/error/docs/current/error.ttl \
+	    > __$@
+	java -jar $(RDF_TOOLKIT_JAR) \
+	  --inline-blank-nodes \
+	  --source __$@ \
+	  --source-format turtle \
+	  --target _$@ \
+	  --target-format turtle
+	rm __$@
+	mv _$@ $@
 
 case-$(case_version)-subclasses.ttl: \
   case-$(case_version).ttl \
