@@ -197,10 +197,18 @@ def disable_tbox_review(graph: rdflib.Graph) -> None:
         "Disjointedness-AP-OP-shape",
         "Disjointedness-C-DT-shape",
         "Disjointedness-DP-OP-shape",
-        "List-shape",
         "ObjectProperty-shacl-constraints-shape",
+        "Sequence-shape",
+        "disjointUnionOf-subjects-shape",
+        "hasKey-subjects-shape",
+        "intersectionOf-subjects-shape",
+        "onProperties-subjects-shape",
+        "oneOf-subjects-shape",
         "ontologyIRI-versionIRI-prerequisite-shape",
+        "propertyChainAxiom-subjects-shape",
+        "unionOf-subjects-shape",
         "versionIRI-nodeKind-shape",
+        "withRestrictions-subjects-shape",
     }:
         n_tbox_shape = ns_uco_owl[tbox_shape_basename]
         graph.add((n_tbox_shape, NS_SH.deactivated, l_true))
