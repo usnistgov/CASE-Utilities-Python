@@ -27,7 +27,7 @@ __version__ = "0.6.1"
 __all__ = ["CURRENT_CASE_VERSION", "built_version_choices_list"]
 
 # Tested with CI to match versionInfo of <https://ontology.caseontology.org/case/case>.
-CURRENT_CASE_VERSION: str = "1.2.0"
+CURRENT_CASE_VERSION: str = "1.3.0"
 
 # Tested with CI to match set of ontology files available.
 built_version_choices_list = [
@@ -38,6 +38,7 @@ built_version_choices_list = [
     "case-0.7.1",
     "case-1.0.0",
     "case-1.1.0",
+    "case-1.2.0",
     "case-" + CURRENT_CASE_VERSION,
 ]
 
