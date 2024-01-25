@@ -166,6 +166,10 @@
 	rdfs:subClassOf <https://ontology.unifiedcyberontology.org/uco/core/Compilation> ;
 	.
 
+<https://ontology.unifiedcyberontology.org/uco/core/Event>
+	rdfs:subClassOf <https://ontology.unifiedcyberontology.org/uco/core/UcoObject> ;
+	.
+
 <https://ontology.unifiedcyberontology.org/uco/core/ExternalReference>
 	rdfs:subClassOf <https://ontology.unifiedcyberontology.org/uco/core/UcoInherentCharacterizationThing> ;
 	.
@@ -1302,6 +1306,10 @@
 
 <https://ontology.unifiedcyberontology.org/uco/observable/StorageMedium>
 	rdfs:subClassOf <https://ontology.unifiedcyberontology.org/uco/observable/Device> ;
+	.
+
+<https://ontology.unifiedcyberontology.org/uco/observable/StorageMediumFacet>
+	rdfs:subClassOf <https://ontology.unifiedcyberontology.org/uco/core/Facet> ;
 	.
 
 <https://ontology.unifiedcyberontology.org/uco/observable/SymbolicLink>

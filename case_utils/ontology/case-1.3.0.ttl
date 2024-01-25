@@ -1,26 +1,28 @@
 # imports: http://purl.org/co
 # imports: http://purl.org/spar/error
-# imports: https://ontology.caseontology.org/case/investigation/1.0.0
-# imports: https://ontology.caseontology.org/case/vocabulary/1.0.0
-# imports: https://ontology.unifiedcyberontology.org/co/1.0.0
-# imports: https://ontology.unifiedcyberontology.org/owl/1.0.0
-# imports: https://ontology.unifiedcyberontology.org/uco/action/1.0.0
-# imports: https://ontology.unifiedcyberontology.org/uco/configuration/1.0.0
-# imports: https://ontology.unifiedcyberontology.org/uco/core/1.0.0
-# imports: https://ontology.unifiedcyberontology.org/uco/identity/1.0.0
-# imports: https://ontology.unifiedcyberontology.org/uco/location/1.0.0
-# imports: https://ontology.unifiedcyberontology.org/uco/marking/1.0.0
-# imports: https://ontology.unifiedcyberontology.org/uco/observable/1.0.0
-# imports: https://ontology.unifiedcyberontology.org/uco/pattern/1.0.0
-# imports: https://ontology.unifiedcyberontology.org/uco/role/1.0.0
-# imports: https://ontology.unifiedcyberontology.org/uco/time/1.0.0
-# imports: https://ontology.unifiedcyberontology.org/uco/tool/1.0.0
-# imports: https://ontology.unifiedcyberontology.org/uco/types/1.0.0
-# imports: https://ontology.unifiedcyberontology.org/uco/uco/1.0.0
-# imports: https://ontology.unifiedcyberontology.org/uco/victim/1.0.0
-# imports: https://ontology.unifiedcyberontology.org/uco/vocabulary/1.0.0
+# imports: https://ontology.caseontology.org/case/investigation/1.3.0
+# imports: https://ontology.caseontology.org/case/vocabulary/1.3.0
+# imports: https://ontology.unifiedcyberontology.org/co/1.3.0
+# imports: https://ontology.unifiedcyberontology.org/owl/1.3.0
+# imports: https://ontology.unifiedcyberontology.org/uco/action/1.3.0
+# imports: https://ontology.unifiedcyberontology.org/uco/analysis/1.3.0
+# imports: https://ontology.unifiedcyberontology.org/uco/configuration/1.3.0
+# imports: https://ontology.unifiedcyberontology.org/uco/core/1.3.0
+# imports: https://ontology.unifiedcyberontology.org/uco/identity/1.3.0
+# imports: https://ontology.unifiedcyberontology.org/uco/location/1.3.0
+# imports: https://ontology.unifiedcyberontology.org/uco/marking/1.3.0
+# imports: https://ontology.unifiedcyberontology.org/uco/observable/1.3.0
+# imports: https://ontology.unifiedcyberontology.org/uco/pattern/1.3.0
+# imports: https://ontology.unifiedcyberontology.org/uco/role/1.3.0
+# imports: https://ontology.unifiedcyberontology.org/uco/time/1.3.0
+# imports: https://ontology.unifiedcyberontology.org/uco/tool/1.3.0
+# imports: https://ontology.unifiedcyberontology.org/uco/types/1.3.0
+# imports: https://ontology.unifiedcyberontology.org/uco/uco/1.3.0
+# imports: https://ontology.unifiedcyberontology.org/uco/victim/1.3.0
+# imports: https://ontology.unifiedcyberontology.org/uco/vocabulary/1.3.0
 
 @prefix action: <https://ontology.unifiedcyberontology.org/uco/action/> .
+@prefix analysis: <https://ontology.unifiedcyberontology.org/uco/analysis/> .
 @prefix co: <http://purl.org/co/> .
 @prefix configuration: <https://ontology.unifiedcyberontology.org/uco/configuration/> .
 @prefix core: <https://ontology.unifiedcyberontology.org/uco/core/> .
@@ -86,49 +88,47 @@ Making contraints on ontology resources"""@en ;
 	rdfs:label "case-master"@en ;
 	rdfs:comment "The Cyber-investigation Analysis Standard Expression (CASE) ontology is a community-developed standard that defines concepts used in a broad range of cyber-investigation domains, including digital forensic science, incident response, counter-terrorism, criminal justice, forensic intelligence, and situational awareness. CASE includes all aspects of the digital forensic process, from evidence-gathering and chain of custody, to generating a final report. The goal is to increase sharing and interoperability of cyber-investigation information among organizations and between forensic analytic tools. CASE aligns with and extends the Unified Cyber Ontology (UCO). The preferred namespace abbreviation for this ontology is: case-master."@en ;
 	dcterms:title "Cyber-investigation Analysis Standard Expression (CASE)"@en ;
+	owl:backwardCompatibleWith <https://ontology.caseontology.org/case/case/1.2.0> ;
 	owl:imports
-		investigation:1.0.0 ,
-		vocab:1.0.0 ,
-		<https://ontology.unifiedcyberontology.org/uco/uco/1.0.0>
+		investigation:1.3.0 ,
+		vocab:1.3.0 ,
+		<https://ontology.unifiedcyberontology.org/uco/uco/1.3.0>
 		;
-	owl:incompatibleWith <https://ontology.caseontology.org/case/case/0.7.1> ;
-	owl:ontologyIRI <https://ontology.caseontology.org/case/case> ;
-	owl:priorVersion <https://ontology.caseontology.org/case/case/0.7.1> ;
-	owl:versionIRI <https://ontology.caseontology.org/case/case/1.0.0> ;
-	owl:versionInfo "1.0.0" ;
+	owl:priorVersion <https://ontology.caseontology.org/case/case/1.2.0> ;
+	owl:versionIRI <https://ontology.caseontology.org/case/case/1.3.0> ;
+	owl:versionInfo "1.3.0" ;
 	.
 
 <https://ontology.caseontology.org/case/investigation>
 	a owl:Ontology ;
 	rdfs:label "investigation"@en ;
 	rdfs:comment "This ontology defines key concepts, and their associated properties and relationships, for characterizing cyber-investigations in the broadest range of contexts, including security incidents, criminal investigations, civil and regulatory matters, intelligence operations, international disputes, accident inquiries, policy violations, and others." ;
+	owl:backwardCompatibleWith investigation:1.2.0 ;
 	owl:imports
-		vocab:1.0.0 ,
-		action:1.0.0 ,
-		role:1.0.0
+		vocab:1.3.0 ,
+		action:1.3.0 ,
+		role:1.3.0
 		;
-	owl:incompatibleWith investigation:0.7.1 ;
-	owl:ontologyIRI <https://ontology.caseontology.org/case/investigation> ;
-	owl:priorVersion investigation:0.7.1 ;
-	owl:versionIRI investigation:1.0.0 ;
+	owl:priorVersion investigation:1.2.0 ;
+	owl:versionIRI investigation:1.3.0 ;
 	.
 
 <https://ontology.caseontology.org/case/vocabulary>
 	a owl:Ontology ;
 	rdfs:label "vocabularies"@en ;
-	owl:incompatibleWith vocab:0.7.1 ;
-	owl:ontologyIRI <https://ontology.caseontology.org/case/vocabulary> ;
-	owl:priorVersion vocab:0.7.1 ;
-	owl:versionIRI vocab:1.0.0 ;
+	owl:backwardCompatibleWith vocab:1.2.0 ;
+	owl:priorVersion vocab:1.2.0 ;
+	owl:versionIRI vocab:1.3.0 ;
 	.
 
 <https://ontology.unifiedcyberontology.org/co>
 	a owl:Ontology ;
 	rdfs:label "uco-co"@en ;
 	rdfs:comment "This ontology defines SHACL shapes to supplement the OWL 2 DL definitions in the Collections Ontology."@en ;
+	owl:backwardCompatibleWith uco-co:1.2.0 ;
 	owl:imports <http://purl.org/co> ;
-	owl:ontologyIRI <https://ontology.unifiedcyberontology.org/co> ;
-	owl:versionIRI uco-co:1.0.0 ;
+	owl:priorVersion uco-co:1.2.0 ;
+	owl:versionIRI uco-co:1.3.0 ;
 	.
 
 <https://ontology.unifiedcyberontology.org/owl>
@@ -136,25 +136,36 @@ Making contraints on ontology resources"""@en ;
 	rdfs:label "uco-owl"@en ;
 	rdfs:comment "This ontology defines SHACL shapes to perform conformance testing of OWL 2 DL.  Some of these shapes follow rules specified from the canonical, subtractive parsing process of Section 3 of the OWL 2 mapping to RDF.  From the last line of that document's Section 3, 'At the end of this process, the graph G MUST be empty,' anything not strictly matching patterns specified in that section cause the input graph to be non-conformant with OWL 2 DL."@en ;
 	rdfs:seeAlso <https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/#Mapping_from_RDF_Graphs_to_the_Structural_Specification> ;
-	owl:ontologyIRI <https://ontology.unifiedcyberontology.org/owl> ;
-	owl:versionIRI uco-owl:1.0.0 ;
+	owl:backwardCompatibleWith uco-owl:1.2.0 ;
+	owl:priorVersion uco-owl:1.2.0 ;
+	owl:versionIRI uco-owl:1.3.0 ;
 	.
 
 <https://ontology.unifiedcyberontology.org/uco/action>
 	a owl:Ontology ;
 	rdfs:label "uco-action"@en ;
 	rdfs:comment "This ontology defines classes and properties for characterizing actions."@en-US ;
+	owl:backwardCompatibleWith action:1.2.0 ;
 	owl:imports
-		core:1.0.0 ,
-		location:1.0.0 ,
-		pattern:1.0.0 ,
-		types:1.0.0 ,
-		vocabulary:1.0.0
+		core:1.3.0 ,
+		location:1.3.0 ,
+		pattern:1.3.0 ,
+		types:1.3.0 ,
+		vocabulary:1.3.0
 		;
-	owl:incompatibleWith action:0.9.1 ;
-	owl:ontologyIRI <https://ontology.unifiedcyberontology.org/uco/action> ;
-	owl:priorVersion action:0.9.1 ;
-	owl:versionIRI action:1.0.0 ;
+	owl:priorVersion action:1.2.0 ;
+	owl:versionIRI action:1.3.0 ;
+	.
+
+<https://ontology.unifiedcyberontology.org/uco/analysis>
+	a owl:Ontology ;
+	rdfs:label "uco-analysis"@en ;
+	rdfs:comment "This ontology defines classes and properties for characterizing analytic actions and results."@en-US ;
+	rdfs:seeAlso <https://github.com/ucoProject/UCO/issues/400> ;
+	owl:backwardCompatibleWith analysis:1.2.0 ;
+	owl:imports action:1.3.0 ;
+	owl:priorVersion analysis:1.2.0 ;
+	owl:versionIRI analysis:1.3.0 ;
 	.
 
 <https://ontology.unifiedcyberontology.org/uco/configuration>
@@ -162,175 +173,164 @@ Making contraints on ontology resources"""@en ;
 	rdfs:label "uco-configuration"@en ;
 	rdfs:comment "This ontology defines classes and properties for characterizing configurations."@en-US ;
 	rdfs:seeAlso <https://github.com/ucoProject/UCO/issues/432> ;
-	owl:imports core:1.0.0 ;
-	owl:ontologyIRI <https://ontology.unifiedcyberontology.org/uco/configuration> ;
-	owl:versionIRI configuration:1.0.0 ;
+	owl:backwardCompatibleWith configuration:1.2.0 ;
+	owl:imports core:1.3.0 ;
+	owl:priorVersion configuration:1.2.0 ;
+	owl:versionIRI configuration:1.3.0 ;
 	.
 
 <https://ontology.unifiedcyberontology.org/uco/core>
 	a owl:Ontology ;
 	rdfs:label "uco-core"@en ;
 	rdfs:comment "This ontology defines classes and properties that are shared across the various UCO ontologies.  At a high-level, the UCO core ontology provides base classes, relationship-oriented classes, content-aggregation classes, and shared classes."@en ;
-	owl:incompatibleWith core:0.9.1 ;
-	owl:ontologyIRI <https://ontology.unifiedcyberontology.org/uco/core> ;
-	owl:priorVersion core:0.9.1 ;
-	owl:versionIRI core:1.0.0 ;
+	owl:backwardCompatibleWith core:1.2.0 ;
+	owl:priorVersion core:1.2.0 ;
+	owl:versionIRI core:1.3.0 ;
 	.
 
 <https://ontology.unifiedcyberontology.org/uco/identity>
 	a owl:Ontology ;
 	rdfs:label "uco-identity"@en ;
+	owl:backwardCompatibleWith identity:1.2.0 ;
 	owl:imports
-		core:1.0.0 ,
-		location:1.0.0
+		core:1.3.0 ,
+		location:1.3.0
 		;
-	owl:incompatibleWith identity:0.9.1 ;
-	owl:ontologyIRI <https://ontology.unifiedcyberontology.org/uco/identity> ;
-	owl:priorVersion identity:0.9.1 ;
-	owl:versionIRI identity:1.0.0 ;
+	owl:priorVersion identity:1.2.0 ;
+	owl:versionIRI identity:1.3.0 ;
 	.
 
 <https://ontology.unifiedcyberontology.org/uco/location>
 	a owl:Ontology ;
 	rdfs:label "uco-location"@en ;
-	owl:imports core:1.0.0 ;
-	owl:incompatibleWith location:0.9.1 ;
-	owl:ontologyIRI <https://ontology.unifiedcyberontology.org/uco/location> ;
-	owl:priorVersion location:0.9.1 ;
-	owl:versionIRI location:1.0.0 ;
+	owl:backwardCompatibleWith location:1.2.0 ;
+	owl:imports core:1.3.0 ;
+	owl:priorVersion location:1.2.0 ;
+	owl:versionIRI location:1.3.0 ;
 	.
 
 <https://ontology.unifiedcyberontology.org/uco/marking>
 	a owl:Ontology ;
 	rdfs:label "uco-marking"@en ;
 	rdfs:comment "Data markings represent restrictions, permissions, and other guidance for how data can be used and shared."@en ;
-	owl:imports core:1.0.0 ;
-	owl:incompatibleWith marking:0.9.1 ;
-	owl:ontologyIRI <https://ontology.unifiedcyberontology.org/uco/marking> ;
-	owl:priorVersion marking:0.9.1 ;
-	owl:versionIRI marking:1.0.0 ;
+	owl:backwardCompatibleWith marking:1.2.0 ;
+	owl:imports core:1.3.0 ;
+	owl:priorVersion marking:1.2.0 ;
+	owl:versionIRI marking:1.3.0 ;
 	.
 
 <https://ontology.unifiedcyberontology.org/uco/observable>
 	a owl:Ontology ;
 	rdfs:label "uco-observable"@en ;
+	owl:backwardCompatibleWith observable:1.2.0 ;
 	owl:imports
-		action:1.0.0 ,
-		configuration:1.0.0 ,
-		core:1.0.0 ,
-		identity:1.0.0 ,
-		location:1.0.0 ,
-		types:1.0.0 ,
-		vocabulary:1.0.0
+		action:1.3.0 ,
+		configuration:1.3.0 ,
+		core:1.3.0 ,
+		identity:1.3.0 ,
+		location:1.3.0 ,
+		types:1.3.0 ,
+		vocabulary:1.3.0
 		;
-	owl:incompatibleWith observable:0.9.1 ;
-	owl:ontologyIRI <https://ontology.unifiedcyberontology.org/uco/observable> ;
-	owl:priorVersion observable:0.9.1 ;
-	owl:versionIRI observable:1.0.0 ;
+	owl:priorVersion observable:1.2.0 ;
+	owl:versionIRI observable:1.3.0 ;
 	.
 
 <https://ontology.unifiedcyberontology.org/uco/pattern>
 	a owl:Ontology ;
 	rdfs:label "uco-pattern"@en ;
-	owl:imports core:1.0.0 ;
-	owl:incompatibleWith pattern:0.9.1 ;
-	owl:ontologyIRI <https://ontology.unifiedcyberontology.org/uco/pattern> ;
-	owl:priorVersion pattern:0.9.1 ;
-	owl:versionIRI pattern:1.0.0 ;
+	owl:backwardCompatibleWith pattern:1.2.0 ;
+	owl:imports core:1.3.0 ;
+	owl:priorVersion pattern:1.2.0 ;
+	owl:versionIRI pattern:1.3.0 ;
 	.
 
 <https://ontology.unifiedcyberontology.org/uco/role>
 	a owl:Ontology ;
 	rdfs:label "uco-role"@en ;
-	owl:imports core:1.0.0 ;
-	owl:incompatibleWith role:0.9.1 ;
-	owl:ontologyIRI <https://ontology.unifiedcyberontology.org/uco/role> ;
-	owl:priorVersion role:0.9.1 ;
-	owl:versionIRI role:1.0.0 ;
+	owl:backwardCompatibleWith role:1.2.0 ;
+	owl:imports core:1.3.0 ;
+	owl:priorVersion role:1.2.0 ;
+	owl:versionIRI role:1.3.0 ;
 	.
 
 <https://ontology.unifiedcyberontology.org/uco/time>
 	a owl:Ontology ;
 	rdfs:label "uco-time"@en ;
-	owl:imports core:1.0.0 ;
-	owl:incompatibleWith time1:0.9.1 ;
-	owl:ontologyIRI <https://ontology.unifiedcyberontology.org/uco/time> ;
-	owl:priorVersion time1:0.9.1 ;
-	owl:versionIRI time1:1.0.0 ;
+	owl:backwardCompatibleWith time1:1.2.0 ;
+	owl:imports core:1.3.0 ;
+	owl:priorVersion time1:1.2.0 ;
+	owl:versionIRI time1:1.3.0 ;
 	.
 
 <https://ontology.unifiedcyberontology.org/uco/tool>
 	a owl:Ontology ;
 	rdfs:label "uco-tool"@en ;
+	owl:backwardCompatibleWith tool:1.2.0 ;
 	owl:imports
-		configuration:1.0.0 ,
-		identity:1.0.0
+		configuration:1.3.0 ,
+		identity:1.3.0
 		;
-	owl:incompatibleWith tool:0.9.1 ;
-	owl:ontologyIRI <https://ontology.unifiedcyberontology.org/uco/tool> ;
-	owl:priorVersion tool:0.9.1 ;
-	owl:versionIRI tool:1.0.0 ;
+	owl:priorVersion tool:1.2.0 ;
+	owl:versionIRI tool:1.3.0 ;
 	.
 
 <https://ontology.unifiedcyberontology.org/uco/types>
 	a owl:Ontology ;
 	rdfs:label "uco-types"@en ;
+	owl:backwardCompatibleWith types:1.2.0 ;
 	owl:imports
-		uco-co:1.0.0 ,
-		core:1.0.0 ,
-		vocabulary:1.0.0
+		uco-co:1.3.0 ,
+		core:1.3.0 ,
+		vocabulary:1.3.0
 		;
-	owl:incompatibleWith types:0.9.1 ;
-	owl:ontologyIRI <https://ontology.unifiedcyberontology.org/uco/types> ;
-	owl:priorVersion types:0.9.1 ;
-	owl:versionIRI types:1.0.0 ;
+	owl:priorVersion types:1.2.0 ;
+	owl:versionIRI types:1.3.0 ;
 	.
 
 <https://ontology.unifiedcyberontology.org/uco/uco>
 	a owl:Ontology ;
 	rdfs:label "uco-master"@en ;
+	owl:backwardCompatibleWith <https://ontology.unifiedcyberontology.org/uco/uco/1.2.0> ;
 	owl:imports
-		uco-co:1.0.0 ,
-		uco-owl:1.0.0 ,
-		action:1.0.0 ,
-		configuration:1.0.0 ,
-		core:1.0.0 ,
-		identity:1.0.0 ,
-		location:1.0.0 ,
-		marking:1.0.0 ,
-		observable:1.0.0 ,
-		pattern:1.0.0 ,
-		role:1.0.0 ,
-		time1:1.0.0 ,
-		tool:1.0.0 ,
-		types:1.0.0 ,
-		victim:1.0.0 ,
-		vocabulary:1.0.0
+		uco-co:1.3.0 ,
+		uco-owl:1.3.0 ,
+		action:1.3.0 ,
+		analysis:1.3.0 ,
+		configuration:1.3.0 ,
+		core:1.3.0 ,
+		identity:1.3.0 ,
+		location:1.3.0 ,
+		marking:1.3.0 ,
+		observable:1.3.0 ,
+		pattern:1.3.0 ,
+		role:1.3.0 ,
+		time1:1.3.0 ,
+		tool:1.3.0 ,
+		types:1.3.0 ,
+		victim:1.3.0 ,
+		vocabulary:1.3.0
 		;
-	owl:incompatibleWith <https://ontology.unifiedcyberontology.org/uco/uco/0.9.1> ;
-	owl:ontologyIRI <https://ontology.unifiedcyberontology.org/uco/uco> ;
-	owl:priorVersion <https://ontology.unifiedcyberontology.org/uco/uco/0.9.1> ;
-	owl:versionIRI <https://ontology.unifiedcyberontology.org/uco/uco/1.0.0> ;
-	owl:versionInfo "1.0.0" ;
+	owl:priorVersion <https://ontology.unifiedcyberontology.org/uco/uco/1.2.0> ;
+	owl:versionIRI <https://ontology.unifiedcyberontology.org/uco/uco/1.3.0> ;
+	owl:versionInfo "1.3.0" ;
 	.
 
 <https://ontology.unifiedcyberontology.org/uco/victim>
 	a owl:Ontology ;
 	rdfs:label "uco-victim"@en ;
-	owl:imports role:1.0.0 ;
-	owl:incompatibleWith victim:0.9.1 ;
-	owl:ontologyIRI <https://ontology.unifiedcyberontology.org/uco/victim> ;
-	owl:priorVersion victim:0.9.1 ;
-	owl:versionIRI victim:1.0.0 ;
+	owl:backwardCompatibleWith victim:1.2.0 ;
+	owl:imports role:1.3.0 ;
+	owl:priorVersion victim:1.2.0 ;
+	owl:versionIRI victim:1.3.0 ;
 	.
 
 <https://ontology.unifiedcyberontology.org/uco/vocabulary>
 	a owl:Ontology ;
 	rdfs:label "uco-vocabularies"@en ;
-	owl:incompatibleWith vocabulary:0.9.1 ;
-	owl:ontologyIRI <https://ontology.unifiedcyberontology.org/uco/vocabulary> ;
-	owl:priorVersion vocabulary:0.9.1 ;
-	owl:versionIRI vocabulary:1.0.0 ;
+	owl:backwardCompatibleWith vocabulary:1.2.0 ;
+	owl:priorVersion vocabulary:1.2.0 ;
+	owl:versionIRI vocabulary:1.3.0 ;
 	.
 
 co:Bag
@@ -1183,11 +1183,15 @@ uco-owl:DatatypeProperty-shacl-constraints-shape
 			sh:select """
 				PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 				PREFIX sh: <http://www.w3.org/ns/shacl#>
-				SELECT $this
+				SELECT $this ?value
 				WHERE {
-					$value
+					?value
 						sh:class ?nClass ;
-						sh:path / rdf:rest* / rdf:first? $this ;
+						sh:path / rdf:rest* ?nLastSequenceMember ;
+						.
+					?nLastSequenceMember
+						rdf:first $this ;
+						rdf:rest rdf:nil ;
 						.
 				}
 			""" ;
@@ -1198,19 +1202,25 @@ uco-owl:DatatypeProperty-shacl-constraints-shape
 			sh:select """
 				PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 				PREFIX sh: <http://www.w3.org/ns/shacl#>
-				SELECT $this
+				SELECT $this ?value
 				WHERE {
-					$value sh:path / rdf:rest* / rdf:first? $this .
+					?value
+						sh:path / rdf:rest* ?nLastSequenceMember ;
+						.
+					?nLastSequenceMember
+						rdf:first $this ;
+						rdf:rest rdf:nil ;
+						.
 
-					{ $value sh:nodeKind sh:BlankNode . }
+					{ ?value sh:nodeKind sh:BlankNode . }
 					UNION
-					{ $value sh:nodeKind sh:BlankNodeOrIRI . }
+					{ ?value sh:nodeKind sh:BlankNodeOrIRI . }
 					UNION
-					{ $value sh:nodeKind sh:BlankNodeOrLiteral . }
+					{ ?value sh:nodeKind sh:BlankNodeOrLiteral . }
 					UNION
-					{ $value sh:nodeKind sh:IRI . }
+					{ ?value sh:nodeKind sh:IRI . }
 					UNION
-					{ $value sh:nodeKind sh:IRIOrLiteral . }
+					{ ?value sh:nodeKind sh:IRIOrLiteral . }
 				}
 			""" ;
 		]
@@ -1287,25 +1297,14 @@ uco-owl:Disjointedness-DP-OP-shape
 	.
 
 uco-owl:List-shape
-	a sh:NodeShape ;
-	sh:property [
-		a sh:PropertyShape ;
-		sh:maxCount "1"^^xsd:integer ;
-		sh:path rdf:first ;
-	] ;
-	sh:sparql [
-		a sh:SPARQLConstraint ;
-		rdfs:comment "This requirement is determined from review of the canonical parsing process in Section 3 of the OWL 2 mapping to RDF.  Table 5 removes any triple matching the pattern 'x a rdf:List`.  All other references throughout Section 3 to rdf:first are identified as blank nodes.  Therefore, any non-blank node that is an rdf:List will not be mapped and consumed by the mapping process, making the graph non-conformant with OWL 2 DL."@en ;
-		rdfs:seeAlso <https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/#Mapping_from_RDF_Graphs_to_the_Structural_Specification> ;
-		sh:message "The subject of a triple with rdf:first as predicate must be a blank node."@en ;
-		sh:select """
-			SELECT $this
-			WHERE {
-				FILTER isIRI($this)
-			}
-		""" ;
-	] ;
-	sh:targetSubjectsOf rdf:first ;
+	a sh:Shape ;
+	rdfs:comment "This shape's functionality has been exported"@en ;
+	rdfs:seeAlso
+		uco-owl:Sequence-shape ,
+		uco-owl:rdf-first-subjects-shape ,
+		uco-owl:rdf-rest-subjects-shape
+		;
+	sh:deactivated "true"^^xsd:boolean ;
 	.
 
 uco-owl:ObjectProperty-shacl-constraints-shape
@@ -1317,11 +1316,15 @@ uco-owl:ObjectProperty-shacl-constraints-shape
 			sh:select """
 				PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 				PREFIX sh: <http://www.w3.org/ns/shacl#>
-				SELECT $this
+				SELECT $this ?value
 				WHERE {
-					$value
+					?value
 						sh:datatype ?nDatatype ;
-						sh:path / rdf:rest* / rdf:first? $this ;
+						sh:path / rdf:rest* ?nLastSequenceMember ;
+						.
+					?nLastSequenceMember
+						rdf:first $this ;
+						rdf:rest rdf:nil ;
 						.
 				}
 		""" ;
@@ -1330,16 +1333,23 @@ uco-owl:ObjectProperty-shacl-constraints-shape
 			a sh:SPARQLConstraint ;
 			sh:message "An OWL Object Property must not permit a Literal value via SHACL consraints."@en ;
 			sh:select """
+				PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 				PREFIX sh: <http://www.w3.org/ns/shacl#>
-				SELECT $this
+				SELECT $this ?value
 				WHERE {
-					$value sh:path / rdf:rest* / rdf:first? $this ;
+					?value
+						sh:path / rdf:rest* ?nLastSequenceMember ;
+						.
+					?nLastSequenceMember
+						rdf:first $this ;
+						rdf:rest rdf:nil ;
+						.
 
-					{ $value sh:nodeKind sh:BlankNodeOrLiteral . }
+					{ ?value sh:nodeKind sh:BlankNodeOrLiteral . }
 					UNION
-					{ $value sh:nodeKind sh:IRIOrLiteral . }
+					{ ?value sh:nodeKind sh:IRIOrLiteral . }
 					UNION
-					{ $value sh:nodeKind sh:Literal . }
+					{ ?value sh:nodeKind sh:Literal . }
 				}
 		""" ;
 		]
@@ -1347,112 +1357,210 @@ uco-owl:ObjectProperty-shacl-constraints-shape
 	sh:targetClass owl:ObjectProperty ;
 	.
 
-uco-owl:incompatibleWith-shape
+uco-owl:Sequence-shape
+	a sh:NodeShape ;
+	rdfs:comment "This shape intentionally has no target declaration.  It is instead intended to be incorporated using 'sh:node'."@en ;
+	rdfs:seeAlso <https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/#Mapping_from_RDF_Graphs_to_the_Structural_Specification> ;
+	sh:description "This shape is determined from review of the canonical parsing process in Section 3 of the OWL 2 mapping to RDF, particularly Tables 3 and 5.  Table 5 removes any triple matching the pattern 'x a rdf:List`.  All other references throughout Section 3 to rdf:first are in the context of mapping a Sequence in OWL structure translation, and are denoted as blank nodes, starting with Table 3.  A non-blank node that is an rdf:List and used with a sequence-valued property IRI in the OWL namespace will not be mapped and consumed by the mapping process, making the graph non-conformant with OWL 2 DL.  But a non-blank node that is an rdf:List can be used if not directly attached to a sequence-valued property IRI in the OWL namespace."@en ;
+	sh:xone (
+		[
+			a sh:NodeShape ;
+			sh:hasValue rdf:nil ;
+		]
+		[
+			a sh:NodeShape ;
+			sh:nodeKind sh:BlankNode ;
+			sh:property [
+				a sh:PropertyShape ;
+				sh:path [
+					sh:oneOrMorePath rdf:rest ;
+				] ;
+				sh:xone (
+					[
+						a sh:NodeShape ;
+						sh:hasValue rdf:nil ;
+					]
+					[
+						a sh:NodeShape ;
+						sh:nodeKind sh:BlankNode ;
+						sh:property [
+							a sh:PropertyShape ;
+							sh:maxCount "1"^^xsd:integer ;
+							sh:minCount "1"^^xsd:integer ;
+							sh:path rdf:first ;
+						] ;
+					]
+				) ;
+			] ;
+		]
+	) ;
+	.
+
+uco-owl:disjointUnionOf-subjects-shape
+	a sh:NodeShape ;
+	sh:property [
+		a sh:PropertyShape ;
+		sh:node uco-owl:Sequence-shape ;
+		sh:path owl:disjointUnionOf ;
+	] ;
+	sh:targetSubjectsOf owl:disjointUnionOf ;
+	.
+
+uco-owl:distinctMembers-subjects-shape
+	a sh:NodeShape ;
+	sh:property [
+		a sh:PropertyShape ;
+		sh:node uco-owl:Sequence-shape ;
+		sh:path owl:distinctMembers ;
+	] ;
+	sh:targetSubjectsOf owl:distinctMembers ;
+	.
+
+uco-owl:hasKey-subjects-shape
+	a sh:NodeShape ;
+	sh:property [
+		a sh:PropertyShape ;
+		sh:node uco-owl:Sequence-shape ;
+		sh:path owl:hasKey ;
+	] ;
+	sh:targetSubjectsOf owl:hasKey ;
+	.
+
+uco-owl:incompatibleWith-direct-import-shape
 	a sh:PropertyShape ;
 	rdfs:seeAlso <https://www.w3.org/TR/owl2-syntax/#Imports> ;
-	sh:message "'The import closure of [ontology] O SHOULD NOT contain ontologies O_1 and O_2 such that ... O_1 contains an ontology annotation owl:incompatibleWith with the value equal to either the ontology IRI or the version IRI of O2.'"@en ;
-	sh:path owl:incompatibleWith ;
+	sh:disjoint owl:incompatibleWith ;
+	sh:message "'The import closure of [ontology] O SHOULD NOT contain ontologies O_1 and O_2 such that ... O_1 contains an ontology annotation owl:incompatibleWith with the value equal to either the ontology IRI or the version IRI of O_2.'  The focusNode directly imported an incompatibility it declared (the value node)."@en ;
+	sh:path owl:imports ;
 	sh:severity sh:Warning ;
-	sh:sparql
-		[
-			a sh:SPARQLConstraint ;
-			sh:select """
-				PREFIX owl: <http://www.w3.org/2002/07/owl#>
-				SELECT $this ?value
-				WHERE {
-					$this
-						owl:imports ?value ;
-						owl:incompatibleWith ?value ;
-						.
-				}
-			""" ;
-		] ,
-		[
-			a sh:SPARQLConstraint ;
-			sh:select """
-				PREFIX owl: <http://www.w3.org/2002/07/owl#>
-				SELECT $this ?value
-				WHERE {
-					$this owl:incompatibleWith ?value .
-
-					{ ?value a owl:Ontology . }
-					UNION
-					{ ?nOntology owl:ontologyIRI ?value . }
-					UNION
-					{ ?nOntology owl:versionIRI ?value . }
-				}
-			""" ;
-		]
-		;
-	sh:targetSubjectsOf owl:incompatibleWith ;
+	sh:targetClass owl:Ontology ;
 	.
 
-uco-owl:ontologyIRI-nodeKind-shape
-	a sh:PropertyShape ;
-	sh:nodeKind sh:IRI ;
-	sh:path owl:ontologyIRI ;
-	sh:targetSubjectsOf owl:ontologyIRI ;
-	.
-
-uco-owl:ontologyIRI-ontology-uniqueness-shape
+uco-owl:incompatibleWith-imported-ontology-iri-shape
 	a sh:NodeShape ;
-	rdfs:seeAlso <https://www.w3.org/TR/owl2-syntax/#Ontology_IRI_and_Version_IRI> ;
-	sh:message "'If an ontology has an ontology IRI but no version IRI, then a different ontology with the same ontology IRI but no version IRI SHOULD NOT exist.'"@en ;
-	sh:severity sh:Warning ;
-	sh:sparql [
-		a sh:SPARQLConstraint ;
-		sh:select """
-			PREFIX owl: <http://www.w3.org/2002/07/owl#>
-			SELECT $this ?value
-			WHERE {
-				$this owl:ontologyIRI ?nOntologyIRI .
-				FILTER NOT EXISTS {
-					$this owl:versionIRI ?nVersionIRI1 .
-				}
-				?value owl:ontologyIRI ?nOntologyIRI .
-				FILTER NOT EXISTS {
-					?value owl:versionIRI ?nVersionIRI2 .
-				}
-				FILTER ( $this != ?value )
-			}
-		""" ;
+	rdfs:seeAlso <https://www.w3.org/TR/owl2-syntax/#Imports> ;
+	sh:message "'The import closure of [ontology] O SHOULD NOT contain ontologies O_1 and O_2 such that ... O_1 contains an ontology annotation owl:incompatibleWith with the value equal to either the ontology IRI or the version IRI of O_2.'  The focusNode, or a versionIRI of it, is imported within the transitive closure of some O, but is incompatible with some O_1 also within the transitive closure of O."@en ;
+	sh:not [
+		a sh:NodeShape ;
+		sh:class owl:Ontology ;
+		sh:description "This node having a class-designation of owl:Ontology implies it is an ontology 'O_2' defined in the transitive closure of an ontology 'O_1' that declared itself incompatible with 'O_2'."@en ;
 	] ;
-	sh:targetSubjectsOf owl:ontologyIRI ;
+	sh:severity sh:Warning ;
+	sh:targetObjectsOf owl:incompatibleWith ;
+	.
+
+uco-owl:incompatibleWith-imported-version-iri-shape
+	a sh:PropertyShape ;
+	rdfs:seeAlso <https://www.w3.org/TR/owl2-syntax/#Imports> ;
+	sh:maxCount "0"^^xsd:integer ;
+	sh:message "'The import closure of [ontology] O SHOULD NOT contain ontologies O_1 and O_2 such that ... O_1 contains an ontology annotation owl:incompatibleWith with the value equal to ... the version IRI of O_2.'  The focusNode is incompatible with some O_1 within the transitive closure of some O."@en ;
+	sh:path [
+		sh:inversePath owl:versionIRI ;
+	] ;
+	sh:severity sh:Warning ;
+	sh:targetObjectsOf owl:incompatibleWith ;
+	.
+
+uco-owl:intersectionOf-subjects-shape
+	a sh:NodeShape ;
+	sh:property [
+		a sh:PropertyShape ;
+		sh:node uco-owl:Sequence-shape ;
+		sh:path owl:intersectionOf ;
+	] ;
+	sh:targetSubjectsOf owl:intersectionOf ;
+	.
+
+uco-owl:members-subjects-shape
+	a sh:NodeShape ;
+	sh:property [
+		a sh:PropertyShape ;
+		sh:node uco-owl:Sequence-shape ;
+		sh:path owl:members ;
+	] ;
+	sh:targetSubjectsOf owl:members ;
+	.
+
+uco-owl:onProperties-subjects-shape
+	a sh:NodeShape ;
+	sh:property [
+		a sh:PropertyShape ;
+		sh:node uco-owl:Sequence-shape ;
+		sh:path owl:onProperties ;
+	] ;
+	sh:targetSubjectsOf owl:onProperties ;
+	.
+
+uco-owl:oneOf-subjects-shape
+	a sh:NodeShape ;
+	sh:property [
+		a sh:PropertyShape ;
+		sh:node uco-owl:Sequence-shape ;
+		sh:path owl:oneOf ;
+	] ;
+	sh:targetSubjectsOf owl:oneOf ;
 	.
 
 uco-owl:ontologyIRI-versionIRI-prerequisite-shape
-	a sh:PropertyShape ;
+	a sh:NodeShape ;
 	rdfs:seeAlso <https://www.w3.org/TR/owl2-syntax/#Ontology_IRI_and_Version_IRI> ;
 	sh:message "'An ontology without an ontology IRI MUST NOT contain a version IRI.'"@en ;
-	sh:minCount "1"^^xsd:integer ;
-	sh:path owl:ontologyIRI ;
+	sh:nodeKind sh:IRI ;
 	sh:targetSubjectsOf owl:versionIRI ;
 	.
 
-uco-owl:ontologyIRI-versionIRI-uniqueness-shape
+uco-owl:propertyChainAxiom-subjects-shape
 	a sh:NodeShape ;
-	rdfs:seeAlso <https://www.w3.org/TR/owl2-syntax/#Ontology_IRI_and_Version_IRI> ;
-	sh:message "'If an ontology has both an ontology IRI and a version IRI, then a different ontology with the same ontology IRI and the same version IRI SHOULD NOT exist.'"@en ;
-	sh:severity sh:Warning ;
-	sh:sparql [
-		a sh:SPARQLConstraint ;
-		sh:select """
-			PREFIX owl: <http://www.w3.org/2002/07/owl#>
-			SELECT $this ?value
-			WHERE {
-				$this
-					owl:ontologyIRI ?nOntologyIRI ;
-					owl:versionIRI ?nVersionIRI ;
-					.
-				?value
-					owl:ontologyIRI ?nOntologyIRI ;
-					owl:versionIRI ?nVersionIRI ;
-					.
-				FILTER ( $this != ?value )
-			}
-		""" ;
+	sh:property [
+		a sh:PropertyShape ;
+		sh:node uco-owl:Sequence-shape ;
+		sh:path owl:propertyChainAxiom ;
 	] ;
-	sh:targetSubjectsOf owl:ontologyIRI ;
+	sh:targetSubjectsOf owl:propertyChainAxiom ;
+	.
+
+uco-owl:rdf-first-subjects-shape
+	a sh:NodeShape ;
+	sh:property
+		[
+			a sh:PropertyShape ;
+			sh:maxCount "1"^^xsd:integer ;
+			sh:path rdf:first ;
+		] ,
+		[
+			a sh:PropertyShape ;
+			sh:minCount "1"^^xsd:integer ;
+			sh:path rdf:rest ;
+		]
+		;
+	sh:targetSubjectsOf rdf:first ;
+	.
+
+uco-owl:rdf-rest-subjects-shape
+	a sh:NodeShape ;
+	sh:property
+		[
+			a sh:PropertyShape ;
+			sh:maxCount "1"^^xsd:integer ;
+			sh:path rdf:rest ;
+		] ,
+		[
+			a sh:PropertyShape ;
+			sh:minCount "1"^^xsd:integer ;
+			sh:path rdf:first ;
+		]
+		;
+	sh:targetSubjectsOf rdf:rest ;
+	.
+
+uco-owl:unionOf-subjects-shape
+	a sh:NodeShape ;
+	sh:property [
+		a sh:PropertyShape ;
+		sh:node uco-owl:Sequence-shape ;
+		sh:path owl:unionOf ;
+	] ;
+	sh:targetSubjectsOf owl:unionOf ;
 	.
 
 uco-owl:versionIRI-multiversion-shape
@@ -1472,6 +1580,16 @@ uco-owl:versionIRI-nodeKind-shape
 	sh:targetSubjectsOf owl:versionIRI ;
 	.
 
+uco-owl:withRestrictions-subjects-shape
+	a sh:NodeShape ;
+	sh:property [
+		a sh:PropertyShape ;
+		sh:node uco-owl:Sequence-shape ;
+		sh:path owl:withRestrictions ;
+	] ;
+	sh:targetSubjectsOf owl:withRestrictions ;
+	.
+
 action:Action
 	a
 		owl:Class ,
@@ -1480,6 +1598,8 @@ action:Action
 	rdfs:subClassOf core:UcoObject ;
 	rdfs:label "Action"@en ;
 	rdfs:comment "An action is something that may be done or performed."@en ;
+	rdfs:isDefinedBy <https://ontology.unifiedcyberontology.org/uco/types> ;
+	owl:disjointWith core:Event ;
 	sh:property
 		[
 			sh:class action:Action ;
@@ -1587,6 +1707,16 @@ action:Action
 			sh:path action:actionStatus ;
 		]
 		;
+	sh:targetClass action:Action ;
+	.
+
+action:Action-disjointWith-Event-shape
+	a sh:NodeShape ;
+	sh:message "action:Action and core:Event are disjoint classes."@en ;
+	sh:not [
+		a sh:NodeShape ;
+		sh:class core:Event ;
+	] ;
 	sh:targetClass action:Action ;
 	.
 
@@ -1991,6 +2121,128 @@ action:value
 	rdfs:range xsd:string ;
 	.
 
+analysis:Analysis
+	a
+		owl:Class ,
+		sh:NodeShape
+		;
+	rdfs:subClassOf action:Action ;
+	rdfs:label "Analysis"@en ;
+	rdfs:comment "An analysis is an action of detailed examination of something in order to understand its nature, context or essential features."@en ;
+	sh:targetClass action:Analysis ;
+	.
+
+analysis:AnalyticResult
+	a
+		owl:Class ,
+		sh:NodeShape
+		;
+	rdfs:subClassOf core:Assertion ;
+	rdfs:label "AnalyticResult"@en ;
+	rdfs:comment "An analytic result is a characterization of the understanding resulting from an analysis action."@en ;
+	sh:property
+		[
+			sh:class analysis:Analysis ;
+			sh:maxCount "1"^^xsd:integer ;
+			sh:nodeKind sh:IRI ;
+			sh:path analysis:originatingAnalysis ;
+		] ,
+		[
+			sh:class core:UcoObject ;
+			sh:nodeKind sh:IRI ;
+			sh:path analysis:resultContent ;
+		]
+		;
+	sh:targetClass analysis:AnalysicResult ;
+	.
+
+analysis:AnalyticResultFacet
+	a
+		owl:Class ,
+		sh:NodeShape
+		;
+	rdfs:subClassOf core:Facet ;
+	rdfs:label "AnalyticResultFacet"@en ;
+	rdfs:comment "An analytic result facet is a grouping of characteristics unique to the results of an analysis action."@en ;
+	sh:targetClass analysis:AnalyticResultFacet ;
+	.
+
+analysis:ArtifactClassification
+	a
+		owl:Class ,
+		sh:NodeShape
+		;
+	rdfs:subClassOf core:UcoInherentCharacterizationThing ;
+	rdfs:label "ArtifactClassification"@en ;
+	rdfs:comment "An artifact classification is a single specific assertion that a particular class of a classification taxonomy applies to something."@en ;
+	sh:property
+		[
+			sh:datatype xsd:decimal ;
+			sh:maxCount "1"^^xsd:integer ;
+			sh:nodeKind sh:Literal ;
+			sh:path analysis:classificationConfidence ;
+		] ,
+		[
+			sh:datatype xsd:string ;
+			sh:minCount "1"^^xsd:integer ;
+			sh:nodeKind sh:Literal ;
+			sh:path analysis:class ;
+		]
+		;
+	sh:targetClass analysis:ArtifactClassification ;
+	.
+
+analysis:ArtifactClassificationResultFacet
+	a
+		owl:Class ,
+		sh:NodeShape
+		;
+	rdfs:subClassOf analysis:AnalyticResultFacet ;
+	rdfs:label "ArtifactClassificationResultFacet"@en ;
+	rdfs:comment "An artifact classification result facet is a grouping of characteristics unique to the results of an artifact classification analysis action."@en ;
+	sh:property [
+		sh:class analysis:ArtifactClassification ;
+		sh:nodeKind sh:IRI ;
+		sh:path analysis:classification ;
+	] ;
+	sh:targetClass analysis:ArtifactClassificationResultFacet ;
+	.
+
+analysis:class
+	a owl:DatatypeProperty ;
+	rdfs:label "class"@en ;
+	rdfs:comment "A specific classification class."@en ;
+	rdfs:range xsd:string ;
+	.
+
+analysis:classification
+	a owl:ObjectProperty ;
+	rdfs:label "classification"@en ;
+	rdfs:comment "An asserted classification of an analyzed artifact resulting from the analysis."@en ;
+	rdfs:range analysis:ArtifactClassification ;
+	.
+
+analysis:classificationConfidence
+	a owl:DatatypeProperty ;
+	rdfs:label "classificationConfidence"@en ;
+	rdfs:comment "The level of confidence that a classification assertion is correct."@en ;
+	rdfs:range xsd:decimal ;
+	.
+
+analysis:originatingAnalysis
+	a owl:ObjectProperty ;
+	rdfs:label "originatingAnalysis"@en ;
+	rdfs:comment "The analysis action that resulted in an analytic result."@en ;
+	rdfs:range analysis:Analysis ;
+	.
+
+analysis:resultContent
+	a owl:ObjectProperty ;
+	rdfs:label "resultContent"@en ;
+	rdfs:comment "Structured content expressing the results of an analysis action."@en ;
+	rdfs:range core:UcoObject ;
+	.
+
 configuration:Configuration
 	a
 		owl:Class ,
@@ -2355,6 +2607,45 @@ core:EnclosingCompilation
 	sh:targetClass core:EnclosingCompilation ;
 	.
 
+core:Event
+	a
+		owl:Class ,
+		sh:NodeShape
+		;
+	rdfs:subClassOf core:UcoObject ;
+	rdfs:label "Event"@en ;
+	rdfs:comment "An Event is a noteworthy occurrence (something that happens or might happen)."@en ;
+	owl:disjointWith action:Action ;
+	sh:property
+		[
+			sh:class core:UcoObject ;
+			sh:nodeKind sh:IRI ;
+			sh:path core:eventContext ;
+		] ,
+		[
+			sh:class types:Dictionary ;
+			sh:nodeKind sh:IRI ;
+			sh:path core:eventAttribute ;
+		] ,
+		[
+			sh:datatype xsd:dateTime ;
+			sh:nodeKind sh:Literal ;
+			sh:path core:endTime ;
+		] ,
+		[
+			sh:datatype xsd:dateTime ;
+			sh:nodeKind sh:Literal ;
+			sh:path core:startTime ;
+		] ,
+		[
+			sh:datatype xsd:string ;
+			sh:nodeKind sh:Literal ;
+			sh:path core:eventType ;
+		]
+		;
+	sh:targetClass core:Event ;
+	.
+
 core:ExternalReference
 	a
 		owl:Class ,
@@ -2593,15 +2884,16 @@ core:UcoThing
 	rdfs:subClassOf owl:Thing ;
 	rdfs:label "UcoThing"@en ;
 	rdfs:comment "UcoThing is the top-level class within UCO."@en ;
-	rdfs:seeAlso core:UcoThing-identifier-shape ;
+	rdfs:seeAlso core:UcoThing-identifier-regex-shape ;
 	sh:sparql [
 		a sh:SPARQLConstraint ;
 		sh:message "UcoThings are required to not be blank nodes."@en ;
 		sh:select """
-			PREFIX uco-core: <https://ontology.unifiedcyberontology.org/uco/core/>
+			PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+			PREFIX core: <https://ontology.unifiedcyberontology.org/uco/core/>
 			SELECT $this
 			WHERE {
-			        $this a/rdfs:subClassOf* uco-core:UcoThing .
+			        $this a/rdfs:subClassOf* core:UcoThing .
 			        FILTER isBlank ($this)
 			}
 		""" ;
@@ -2619,10 +2911,11 @@ core:UcoThing-identifier-regex-shape
 		rdfs:seeAlso <https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.3> ;
 		sh:message "UcoThings are suggested to end with a UUID."@en ;
 		sh:select '''
-			PREFIX uco-core: <https://ontology.unifiedcyberontology.org/uco/core/>
+			PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+			PREFIX core: <https://ontology.unifiedcyberontology.org/uco/core/>
 			SELECT $this
 			WHERE {
-			        $this a/rdfs:subClassOf* uco-core:UcoThing .
+			        $this a/rdfs:subClassOf* core:UcoThing .
 			        FILTER (
 			                ! REGEX (
 			                        STR($this),
@@ -2698,6 +2991,27 @@ core:endTime
 	rdfs:label "endTime"@en ;
 	rdfs:comment "The ending time of a time range."@en ;
 	rdfs:range xsd:dateTime ;
+	.
+
+core:eventAttribute
+	a owl:ObjectProperty ;
+	rdfs:label "Event Attribute"@en ;
+	rdfs:comment "An event attribute specifies an ad-hoc attribute/value for an event."@en ;
+	rdfs:range types:Dictionary ;
+	.
+
+core:eventContext
+	a owl:ObjectProperty ;
+	rdfs:label "Event Context"@en ;
+	rdfs:comment "An event context describes the association of actions and objects relating to an event."@en ;
+	rdfs:range core:UcoObject ;
+	.
+
+core:eventType
+	a owl:DatatypeProperty ;
+	rdfs:label "Event Type"@en ;
+	rdfs:comment "An event type specifies a classification type for the event."@en ;
+	rdfs:range xsd:string ;
 	.
 
 core:externalIdentifier
@@ -6689,6 +7003,12 @@ observable:ExtractedString
 	rdfs:comment "An extracted string is a grouping of characteristics unique to a series of characters pulled from an observable object."@en ;
 	sh:property
 		[
+			sh:datatype xsd:base64Binary ;
+			sh:maxCount "1"^^xsd:integer ;
+			sh:nodeKind sh:Literal ;
+			sh:path observable:byteStringValue ;
+		] ,
+		[
 			sh:datatype xsd:integer ;
 			sh:maxCount "1"^^xsd:integer ;
 			sh:nodeKind sh:Literal ;
@@ -6717,11 +7037,6 @@ observable:ExtractedString
 			sh:maxCount "1"^^xsd:integer ;
 			sh:nodeKind sh:Literal ;
 			sh:path observable:stringValue ;
-		] ,
-		[
-			sh:maxCount "1"^^xsd:integer ;
-			sh:nodeKind sh:Literal ;
-			sh:path observable:byteStringValue ;
 		]
 		;
 	sh:targetClass observable:ExtractedString ;
@@ -6751,6 +7066,18 @@ observable:File
 	rdfs:subClassOf observable:FileSystemObject ;
 	rdfs:label "File"@en ;
 	rdfs:comment "A file is a computer resource for recording data discretely on a computer storage device."@en ;
+	owl:disjointWith observable:URL ;
+	sh:targetClass observable:File ;
+	.
+
+observable:File-disjointWith-URL-shape
+	a sh:NodeShape ;
+	sh:message "observable:File and observable:URL are disjoint classes.  Assigning both types to a single node will be an error in UCO 2.0.0."@en ;
+	sh:not [
+		a sh:NodeShape ;
+		sh:class observable:URL ;
+	] ;
+	sh:severity sh:Warning ;
 	sh:targetClass observable:File ;
 	.
 
@@ -8034,12 +8361,6 @@ observable:MobileDeviceFacet
 			sh:datatype xsd:string ;
 			sh:maxCount "1"^^xsd:integer ;
 			sh:nodeKind sh:Literal ;
-			sh:path observable:IMEI ;
-		] ,
-		[
-			sh:datatype xsd:string ;
-			sh:maxCount "1"^^xsd:integer ;
-			sh:nodeKind sh:Literal ;
 			sh:path observable:bluetoothDeviceName ;
 		] ,
 		[
@@ -8053,6 +8374,11 @@ observable:MobileDeviceFacet
 			sh:maxCount "1"^^xsd:integer ;
 			sh:nodeKind sh:Literal ;
 			sh:path observable:network ;
+		] ,
+		[
+			sh:datatype xsd:string ;
+			sh:nodeKind sh:Literal ;
+			sh:path observable:IMEI ;
 		]
 		;
 	sh:targetClass observable:MobileDeviceFacet ;
@@ -9769,6 +10095,23 @@ observable:StorageMedium
 	sh:targetClass observable:StorageMedium ;
 	.
 
+observable:StorageMediumFacet
+	a
+		owl:Class ,
+		sh:NodeShape
+		;
+	rdfs:subClassOf core:Facet ;
+	rdfs:label "StorageMediumFacet"@en ;
+	rdfs:comment "A storage medium facet is a grouping of characteristics unique to a the storage capabilities of a piece of equipment or a mechanism designed to serve a special purpose or perform a special function."@en ;
+	sh:property [
+		sh:datatype xsd:integer ;
+		sh:maxCount "1"^^xsd:integer ;
+		sh:nodeKind sh:Literal ;
+		sh:path observable:totalStorageCapacityInBytes ;
+	] ;
+	sh:targetClass observable:StorageMediumFacet ;
+	.
+
 observable:SymbolicLink
 	a
 		owl:Class ,
@@ -9820,14 +10163,124 @@ observable:TCPConnectionFacet
 		[
 			sh:datatype xsd:hexBinary ;
 			sh:nodeKind sh:Literal ;
-			sh:path observable:sourceFlags ;
+			sh:path observable:destinationFlags ;
 		] ,
 		[
+			sh:datatype xsd:hexBinary ;
 			sh:nodeKind sh:Literal ;
-			sh:path observable:destinationFlags ;
+			sh:path observable:sourceFlags ;
 		]
 		;
 	sh:targetClass observable:TCPConnectionFacet ;
+	.
+
+observable:TableField
+	a
+		owl:Class ,
+		sh:NodeShape
+		;
+	rdfs:subClassOf observable:ObservableObject ;
+	rdfs:label "TableField"@en ;
+	rdfs:comment "A database table field and its associated value contained within a relational database."@en ;
+	sh:targetClass observable:TableField ;
+	.
+
+observable:TableFieldFacet
+	a
+		owl:Class ,
+		sh:NodeShape
+		;
+	rdfs:subClassOf core:Facet ;
+	rdfs:label "TableFieldFacet"@en ;
+	rdfs:comment "A database record facet contains properties associated with a specific table record value from a database."@en ;
+	sh:property
+		[
+			sh:datatype xsd:boolean ;
+			sh:maxCount "1"^^xsd:integer ;
+			sh:nodeKind sh:Literal ;
+			sh:path observable:recordFieldIsNull ;
+		] ,
+		[
+			sh:datatype xsd:string ;
+			sh:maxCount "1"^^xsd:integer ;
+			sh:nodeKind sh:Literal ;
+			sh:path observable:recordFieldName ;
+		] ,
+		[
+			sh:datatype xsd:string ;
+			sh:maxCount "1"^^xsd:integer ;
+			sh:nodeKind sh:Literal ;
+			sh:path observable:tableName ;
+		] ,
+		[
+			sh:datatype xsd:string ;
+			sh:maxCount "1"^^xsd:integer ;
+			sh:nodeKind sh:Literal ;
+			sh:path observable:tableSchema ;
+		] ,
+		[
+			sh:maxCount "1"^^xsd:integer ;
+			sh:nodeKind sh:Literal ;
+			sh:or (
+				[
+					sh:datatype xsd:base64Binary ;
+				]
+				[
+					sh:datatype xsd:decimal ;
+				]
+				[
+					sh:datatype xsd:integer ;
+				]
+				[
+					sh:datatype xsd:string ;
+				]
+			) ;
+			sh:path observable:recordFieldValue ;
+		] ,
+		[
+			sh:maxCount "1"^^xsd:integer ;
+			sh:nodeKind sh:Literal ;
+			sh:or (
+				[
+					sh:datatype xsd:integer ;
+				]
+				[
+					sh:datatype xsd:string ;
+				]
+			) ;
+			sh:path observable:recordRowID ;
+		]
+		;
+	sh:targetClass observable:TableFieldFacet ;
+	sh:xone (
+		[
+			a sh:NodeShape ;
+			sh:property [
+				sh:hasValue "false"^^xsd:boolean ;
+				sh:path observable:recordFieldIsNull ;
+			] ;
+		]
+		[
+			a sh:NodeShape ;
+			sh:property
+				[
+					sh:hasValue "true"^^xsd:boolean ;
+					sh:path observable:recordFieldIsNull ;
+				] ,
+				[
+					sh:maxCount "0"^^xsd:integer ;
+					sh:path observable:recordFieldValue ;
+				]
+				;
+		]
+		[
+			a sh:NodeShape ;
+			sh:property [
+				sh:maxCount "0"^^xsd:integer ;
+				sh:path observable:recordFieldIsNull ;
+			] ;
+		]
+	) ;
 	.
 
 observable:Tablet
@@ -12310,6 +12763,12 @@ observable:WindowsThreadFacet
 			sh:path observable:creationTime ;
 		] ,
 		[
+			sh:datatype xsd:dateTime ;
+			sh:maxCount "1"^^xsd:integer ;
+			sh:nodeKind sh:Literal ;
+			sh:path observable:observableCreatedTime ;
+		] ,
+		[
 			sh:datatype xsd:hexBinary ;
 			sh:nodeKind sh:Literal ;
 			sh:path observable:parameterAddress ;
@@ -13193,6 +13652,7 @@ observable:byteStringValue
 	a owl:DatatypeProperty ;
 	rdfs:label "byteStringValue"@en ;
 	rdfs:comment "Specifies the raw, byte-string representation of the extracted string."@en ;
+	rdfs:range xsd:base64Binary ;
 	.
 
 observable:callType
@@ -13634,9 +14094,24 @@ observable:creationFlags
 	.
 
 observable:creationTime
-	a owl:DatatypeProperty ;
+	a
+		owl:DatatypeProperty ,
+		owl:DeprecatedProperty
+		;
 	rdfs:label "creationTime"@en ;
 	rdfs:range xsd:dateTime ;
+	.
+
+observable:creationTime-deprecation-shape
+	a sh:NodeShape ;
+	sh:property [
+		a sh:PropertyShape ;
+		sh:maxCount "0"^^xsd:integer ;
+		sh:message "observable:creationTime is deprecated, and will be an error to use in UCO 2.0.0.  observable:observableCreatedTime should be used instead."@en ;
+		sh:path observable:creationTime ;
+		sh:severity sh:Warning ;
+	] ;
+	sh:targetSubjectsOf observable:creationTime ;
 	.
 
 observable:creator
@@ -13725,8 +14200,8 @@ observable:destination
 observable:destinationFlags
 	a owl:DatatypeProperty ;
 	rdfs:label "destinationFlags"@en ;
-	rdfs:comment """Specifies the destination TCP flags.
-          """@en ;
+	rdfs:comment "Specifies the destination TCP flags."@en ;
+	rdfs:range xsd:hexBinary ;
 	.
 
 observable:destinationPort
@@ -15887,6 +16362,48 @@ observable:receivedTime
 	rdfs:range xsd:dateTime ;
 	.
 
+observable:recordFieldIsNull
+	a owl:DatatypeProperty ;
+	rdfs:label "recordFieldIsNull"@en ;
+	rdfs:comment "Whether the specified database record field is null."@en ;
+	rdfs:range xsd:boolean ;
+	.
+
+observable:recordFieldName
+	a owl:DatatypeProperty ;
+	rdfs:label "recordFieldName"@en ;
+	rdfs:comment "A field name of a database record value being identified."@en ;
+	rdfs:range xsd:string ;
+	.
+
+observable:recordFieldValue
+	a owl:DatatypeProperty ;
+	rdfs:label "recordFieldValue"@en ;
+	rdfs:comment "The field value of a specified database record."@en ;
+	rdfs:range [
+		a rdfs:Datatype ;
+		owl:unionOf (
+			xsd:base64Binary
+			xsd:decimal
+			xsd:integer
+			xsd:string
+		) ;
+	] ;
+	.
+
+observable:recordRowID
+	a owl:DatatypeProperty ;
+	rdfs:label "recordRowID"@en ;
+	rdfs:comment "The unique ID that identifies a database record, supplied by the originating database engine."@en ;
+	rdfs:range [
+		a rdfs:Datatype ;
+		owl:unionOf (
+			xsd:integer
+			xsd:string
+		) ;
+	] ;
+	.
+
 observable:recurrence
 	a owl:DatatypeProperty ;
 	rdfs:label "recurrence"@en ;
@@ -16587,6 +17104,14 @@ observable:systemTime
 observable:tableName
 	a owl:DatatypeProperty ;
 	rdfs:label "tableName"@en ;
+	rdfs:comment "The table containing a specified database record."@en ;
+	rdfs:range xsd:string ;
+	.
+
+observable:tableSchema
+	a owl:DatatypeProperty ;
+	rdfs:label "tableSchema"@en ;
+	rdfs:comment "The schema that contains the identified database record."@en ;
 	rdfs:range xsd:string ;
 	.
 
@@ -16682,6 +17207,13 @@ observable:totalSpace
 	a owl:DatatypeProperty ;
 	rdfs:label "totalSpace"@en ;
 	rdfs:comment "Specifies the total amount of space available on the partition, in bytes."@en ;
+	rdfs:range xsd:integer ;
+	.
+
+observable:totalStorageCapacityInBytes
+	a owl:DatatypeProperty ;
+	rdfs:label "totalStorageCapacityInBytes"@en ;
+	rdfs:comment "The maximum number of bytes that can be stored on a storage device."@en ;
 	rdfs:range xsd:integer ;
 	.
 
@@ -16974,7 +17506,7 @@ observable:wirelessNetworkSecurityMode
 	rdfs:label "wirelessNetworkSecurityMode"@en ;
 	rdfs:comment "Specifies the security mode of a wireless network (None, WEP, WPA, etc)."@en ;
 	rdfs:range [
-		a rdfs:DataType ;
+		a rdfs:Datatype ;
 		owl:unionOf (
 			vocabulary:WirelessNetworkSecurityModeVocab
 			xsd:string
@@ -17592,6 +18124,7 @@ types:Dictionary
 	rdfs:subClassOf core:UcoInherentCharacterizationThing ;
 	rdfs:label "Dictionary"@en ;
 	rdfs:comment "A dictionary is list of (term/key, value) pairs with each term/key existing no more than once."@en ;
+	rdfs:isDefinedBy <https://ontology.unifiedcyberontology.org/uco/types> ;
 	sh:property [
 		sh:class types:DictionaryEntry ;
 		sh:minCount "1"^^xsd:integer ;
@@ -17675,6 +18208,10 @@ types:Hash
 						"SHA1"^^vocabulary:HashNameVocab
 						"SHA224"^^vocabulary:HashNameVocab
 						"SHA256"^^vocabulary:HashNameVocab
+						"SHA3-224"^^vocabulary:HashNameVocab
+						"SHA3-256"^^vocabulary:HashNameVocab
+						"SHA3-384"^^vocabulary:HashNameVocab
+						"SHA3-512"^^vocabulary:HashNameVocab
 						"SHA384"^^vocabulary:HashNameVocab
 						"SHA512"^^vocabulary:HashNameVocab
 						"SSDEEP"^^vocabulary:HashNameVocab
@@ -18584,6 +19121,10 @@ vocabulary:HashNameVocab
 			"SHA1"^^vocabulary:HashNameVocab
 			"SHA224"^^vocabulary:HashNameVocab
 			"SHA256"^^vocabulary:HashNameVocab
+			"SHA3-224"^^vocabulary:HashNameVocab
+			"SHA3-256"^^vocabulary:HashNameVocab
+			"SHA3-384"^^vocabulary:HashNameVocab
+			"SHA3-512"^^vocabulary:HashNameVocab
 			"SHA384"^^vocabulary:HashNameVocab
 			"SHA512"^^vocabulary:HashNameVocab
 			"SSDEEP"^^vocabulary:HashNameVocab
@@ -18751,6 +19292,7 @@ vocabulary:ObservableObjectRelationshipVocab
 			"Sent_Via_Upload"^^vocabulary:ObservableObjectRelationshipVocab
 			"Set_From"^^vocabulary:ObservableObjectRelationshipVocab
 			"Set_To"^^vocabulary:ObservableObjectRelationshipVocab
+			"Signed_By"^^vocabulary:ObservableObjectRelationshipVocab
 			"Sub-domain_Of"^^vocabulary:ObservableObjectRelationshipVocab
 			"Supra-domain_Of"^^vocabulary:ObservableObjectRelationshipVocab
 			"Suspended"^^vocabulary:ObservableObjectRelationshipVocab
@@ -19352,9 +19894,9 @@ vocabulary:WirelessNetworkSecurityModeVocab
 []
 	a owl:Axiom ;
 	rdfs:comment "This triple is repeated from the Collections Ontology."@en ;
-	owl:AnnotatedProperty rdfs:subClassOf ;
-	owl:AnnotatedSource co:ListItem ;
-	owl:AnnotatedTarget co:Item ;
+	owl:annotatedProperty rdfs:subClassOf ;
+	owl:annotatedSource co:ListItem ;
+	owl:annotatedTarget co:Item ;
 	.
 
 []
